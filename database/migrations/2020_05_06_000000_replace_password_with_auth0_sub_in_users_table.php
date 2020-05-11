@@ -1,0 +1,41 @@
+<?php
+
+// Users table migration when Auth0 is added to an application:
+//   - the "sub" field is Auth0's unique user identifier
+//   - the "password" field is no longer required
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class ReplacePasswordWithAuth0SubInUsersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('password');
+            $table->string('sub')->after('id')
+                                ->unique()
+                                ->nullable()
+                                ->default(null);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('password')->after('email_verified_at');
+            $table->dropColumn('sub');
+        });
+    }
+}
