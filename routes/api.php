@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:api,web')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/songs', function () {
+    return \App\Song::all();
+});
+
+Route::get('/content', function () {
+    return \App\Content::where('file', 'NOT LIKE', '3abn%')->get();
+});
+
+Route::get('/prefilters', function () {
+    return \App\Prefilter::all();
+});
+
+Route::apiResource('/songreviews', 'SongReviewController');
+

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
 });
 
@@ -24,3 +24,10 @@ Route::get( '/auth0/callback', '\Auth0\Login\Auth0Controller@callback' )->name( 
 Route::get( '/login', 'Auth\Auth0IndexController@login' )->name( 'login' );
 Route::match(['get','post'], '/logout', 'Auth\Auth0IndexController@logout' )->name( 'logout' )->middleware('auth');
 Route::get( '/profile', 'Auth\Auth0IndexController@profile' )->name( 'profile' )->middleware('auth');
+
+// Remaining routes are handled by our Vue SPA
+Route::get('/{any}', function () {
+    Gate::authorize('play-music');
+    return view('player');
+})->where('any', '.*')->middleware('auth');
+
