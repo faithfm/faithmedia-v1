@@ -25,6 +25,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::define('play-music', function ($user) {
+            return $user->permissions->firstWhere('permission', 'play-music') !== null;     // check if permission exists
+        });
+
+        Gate::define('review-songs', function ($user) {
+            return $user->permissions->firstWhere('permission', 'review-songs') !== null;     // check if permission exists
+        });
+
         //
     }
 }
