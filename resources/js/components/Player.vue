@@ -166,7 +166,9 @@ export default {
     // load pre-filters (from localstorage or API)
     const vm = this
     const ls = localStorage
-    if (localStorage.prefilters) {
+    const useLocalStorage = (localStorage.enableDevCache ? true : false);
+
+    if (useLocalStorage && localStorage.prefilters) {
       try { this.prefilters = JSON.parse(localStorage.prefilters) }
       catch(error) { this.prefilters = [] } // clear data on error
       this.applyRouteFilter()
@@ -300,7 +302,10 @@ export default {
     loadContentDb() {
       const vm = this
       const ls = localStorage
-      if (localStorage.contentDb) {
+
+      const useLocalStorage = (localStorage.enableDevCache ? true : false);
+
+      if (useLocalStorage && localStorage.contentDb) {
         try { this.contentDb = JSON.parse(LZString.decompressFromUTF16(localStorage.contentDb)) }
         catch(error) { vm.contentDb = [] } // clear data on error
         this.applyRouteFilter()
@@ -309,8 +314,11 @@ export default {
         axios.get("/api/content")
           .then(function (response) {
             vm.contentDb = response.data
-            try { ls.contentDb = LZString.compressToUTF16(JSON.stringify(response.data)) }
-            catch (error) { vm.contentDb = [] } // clear data on error 
+            ls.removeItem('contentDb')
+            if (useLocalStorage) {
+              try { ls.contentDb = LZString.compressToUTF16(JSON.stringify(response.data)) }
+              catch (error) { vm.contentDb = [] } // clear data on error 
+            }
             vm.applyRouteFilter()
           })
           .catch(function (error) {
