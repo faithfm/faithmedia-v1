@@ -25,14 +25,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('play-music', function ($user) {
-            return $user->permissions->firstWhere('permission', 'play-music') !== null;     // check if permission exists
-        });
+        $defined_permissions = ['use-app', 'edit-metadata', 'upload-files', 'review-songs', 'admin-media', 'admin-master'];
 
-        Gate::define('review-songs', function ($user) {
-            return $user->permissions->firstWhere('permission', 'review-songs') !== null;     // check if permission exists
-        });
-
-        //
+        // define gates for each permission
+        foreach ($defined_permissions as $permission) {
+            Gate::define($permission, function ($user) use ($permission) {
+                return $user->permissions->firstWhere('permission', $permission) !== null;     // check if the specified permission exists in the current User's UserPermissions model
+            });
+        }
     }
 }
