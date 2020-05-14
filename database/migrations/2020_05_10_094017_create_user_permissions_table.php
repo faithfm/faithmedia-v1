@@ -16,9 +16,10 @@ class CreateUserPermissionsTable extends Migration
         Schema::create('user_permissions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->string('permission');
+            $table->string('permission')->default('use-app');;
             $table->string('restrictions')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->unique(['user_id', 'permission']);
         });
