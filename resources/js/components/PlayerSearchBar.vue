@@ -2,10 +2,12 @@
   <v-toolbar flat rounded>
     <v-text-field
       clearable
-      prepend-icon="mdi-playlist-music"
+      prepend-icon="mdi-magnify"
+      append-outer-icon="mdi-sort"
       placeholder="Quick search"
       :value="searchString"
       @input="updateSearchString"
+      @click:append-outer="$emit('reverseSort')"
     ></v-text-field>
   </v-toolbar>
 </template>

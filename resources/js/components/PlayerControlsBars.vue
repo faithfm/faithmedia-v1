@@ -1,24 +1,6 @@
 <template>
 	<div class="footer">
 		<v-toolbar float height="90" class="d-flex align-center justify-center">
-			<!-- <v-btn icon @click="toggleMute" class="ml-2 mt-n5">
-				<template v-if="!this.muted">
-					<v-icon v-if="this.volume >= 0.5">mdi-volume-high</v-icon>
-					<v-icon v-else-if="this.volume > 0">mdi-volume-medium</v-icon>
-					<v-icon v-else>mdi-volume-off</v-icon>
-				</template>
-				<v-icon v-show="this.muted">mdi-volume-off</v-icon>
-			</v-btn>-->
-			<!-- <v-slider
-				inverse-label
-				prepend-icon
-				v-model="volume"
-				@input="updateVolume(volume)"
-				max="1"
-				step="0.1"
-				:label="this.volume * 100 + '%' "
-				loader-height="20px"
-			></v-slider>-->
 			<v-btn icon @click="toggleLoop">
 				<v-icon color="red accent-1" v-if="this.loop">mdi-repeat-once</v-icon>
 				<v-icon color="grey darken-1" v-else>mdi-repeat-once</v-icon>

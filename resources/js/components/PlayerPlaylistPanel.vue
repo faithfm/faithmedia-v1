@@ -11,11 +11,19 @@
 						class="my-1"
 					>
 						<v-list-item-content @click="selectTrack(track.file)" @dblclick="playTrack(track.file)">
-							<v-list-item-title>{{ index | numbers}} {{ track.content }} - {{ track.guests }}</v-list-item-title>
+							<v-list-item-title><span class="text--secondary">{{ index | numbers}}</span> {{ track.content }} <span class="text--secondary">- {{ track.guests }}</span></v-list-item-title>
 							<v-list-item-subtitle
 								v-show="$route.params.filter != 'music-pending'"
-								class="text--primary"
-							>{{ track.file }} - {{ track.tags }}</v-list-item-subtitle>
+								class="text--primary text-right text-sm-left"
+								style="text-oveflow:ellipsis; direction:rtl;"
+							>
+								<span class="text--secondary">{{ filePath(track.file) }}</span>/{{ fileName(track.file) }}
+								<span style="float:right">
+								<v-chip v-for="tag in track.tags ? track.tags.split(' ') : []" :key=tag x-small color="#dde" text-color="#444" style="margin-left:2px; padding-left:4px; padding-right:4px">
+									{{tag}}
+								</v-chip>
+								</span>
+							</v-list-item-subtitle>
 							<v-chip-group v-show="$route.params.filter == 'music-pending'" class="text--primary">
 								<v-chip
 									small
@@ -66,68 +74,13 @@
 							</v-chip-group>
 						</v-list-item-content>
 						<v-list-item-action>
-							<v-btn icon @click.stop="downloadFilename=track.file; downloadDialog=true">
-								<v-icon color="black">mdi-cloud-download-outline</v-icon>
+							<v-btn icon @click.stop="actionsDialogModel=track; selectTrack(track.file)">
+								<v-icon small color="black">mdi-dots-horizontal</v-icon>
 							</v-btn>
 						</v-list-item-action>
 					</v-list-item>
 				</v-list-item-group>
 			</v-list>
-			<DownloadDialog
-				:downloadDialog.sync = "downloadDialog"
-				:downloadFilename = "downloadFilename"
-			></DownloadDialog>
-			<v-dialog v-model="reviewDialog">
-				<v-card min-height="200px">
-					<v-btn icon fixed right @click="reviewDialog=false" class="mr-2">
-						<v-icon>mdi-close-thick</v-icon>
-					</v-btn>
-					<v-card-title class="justify-center">Comments</v-card-title>
-					<v-card class="mx-3" max-height="500px">
-						<v-list>
-							<v-list-item-group>
-								<v-list-item
-									v-for="(review, index) in songReviews"
-									:key="index"
-									v-if="review.file==reviewFilename"
-								>
-									<v-list-item-icon>
-										<v-icon v-if="review.rating=='+'">mdi-thumb-up-outline</v-icon>
-										<v-icon v-if="review.rating=='-'">mdi-thumb-down-outline</v-icon>
-										<v-icon v-if="review.rating=='?'">mdi-help</v-icon>
-									</v-list-item-icon>
-									<v-list-item-content>
-										<v-list-item-subtitle class="text-wrap">{{review.comments}}</v-list-item-subtitle>
-									</v-list-item-content>
-									<v-list-item-avatar color="red darken-4">
-										<span class="text-area caption">{{getInitials(review.user ? review.user.name : '') }}</span>
-									</v-list-item-avatar>
-								</v-list-item>
-							</v-list-item-group>
-						</v-list>
-					</v-card>
-					<v-card-text>
-						<div class="text-area">
-							<v-divider></v-divider>
-							<v-textarea
-								outlined
-								label="Comment"
-								clearable
-								clear-icon="mdi-delete"
-								append-icon="mdi-checkbox-marked-circle"
-								color="red darken-4"
-								counter
-								maxlength="500"
-								:rules="[rules.counter]"
-								dense
-								placeholder
-								v-model="reviewComment"
-								@click:append="submitSongReview(reviewFilename, null, reviewComment || '')"
-							></v-textarea>
-						</div>
-					</v-card-text>
-				</v-card>
-			</v-dialog>
 			<div v-show="playlist.length < totalResultsAvailable">
 				<v-card-actions class="d-flex justify-content-center">
 					<v-btn color="#e538356b" @click="showMoreResults">Show more Results</v-btn>
@@ -135,27 +88,40 @@
 				</v-card-actions>
 			</div>
 		</v-card>
+		<ActionsDialog
+			v-model = "actionsDialogModel"
+			:formFieldNames = "['file', 'series', 'numbers', 'guests', 'content', 'tags']"
+			:defaultFieldConfig = "{ required:true, maxLength:255 }"
+			:fieldConfig = "{ file:{disabled:true}, numbers:{maxLength:30} }"
+			@playTrack = "playTrack"
+			@updateContentDb = "$emit('updateContentDb',$event);"
+		></ActionsDialog>
+		<SongReviewDialog
+			:reviewDialog.sync = "reviewDialog"
+			:reviewComment.sync = "reviewComment"
+			:reviewFilename = "reviewFilename"
+						:songReviews= "songReviews"
+			@submitSongReview="submitSongReview"
+		></SongReviewDialog>
 	</v-skeleton-loader>
 </template>
  
 <script>
-import DownloadDialog from "./DownloadDialog.vue";
+import ActionsDialog from "./ActionsDialog.vue";
+import SongReviewDialog from "./SongReviewDialog.vue";
 
 export default {
   components: {
-    DownloadDialog,
+	ActionsDialog,
+	SongReviewDialog
   },
 	data() {
 		return {
-			downloadDialog: false,
-			downloadFilename: "",
+			actionsDialogModel: null,
 			reviewFilename: "",
 			reviewDialog: false,
 			reviewComment: "",
-			show: false,
-			rules: {
-				counter: value => (value || "").length <= 500 || "Max 500 characters"
-			}, 
+			show: false
 		};
 	},
 	props: {
@@ -167,6 +133,7 @@ export default {
 		songReviews: Array
 	},
 	computed: {
+		// console: () => console,		// make console.XXX available in templates
 		ratingSummary() {
 			let rs = {};
 			// return rs
@@ -210,11 +177,11 @@ export default {
 				? this.ratingSummary[file][ratingType] || 0
 				: 0;
 		},
-		getInitials(fullName) {
-			return (fullName || "")
-				.split(" ")
-				.map(n => n[0])
-				.join("");
+		filePath(pathname) {
+			return pathname.split("/").slice(0,-1).join('/')
+		},
+		fileName(pathname) {
+			return pathname.split("/").pop()
 		},
 	}
 };
@@ -237,18 +204,11 @@ export default {
 .v-skeleton-loader {
 	padding-bottom: 115px;
 }
-::v-deep .v-slide-group__content {
-	justify-content: center;
-}
 .myRatings {
 	background-color: #b71c1c !important;
 	color: white;
 }
 .myRatings ::v-deep .v-icon {
 	color: white;
-}
-.text-area {
-	color: white;
-	font-weight: bold;
 }
 </style>

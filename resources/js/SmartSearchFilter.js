@@ -73,7 +73,7 @@ export class SmartSearchFilter {
     return items.filter(item => so.test(item, so.filterOpsArray))
   }
 
-  test(x, filter_operations_array){
+  test(x, filter_operations_array=this.filterOpsArray){
     const [fn, ...params] = filter_operations_array
     const so = this
     const fns = {

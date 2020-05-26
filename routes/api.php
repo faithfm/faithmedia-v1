@@ -18,13 +18,7 @@ Route::middleware('auth:api,web')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/songs', function () {
-    return \App\Song::all();
-});
-
-Route::get('/content', function () {
-    return \App\Content::where('file', 'NOT LIKE', '3abn%')->get();
-});
+Route::apiResource('/content', 'ContentController');
 
 Route::get('/prefilters', function () {
     return \App\Prefilter::all();

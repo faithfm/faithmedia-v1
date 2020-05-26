@@ -55,8 +55,20 @@ Vue.filter('numbers', (value) => {
  */
 
  // Pass window.XXX variables into our Vue model.  (These are defined by our Laravel Blade template)
-Vue.prototype.$user = window.user;        
+Vue.prototype.$user = window.user;
 Vue.prototype.$config = window.config;
+
+// Add can() and restrictions() functions to the $user object
+Vue.prototype.$user.can = function (permissionToCheck) {
+  return this.permissions.some(p => p.permission===permissionToCheck);
+}
+Vue.prototype.$user.restrictions = function (permissionToCheck) {
+  const perm = this.permissions.find(p => p.permission===permissionToCheck);
+  if (perm === undefined)   return { status:"NOT PERMITTED" }
+  if (!perm.restrictions )  return { status:"ALL PERMITTED" }
+  try { return  { status:"SOME PERMITTED", ...JSON.parse(perm.restrictions) } }
+  catch { return { status:"NOT PERMITTED", error:"INVALID JSON", json:perm.restricitons } }
+}
 
 const app = new Vue({
     el: '#app',
