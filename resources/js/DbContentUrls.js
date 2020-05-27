@@ -21,7 +21,7 @@ export function origUrl(dbPathname, config) {
 
 // **** URL generators ****
 function dbUrlEncode(dbPathname) {
-	return dbPathname.replace("+", "%2B")
+	return dbPathname.replace(/\+/g, "%2B")
 }
 
 

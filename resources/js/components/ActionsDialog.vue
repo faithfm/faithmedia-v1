@@ -7,7 +7,7 @@
 			<v-card-title class="justify-content-center">Actions</v-card-title>
 			<v-card-actions class="justify-content-center">
 				<v-chip-group>
-					<v-chip label outlined color="red darken-4" @click="$emit('playTrack',sandbox.file)">
+					<v-chip label outlined color="red darken-4" @click="$emit('playTrack',sandbox.file); closeDialog()">
 						<v-icon>mdi-play</v-icon>Play
 					</v-chip>
 					<v-chip

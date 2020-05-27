@@ -10,7 +10,7 @@
 						:class="[{selected: track.file === selectedTrackFile}, {playing: track.file === indexFile}, {bg: track.file !== indexFile}]"
 						class="my-1"
 					>
-						<v-list-item-content @click="selectTrack(track.file)" @dblclick="playTrack(track.file)">
+						<v-list-item-content @click="selectTrack(track.file)" @dblclick="actionsDialogModel=track; selectTrack(track.file)">
 							<v-list-item-title><span class="text--secondary">{{ index | numbers}}</span> {{ track.content }} <span class="text--secondary">- {{ track.guests }}</span></v-list-item-title>
 							<v-list-item-subtitle
 								v-show="$route.params.filter != 'music-pending'"
