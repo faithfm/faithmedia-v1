@@ -7,7 +7,7 @@
 						two-line
 						v-for="(track, index) in playlist"
 						:key="track.file"
-						:class="[{selected: track.file === selectedTrackFile}, {playing: track.file === indexFile}, {bg: track.file !== indexFile}]"
+						:class="[{selected: track.file === selectedTrackFile}, {playing: track.file === indexFile}, {bg: track.file !== indexFile}, {missingFile: ! Boolean(track.bytes)}]"
 						class="my-1"
 					>
 						<v-list-item-content @click="selectTrack(track.file)" @dblclick="actionsDialogModel=track; selectTrack(track.file)">
@@ -197,6 +197,9 @@ export default {
 }
 .bg {
 	background-color: rgba(218, 218, 218, 0.425);
+}
+.missingFile {
+	background-color: rgba(144, 144, 144, 0.425);
 }
 .playlist {
 	overflow: auto;
