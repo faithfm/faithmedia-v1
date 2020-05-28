@@ -176,6 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Auth0\Login\LoginServiceProvider::class,        // Add Auth0 login service provider
 
+        OwenIt\Auditing\AuditingServiceProvider::class,   //Add Laravel Auditing
+
     ],
 
     /*

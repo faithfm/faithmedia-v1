@@ -17,20 +17,6 @@ trait Auth0Trait
 	public $accessToken;
 
 	/**
-	 * Get the unique identifier for the user.
-	 *
-	 * @return mixed
-	 */
-	public function getAuthIdentifier()
-	{
-    if (isset($this->sub)) {
-      return $this->sub;
-    }
-
-		return $this->id;
-	}
-
-	/**
 	 * Get id field name.
 	 *
 	 * @return string
