@@ -28,9 +28,6 @@ class Content extends Model
      */
     protected $keyType = 'string';
 
-    const CREATED_AT = 'created_at';        // probably redundent - we added this to our legacy table
-    const UPDATED_AT = 'tstamp';            // our legacy table is currently using 'tstamp' instaad of 'update_at' field name.
-
     /**
      * The connection name for the model.
      *
