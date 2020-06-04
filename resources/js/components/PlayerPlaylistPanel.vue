@@ -13,7 +13,7 @@
 						<v-list-item-content @click="selectTrack(track.file)" @dblclick="actionsDialogModel=track; selectTrack(track.file)">
 							<v-list-item-title><span class="text--secondary">{{ index | numbers}}</span> {{ track.content }} <span class="text--secondary">- {{ track.guests }}</span></v-list-item-title>
 							<v-list-item-subtitle
-								v-show="($route.params.filter != 'music-pending' || !$user.can('review-songs'))"
+								v-show="!showReviews"
 								class="text--primary text-right text-sm-left"
 								style="text-oveflow:ellipsis; direction:rtl;"
 							>
@@ -24,7 +24,7 @@
 								</v-chip>
 								</span>
 							</v-list-item-subtitle>
-							<v-chip-group v-show="($route.params.filter == 'music-pending' && $user.can('review-songs'))" class="text--primary">
+							<v-chip-group v-show="showReviews" class="text--primary">
 								<v-chip
 									small
 									class="mb-n1"
@@ -59,7 +59,7 @@
 									{{ getRating(track.file, '?') }}
 								</v-chip>
 							</v-chip-group>
-							<v-chip-group v-show="($route.params.filter == 'music-pending' && $user.can('review-songs'))" class="text--primary">
+							<v-chip-group v-show="showReviews" class="text--primary">
 								<v-chip
 									small
 									class="mb-n1"
@@ -153,6 +153,16 @@ export default {
 				rs[review.file] = summary;
 			});
 			return rs;
+		},
+		showReviews(){
+			if (this.$route.params.filter == 'music-pending'){
+				if(this.$user.can('review-songs'))
+					return true;
+				else 
+					return false;		
+			}
+			else 
+				return false;
 		}
 	},
 	methods: {
