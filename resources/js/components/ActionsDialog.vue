@@ -43,7 +43,7 @@
 									:key="fieldName"
 								>
 									<v-text-field
-										v-model="sandbox[fieldName]"
+										v-model.trim="sandbox[fieldName]"
 										:rules="getFieldRules(config)"
 										:label="getTitle(config)"
 										:disabled="config.disabled || (userAllowedFields ? !userAllowedFields.includes(fieldName) : false)"
