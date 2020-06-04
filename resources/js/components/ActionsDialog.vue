@@ -48,7 +48,7 @@
 										:label="getTitle(config)"
 										:disabled="config.disabled || (userAllowedFields ? !userAllowedFields.includes(fieldName) : false)"
 										:required="config.required"
-										:background-color="fieldIsDirty(fieldName) ? '#ffe' : null"
+										:background-color="fieldIsDirty(fieldName) ? 'grey lighten-2' : null"
 										dense
 										clearable
 									></v-text-field>
@@ -70,25 +70,19 @@
 						<v-card-actions class="justify-center">
 							<v-chip-group column>
 								<v-chip
-									class="my-1"
-									color="red darken-2"
-									outlined
+									class="downloadBtn"
 									:href="oggDownloadUrl"
 									download
 									@click="closeDialog"
 								>OGG master</v-chip>
 								<v-chip
-									class="my-1"
-									color="red darken-2"
-									outlined
+									class="downloadBtn"
 									:href="mp3DownloadUrl"
 									download
 									@click="closeDialog"
 								>MP3 low-quality</v-chip>
 								<v-chip
-									class="my-1"
-									color="red darken-2"
-									outlined
+									class="downloadBtn"
 									:href="origDownloadUrl"
 									download
 									@click="closeDialog"
@@ -235,5 +229,13 @@ export default {
 </script>
 
 <style scoped>
+.downloadBtn{
+	margin: 4px 0;
+	color: rgb(211,47,47);
+	border-width: thin;
+    border-style: solid;
+	border-color: rgb(211,47,47);
+	background-color:transparent !important;
+}
 </style>
 
