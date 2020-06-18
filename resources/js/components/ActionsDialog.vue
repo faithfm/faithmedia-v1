@@ -72,20 +72,20 @@
 								<v-chip
 									class="downloadBtn"
 									:href="oggDownloadUrl"
+                                    target="_blank"
 									download
-									@click="closeDialog"
 								>OGG master</v-chip>
 								<v-chip
 									class="downloadBtn"
 									:href="mp3DownloadUrl"
+                                    target="_blank"
 									download
-									@click="closeDialog"
 								>MP3 low-quality</v-chip>
 								<v-chip
 									class="downloadBtn"
 									:href="origDownloadUrl"
+                                    target="_blank"
 									download
-									@click="closeDialog"
 								>MP3 original</v-chip>
 							</v-chip-group>
 						</v-card-actions>
