@@ -102,7 +102,7 @@ import { SmartSearchFilter } from "../SmartSearchFilter";
 import { laravelUserRestrictions } from "../LaravelUserPermissions";
 
 import vuetifyToast from "../VuetifyToast";
-vuetifyToast.setDefaults({ toastParentId:'player' });
+vuetifyToast.setDefaults({ toastParentId:'the-media-page' });
 
 // Object map helper functions - inspired by: https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
 const objectMapfromObject = (obj, fn) =>

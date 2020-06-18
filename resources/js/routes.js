@@ -1,20 +1,20 @@
-import Player from './components/Player.vue';
+import TheMediaPage from './components/TheMediaPage.vue';
 
 export default {
     mode:'history',
-    
+
     routes:[
         {
             path: '/',
-            component: Player
+            component: TheMediaPage
         },
         {
             path: '/filter/:filter',
-            component: Player
+            component: TheMediaPage
         },
         {
             path: '/path/:path*',
-            component: Player
+            component: TheMediaPage
         },
     ]
 }

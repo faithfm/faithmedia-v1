@@ -36,6 +36,6 @@ Route::get('/{any}', function () {
             'MEDIA_DOWNLOAD_BASE_ORIG' => env('MEDIA_DOWNLOAD_BASE_ORIG'),
         ],
     ];
-    return view('player')->with('LaravelAppGlobals', $LaravelAppGlobals);
+    return view('media')->with('LaravelAppGlobals', $LaravelAppGlobals);
 })->where('any', '.*')->middleware('auth');
 
