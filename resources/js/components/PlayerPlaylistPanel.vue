@@ -105,10 +105,11 @@
 		></SongReviewDialog>
 	</v-skeleton-loader>
 </template>
- 
+
 <script>
 import ActionsDialog from "./ActionsDialog.vue";
 import SongReviewDialog from "./SongReviewDialog.vue";
+import { laravelUserCan } from "../LaravelUserPermissions";
 
 export default {
   components: {
@@ -139,7 +140,7 @@ export default {
 			// return rs
 			this.songReviews.forEach(review => {
 				let summary = rs[review.file] || {};
-				if (review.user_id == this.$user.id) {
+				if (review.user_id == LaravelAppGlobals.user.id) {
 					summary["myRating"] = review.rating;
 					summary["myComment"] = review.comments;
 				}
@@ -156,12 +157,12 @@ export default {
 		},
 		showReviews(){
 			if (this.$route.params.filter == 'music-pending'){
-				if(this.$user.can('review-songs'))
+				if(laravelUserCan('review-songs'))
 					return true;
-				else 
-					return false;		
+				else
+					return false;
 			}
-			else 
+			else
 				return false;
 		}
 	},

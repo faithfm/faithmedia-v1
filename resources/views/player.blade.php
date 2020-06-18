@@ -11,13 +11,7 @@
 
     <!-- Scripts -->
     <script>
-        window.user = {!! json_encode(Auth::user()) !!};
-        window.config = { 
-            APP_NAME: "{{ env('APP_NAME') }}",
-            MEDIA_DOWNLOAD_BASE_OGG: "{{ env('MEDIA_DOWNLOAD_BASE_OGG') }}",
-            MEDIA_DOWNLOAD_BASE_MP3: "{{ env('MEDIA_DOWNLOAD_BASE_MP3') }}",
-            MEDIA_DOWNLOAD_BASE_ORIG: "{{ env('MEDIA_DOWNLOAD_BASE_ORIG') }}",
-        };
+        var LaravelAppGlobals = Object.freeze({!! json_encode($LaravelAppGlobals) !!});
     </script>
     <script src="{{ asset('js/player_app.js') }}" defer></script>
 

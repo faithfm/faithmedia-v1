@@ -34,10 +34,10 @@ Vue.filter('numbers', (value) => {
     let number = value + 1
     if (number < 10) {
       return "0" + number + "."
-    } 
+    }
     return number + "."
   })
-  
+
   Vue.filter('minutes', (value) => {
     if (!value || typeof value !== "number") return "00:00"
     let min = parseInt(value / 60),
@@ -54,21 +54,6 @@ Vue.filter('numbers', (value) => {
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
- // Pass window.XXX variables into our Vue model.  (These are defined by our Laravel Blade template)
-Vue.prototype.$user = window.user;
-Vue.prototype.$config = window.config;
-
-// Add can() and restrictions() functions to the $user object
-Vue.prototype.$user.can = function (permissionToCheck) {
-  return this.permissions.some(p => p.permission===permissionToCheck);
-}
-Vue.prototype.$user.restrictions = function (permissionToCheck) {
-  const perm = this.permissions.find(p => p.permission===permissionToCheck);
-  if (perm === undefined)   return { status:"NOT PERMITTED" }
-  if (!perm.restrictions )  return { status:"ALL PERMITTED" }
-  try { return  { status:"SOME PERMITTED", ...JSON.parse(perm.restrictions) } }
-  catch { return { status:"NOT PERMITTED", error:"INVALID JSON", json:perm.restricitons } }
-}
 
 const app = new Vue({
     el: '#app',

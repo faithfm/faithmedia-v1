@@ -27,24 +27,25 @@
 		></v-img>
 
 		<v-spacer class="d-none d-sm-flex"></v-spacer>
-		<v-toolbar-title class="d-none d-sm-flex textTitleBar title">{{$config.APP_NAME}}</v-toolbar-title>
+		<v-toolbar-title class="d-none d-sm-flex textTitleBar title">{{app.name}}</v-toolbar-title>
 
 		<v-spacer></v-spacer>
-		<span class="d-none d-sm-flex textTitleBar">{{$user.name}}&nbsp;</span>
-		<span class="d-flex d-sm-none textTitleBar fontUser">{{$user.name}}&nbsp;</span>
+		<span class="d-none d-sm-flex textTitleBar">{{app.user.name}}&nbsp;</span>
+		<span class="d-flex d-sm-none textTitleBar fontUser">{{app.user.name}}&nbsp;</span>
 		<!-- <v-icon>mdi-minus</v-icon>
 		<v-icon>mdi-checkbox-blank-outline</v-icon>-->
 		<v-icon @click="reload">mdi-reload</v-icon>
 		<v-icon @click="logout">mdi-close</v-icon>
 	</v-toolbar>
 </template>
- 
+
 <script>
 export default {
 	data() {
 		return {
 			dialog: false,
-			params: Array
+            params: Array,
+            app: LaravelAppGlobals,
 		};
 	},
 	props: {

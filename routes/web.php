@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,15 @@ Route::get( '/profile', 'Auth\Auth0IndexController@profile' )->name( 'profile' )
 // Remaining routes are handled by our Vue SPA
 Route::get('/{any}', function () {
     Gate::authorize('use-app');
-    return view('player');
+    $LaravelAppGlobals = [
+        'name' => env('APP_NAME'),
+        'user' => Auth::user(),
+        'config' => [
+            'MEDIA_DOWNLOAD_BASE_OGG' => env('MEDIA_DOWNLOAD_BASE_OGG'),
+            'MEDIA_DOWNLOAD_BASE_MP3' => env('MEDIA_DOWNLOAD_BASE_MP3'),
+            'MEDIA_DOWNLOAD_BASE_ORIG' => env('MEDIA_DOWNLOAD_BASE_ORIG'),
+        ],
+    ];
+    return view('player')->with('LaravelAppGlobals', $LaravelAppGlobals);
 })->where('any', '.*')->middleware('auth');
 

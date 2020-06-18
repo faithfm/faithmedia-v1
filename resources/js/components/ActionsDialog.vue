@@ -31,13 +31,13 @@
 							v-show="!canEdit"
 							type="error"
 						>You don't have permission to edit this area.</v-alert>
-						
-						<v-form 
-							v-show="canEdit" 
+
+						<v-form
+							v-show="canEdit"
 							lazy-validation
-							v-model="formIsValid" 
+							v-model="formIsValid"
 						>
-								<v-col 
+								<v-col
 									cols="12"
 									v-for="(config, fieldName) in combinedConfig"
 									:key="fieldName"
@@ -95,10 +95,11 @@
 		</v-card>
 	</v-dialog>
 </template>
- 
+
 <script>
 import { oggUrl, mp3Url, origUrl } from "../DbContentUrls";
 import { SmartSearchFilter } from "../SmartSearchFilter";
+import { laravelUserRestrictions } from "../LaravelUserPermissions";
 
 import vuetifyToast from "../VuetifyToast";
 vuetifyToast.setDefaults({ toastParentId:'player' });
@@ -144,7 +145,7 @@ export default {
 		// console: () => console,		// make console.XXX available in templates
 		combinedConfig() {
 			const baselineFieldConfig = { defaultValue:'', title:null, required:false, disabled:false, maxLength:0 };
-			return objectMapfromArray(this.formFieldNames, 
+			return objectMapfromArray(this.formFieldNames,
 				fieldName => ({ fieldName:fieldName, ...baselineFieldConfig, ...this.defaultFieldConfig, ...this.fieldConfig[fieldName] })
 			);
 		},
@@ -152,13 +153,13 @@ export default {
 			return this.formFieldNames.some(fieldName => this.fieldIsDirty(fieldName))
 		},
 		oggDownloadUrl() {
-			return oggUrl(this.sandbox.file, this.$config);
+			return oggUrl(this.sandbox.file, LaravelAppGlobals.config);
 		},
 		mp3DownloadUrl() {
-			return mp3Url(this.sandbox.file, this.$config);
+			return mp3Url(this.sandbox.file, LaravelAppGlobals.config);
 		},
 		origDownloadUrl() {
-			return origUrl(this.sandbox.file, this.$config);
+			return origUrl(this.sandbox.file, LaravelAppGlobals.config);
 		},
 		musixMatchLyrics() {
 			return (
@@ -168,8 +169,8 @@ export default {
 		},
 
 		canEdit() {
-			const restrictions = this.$user.restrictions('edit-content');
-			
+			const restrictions = laravelUserRestrictions('edit-content');
+
 			if (restrictions.error && !this.jsonErrorShownOnce) {
 				vuetifyToast.error("Your user profile contains an invalid permission restriction code. \nPlease contact your administrator for help.");
 				this.jsonErrorShownOnce = true;
@@ -189,13 +190,13 @@ export default {
 				return new SmartSearchFilter(
 					restrictions.filter,
 					"file|series|numbers|content|guests|tags"
-				).test(this.sandbox);			
+				).test(this.sandbox);
 			}
 
 			return false;		// Catch unexpected cases too
 		},
 		userAllowedFields() {
-			const restrictions = this.$user.restrictions('edit-content');
+			const restrictions = laravelUserRestrictions('edit-content');
 			return restrictions.fields ? restrictions.fields : null
 		},
 	},
@@ -204,7 +205,7 @@ export default {
 			this.$emit("input", null);
 		},
 		fieldIsDirty(fieldName) {
-			if (!this.value || !this.sandbox || !(fieldName in this.value) || !(fieldName in this.sandbox)) 
+			if (!this.value || !this.sandbox || !(fieldName in this.value) || !(fieldName in this.sandbox))
 				return false;
 			return  this.value[fieldName] !== this.sandbox[fieldName];
 		},

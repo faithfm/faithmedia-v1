@@ -9,7 +9,7 @@
           @applyroutefilter="applyRouteFilter"
         ></player-title-bar>
         <player-info-panel :trackInfo="getTrackInfo"></player-info-panel>
-        <player-search-bar 
+        <player-search-bar
           :searchString.sync="searchString"
           @update:searchString="searchPlaylist"
           @reverseSort="reverseSort"
@@ -46,7 +46,7 @@
     </v-content>
   </v-app>
 </template>
- 
+
 <script>
 import { SmartSearchFilter } from "../SmartSearchFilter";
 import { mp3Url } from "../DbContentUrls";
@@ -188,7 +188,7 @@ export default {
 						if (!(response.data instanceof Array)) throw "Result error";		// expecting an array
 						vm.prefilters = response.data;
 						ls.prefilters = JSON.stringify(response.data);
-					} catch (error) { throw error; } 
+					} catch (error) { throw error; }
 					vm.applyRouteFilter();
 				})
 				.catch(function(error) {
@@ -205,7 +205,7 @@ export default {
 					if (!(response.data instanceof Array)) throw "Result error";		// expecting an array
 					vm.songReviews = response.data;
 					vm.songReviewsAllowed = true;
-				} catch (error) { throw error; } 
+				} catch (error) { throw error; }
 			})
 			.catch(function(error) {
 				vm.songReviewsAllowed = false;
@@ -236,7 +236,7 @@ export default {
 			// create new instance if required
 			if (!howl) {
 				howl = new Howl({
-					src: mp3Url(file, this.$config),
+					src: mp3Url(file, LaravelAppGlobals.config),
 					onend: () => {
 						if (this.loop) {
 							this.play(file);
@@ -356,7 +356,7 @@ export default {
 									JSON.stringify(response.data)
 								);
 							}
-						} catch (error) { throw error; } 
+						} catch (error) { throw error; }
 						vm.sortContentDbBy("file");
             vm.applyRouteFilter();
 					})
