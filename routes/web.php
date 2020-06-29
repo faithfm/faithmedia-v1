@@ -28,12 +28,10 @@ Route::get( '/profile', 'Auth\Auth0IndexController@profile' )->name( 'profile' )
 Route::get('/{any}', function () {
     Gate::authorize('use-app');
     $LaravelAppGlobals = [
-        'name' => env('APP_NAME'),
         'user' => Auth::user(),
         'config' => [
-            'MEDIA_DOWNLOAD_BASE_OGG' => env('MEDIA_DOWNLOAD_BASE_OGG'),
-            'MEDIA_DOWNLOAD_BASE_MP3' => env('MEDIA_DOWNLOAD_BASE_MP3'),
-            'MEDIA_DOWNLOAD_BASE_ORIG' => env('MEDIA_DOWNLOAD_BASE_ORIG'),
+            'name' => config('app.name'),
+            'media_download_base' => config('myapp.media_download_base'),
         ],
     ];
     return view('media')->with('LaravelAppGlobals', $LaravelAppGlobals);

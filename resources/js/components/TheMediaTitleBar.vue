@@ -27,7 +27,7 @@
 		></v-img>
 
 		<v-spacer class="d-none d-sm-flex"></v-spacer>
-		<v-toolbar-title class="d-none d-sm-flex textTitleBar title">{{app.name}}</v-toolbar-title>
+		<v-toolbar-title class="d-none d-sm-flex textTitleBar title">{{app.config.name}}</v-toolbar-title>
 
 		<v-spacer></v-spacer>
 		<span class="d-none d-sm-flex textTitleBar">{{app.user.name}}&nbsp;</span>
