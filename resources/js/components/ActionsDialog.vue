@@ -100,24 +100,10 @@
 import { oggUrl, mp3Url, origUrl } from "../DbContentUrls";
 import { SmartSearchFilter } from "../SmartSearchFilter";
 import { laravelUserRestrictions } from "../LaravelUserPermissions";
+import { objectMapfromObject, objectMapfromArrayPairs}  from "../ObjectMapHelpers";
 
 import vuetifyToast from "../VuetifyToast";
 vuetifyToast.setDefaults({ toastParentId:'the-media-page' });
-
-// Object map helper functions - inspired by: https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
-const objectMapfromObject = (obj, fn) =>
-	Object.fromEntries(
-		Object.entries(obj).map(
-			([k, v], i) => [k, fn(k, v, i)]
-		)
-	)
-const objectMapfromArray = (arr, fn) =>
-	Object.fromEntries(
-		arr.map(
-			(k, i) => [k, fn(k, i)]
-		)
-	)
-
 
 export default {
 	props: {
@@ -145,8 +131,8 @@ export default {
 		// console: () => console,		// make console.XXX available in templates
 		combinedConfig() {
 			const baselineFieldConfig = { defaultValue:'', title:null, required:false, disabled:false, maxLength:0 };
-			return objectMapfromArray(this.formFieldNames,
-				fieldName => ({ fieldName:fieldName, ...baselineFieldConfig, ...this.defaultFieldConfig, ...this.fieldConfig[fieldName] })
+			return objectMapfromArrayPairs(this.formFieldNames,
+				fieldName => [fieldName, { fieldName:fieldName, ...baselineFieldConfig, ...this.defaultFieldConfig, ...this.fieldConfig[fieldName] }]
 			);
 		},
 		formIsDirty() {
