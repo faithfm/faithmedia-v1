@@ -1,9 +1,12 @@
 <template>
 	<div class="footer">
 		<v-toolbar float height="90" class="d-flex align-center justify-center">
-			<v-btn icon @click="toggleLoop">
+			<!-- <v-btn icon @click="toggleLoop">
 				<v-icon color="red accent-1" v-if="this.loop">mdi-repeat-once</v-icon>
 				<v-icon color="grey darken-1" v-else>mdi-repeat-once</v-icon>
+			</v-btn> -->
+			<v-btn icon @click="rewind">
+				<v-icon color="grey darken-1">mdi-rewind-30</v-icon>
 			</v-btn>
 			<v-btn outlined fab small color="red darken-4" @click="skipTrack('prev')">
 				<v-icon>mdi-skip-previous</v-icon>
@@ -20,14 +23,18 @@
 			<v-btn outlined fab small color="red darken-4" @click="skipTrack('next')">
 				<v-icon>mdi-skip-next</v-icon>
 			</v-btn>
-			<v-btn icon @click="toggleShuffle">
+			<!-- <v-btn icon @click="toggleShuffle">
 				<v-icon color="red accent-1" v-if="this.shuffle">mdi-shuffle</v-icon>
 				<v-icon color="grey darken-1" v-else>mdi-shuffle</v-icon>
+			</v-btn> -->
+			<v-btn icon @click="fastForward">
+				<v-icon color="grey darken-1">mdi-fast-forward-30</v-icon>
 			</v-btn>
 		</v-toolbar>
-		<v-toolbar flat height="10" class="px-10 pb-10">
+		<v-toolbar flat height="10" class="px-sm-10 pb-10">
 			<v-toolbar-items class="text-nonwrap ma-3">{{trackInfo.seek | minutes}}</v-toolbar-items>
-			<v-progress-linear rounded color="red darken-4" height="8" v-model="trackProgress"></v-progress-linear>
+			<v-progress-linear rounded color="red darken-4" height="8" v-model="trackProgress" class="d-none d-sm-flex"></v-progress-linear>
+			<v-progress-linear rounded color="red darken-4" height="16" v-model="trackProgress" class="d-flex d-sm-none"></v-progress-linear>
 			<v-toolbar-items class="text-nonwrap ma-3">{{trackInfo.duration | minutes}}</v-toolbar-items>
 		</v-toolbar>
 	</div>
@@ -88,6 +95,12 @@ export default {
 		},
 		toggleShuffle() {
 			this.$emit("toggleshuffle", !this.shuffle);
+		},
+		fastForward(){
+			this.$emit("fastforward");
+		},
+		rewind(){
+			this.$emit("rewind");
 		}
 	}
 };

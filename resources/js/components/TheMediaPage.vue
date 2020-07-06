@@ -1,50 +1,52 @@
 <template>
-  <v-app dark id="the-media-page">
-    <v-content>
-      <v-container>
-        <!-- <div>{{prefilters}}</div> -->
-        <TheMediaTitleBar
-          :itemMenu="prefilters"
-          @reload="reloadContentDb"
-          @applyroutefilter="applyRouteFilter"
-        ></TheMediaTitleBar>
-        <ThePlayerInfoPanel :trackInfo="getTrackInfo"></ThePlayerInfoPanel>
-        <TheMediaSearchBar
-          :searchString.sync="searchString"
-          @update:searchString="searchPlaylist"
-          @reverseSort="reverseSort"
-        ></TheMediaSearchBar>
-        <TheMediaPlaylistPanel
-          :playlist="displayedContent"
-          :selectedTrackFile="selectedTrackFile"
-          :indexFile="indexFile"
-          :isLoading="isLoading"
-          :totalResultsAvailable="filteredContent.length"
-          :songReviews.sync="songReviews"
-          @selecttrack="selectTrack"
-          @playtrack="play"
-          @updateContentDb = "updateContentDb($event);"
-          @showmoreresults="showMoreResults"
-          @showallresults="showAllResults"
-          @submitSongReview="submitSongReview"
-        ></TheMediaPlaylistPanel>
-        <ThePlayerControlsBars
-          :loop="loop"
-          :shuffle="shuffle"
-          :progress="progress"
-          :playing="playing"
-          :trackInfo="getTrackInfo"
-          @playtrack="play"
-          @pausetrack="pause"
-          @stoptrack="stop"
-          @skiptrack="skip"
-          @toggleloop="toggleLoop"
-          @toggleshuffle="toggleShuffle"
-          @updateseek="setSeek"
-        ></ThePlayerControlsBars>
-      </v-container>
-    </v-content>
-  </v-app>
+	<v-app dark id="the-media-page">
+		<v-content>
+			<v-container>
+				<!-- <div>{{prefilters}}</div> -->
+				<TheMediaTitleBar
+					:itemMenu="prefilters"
+					@reload="reloadContentDb"
+					@applyroutefilter="applyRouteFilter"
+				></TheMediaTitleBar>
+				<ThePlayerInfoPanel :trackInfo="getTrackInfo"></ThePlayerInfoPanel>
+				<TheMediaSearchBar
+					:searchString.sync="searchString"
+					@update:searchString="searchPlaylist"
+					@reverseSort="reverseSort"
+				></TheMediaSearchBar>
+				<TheMediaPlaylistPanel
+					:playlist="displayedContent"
+					:selectedTrackFile="selectedTrackFile"
+					:indexFile="indexFile"
+					:isLoading="isLoading"
+					:totalResultsAvailable="filteredContent.length"
+					:songReviews.sync="songReviews"
+					@selecttrack="selectTrack"
+					@playtrack="play"
+					@updateContentDb="updateContentDb($event);"
+					@showmoreresults="showMoreResults"
+					@showallresults="showAllResults"
+					@submitSongReview="submitSongReview"
+				></TheMediaPlaylistPanel>
+				<ThePlayerControlsBars
+					:loop="loop"
+					:shuffle="shuffle"
+					:progress="progress"
+					:playing="playing"
+					:trackInfo="getTrackInfo"
+					@playtrack="play"
+					@pausetrack="pause"
+					@stoptrack="stop"
+					@skiptrack="skip"
+					@fastforward="setSeekOffset(+30)"
+					@rewind="setSeekOffset(-30)"
+					@toggleloop="toggleLoop"
+					@toggleshuffle="toggleShuffle"
+					@updateseek="setSeekPercent"
+				></ThePlayerControlsBars>
+			</v-container>
+		</v-content>
+	</v-app>
 </template>
 
 <script>
@@ -60,7 +62,7 @@ import NoSleep from "NoSleep.js";
 import LZString from "lz-string";
 
 import vuetifyToast from "../VuetifyToast";
-vuetifyToast.setDefaults({ toastParentId:'the-media-page' });
+vuetifyToast.setDefaults({ toastParentId: "the-media-page" });
 
 // DELETEME
 function doesFileExist(urlToFile) {
@@ -82,14 +84,14 @@ export default {
 		TheMediaSearchBar,
 		TheMediaPlaylistPanel,
 		ThePlayerInfoPanel,
-		ThePlayerControlsBars,
+		ThePlayerControlsBars
 	},
 	data() {
 		return {
 			smartSearchFilter: new SmartSearchFilter(
 				"",
 				"file|series|numbers|content|guests|tags"
-      ),
+			),
 			prefilters: [],
 			contentDb: [],
 			prefilteredContent: [],
@@ -110,7 +112,7 @@ export default {
 			sortAscending: false,
 			isLoading: true,
 			errorAlert: "",
-			noSleep: new NoSleep(),
+			noSleep: new NoSleep()
 		};
 	},
 	computed: {
@@ -185,15 +187,17 @@ export default {
 				.get("/api/prefilters")
 				.then(function(response) {
 					try {
-						if (!(response.data instanceof Array)) throw "Result error";		// expecting an array
+						if (!(response.data instanceof Array)) throw "Result error"; // expecting an array
 						vm.prefilters = response.data;
 						ls.prefilters = JSON.stringify(response.data);
-					} catch (error) { throw error; }
+					} catch (error) {
+						throw error;
+					}
 					vm.applyRouteFilter();
 				})
 				.catch(function(error) {
-					vm.prefilters = [];					// clear data on error
-					vuetifyToast.error(error + ' - prefilters API')
+					vm.prefilters = []; // clear data on error
+					vuetifyToast.error(error + " - prefilters API");
 				});
 		}
 
@@ -202,15 +206,18 @@ export default {
 			.get("/api/songreviews")
 			.then(function(response) {
 				try {
-					if (!(response.data instanceof Array)) throw "Result error";		// expecting an array
+					if (!(response.data instanceof Array)) throw "Result error"; // expecting an array
 					vm.songReviews = response.data;
 					vm.songReviewsAllowed = true;
-				} catch (error) { throw error; }
+				} catch (error) {
+					throw error;
+				}
 			})
 			.catch(function(error) {
 				vm.songReviewsAllowed = false;
-				if (error != "Error: Request failed with status code 403")		// anticipate "403 FORBIDDEN" failures (normal response based on user permissions)
-					vuetifyToast.error(error + ' - song reviews API')
+				if (error != "Error: Request failed with status code 403")
+					// anticipate "403 FORBIDDEN" failures (normal response based on user permissions)
+					vuetifyToast.error(error + " - song reviews API");
 			});
 
 		this.loadContentDb();
@@ -227,7 +234,7 @@ export default {
 			if (!file) return; // ... OR nothing to play
 			if (this.currentHowler) {
 				// stop playing if different file
-				if (file != this.indexFile) this.currentHowler.stop();
+				if (file != this.indexFile) Howler.stop();
 				// don't do anything if already playing
 				if (this.currentHowler.playing()) return;
 			}
@@ -265,7 +272,7 @@ export default {
 			this.noSleep.disable();
 		},
 		stop() {
-			this.currentHowler.stop();
+			Howler.stop();
 			this.playing = false;
 			this.noSleep.disable();
 		},
@@ -317,10 +324,17 @@ export default {
 		toggleShuffle(value) {
 			this.shuffle = value;
 		},
-		setSeek(percents) {
+		setSeekPercent(percents) {
 			if (this.currentHowler.playing()) {
 				this.currentHowler.seek(
 					(this.currentHowler.duration() / 100) * percents
+				);
+			}
+		},
+		setSeekOffset(seconds) {
+			if (this.currentHowler.playing()) {
+				this.currentHowler.seek(
+					Math.max(0, this.currentHowler.seek() + seconds)
 				);
 			}
 		},
@@ -348,7 +362,7 @@ export default {
 					// .get("/storage/content-snapshot.json")
 					.then(function(response) {
 						try {
-							if (!(response.data instanceof Array)) throw "Result error";		// expecting an array
+							if (!(response.data instanceof Array)) throw "Result error"; // expecting an array
 							vm.contentDb = response.data;
 							ls.removeItem("contentDb");
 							if (useLocalStorage) {
@@ -356,13 +370,15 @@ export default {
 									JSON.stringify(response.data)
 								);
 							}
-						} catch (error) { throw error; }
+						} catch (error) {
+							throw error;
+						}
 						vm.sortContentDbBy("file");
-            vm.applyRouteFilter();
+						vm.applyRouteFilter();
 					})
 					.catch(function(error) {
-						vm.contentDb = [];	// clear data on error
-						vuetifyToast.error(error + ' - content API')
+						vm.contentDb = []; // clear data on error
+						vuetifyToast.error(error + " - content API");
 					});
 			}
 		},
@@ -405,7 +421,7 @@ export default {
 		},
 		applyRouteFilter() {
 			let prefilterSearchString = "";
-			if (this.$route.params.filter && this.prefilters.length>0)
+			if (this.$route.params.filter && this.prefilters.length > 0)
 				prefilterSearchString = this.prefilters.find(
 					f => f.slug == this.$route.params.filter
 				).filter;
@@ -439,7 +455,7 @@ export default {
 					else vm.$set(vm.songReviews, vm.songReviews.length, response.data);
 				})
 				.catch(function(error) {
-					vuetifyToast.error(error + ' - song reviews API')
+					vuetifyToast.error(error + " - song reviews API");
 				});
 		},
 		updateContentDb(fields) {
@@ -463,7 +479,7 @@ export default {
 					vm.applyRouteFilter();
 				})
 				.catch(function(error) {
-					vuetifyToast.error(error + ' - content API')
+					vuetifyToast.error(error + " - content API");
 					vm.isLoading = false;
 				});
 		},
@@ -480,7 +496,7 @@ export default {
 			this.sortAscending = !this.sortAscending;
 			this.sortContentDbBy("file");
 			this.applyRouteFilter();
-		},
+		}
 	}
 };
 </script>

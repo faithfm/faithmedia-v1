@@ -1,12 +1,10 @@
 <template>
-<div class="infoPanel">
-	<v-card>
+	<v-card class="infoPanel">
 		<v-card-text class="caption text-uppercase d-flex justify-content-between word-break:keep-all">
 			<span>{{ trackInfo.content }} - {{ trackInfo.guests }}</span>
-			<span>{{trackInfo.seek | minutes}}/{{trackInfo.duration | minutes}}</span>
+			<span class="d-none d-sm-flex">{{trackInfo.seek | minutes}}/{{trackInfo.duration | minutes}}</span>
 		</v-card-text>
 	</v-card>
-</div>
 </template>
  
 <script>
@@ -23,6 +21,5 @@ export default {
 	width: 100%;
 	top: 0;
 	z-index: 1;
-
 }
 </style>
