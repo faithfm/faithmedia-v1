@@ -5,15 +5,15 @@
     :color="color"
     :top="top"
     v-model="active"
-    class="application"
-    @click="dismiss">
-
+    class="application">
+    
     {{ text }}
-
-    <v-icon v-if="icon.length>0" >
-      {{ icon }}
-    </v-icon>
-
+    
+    <v-btn icon @click="active=false">
+      <v-icon x-small v-if="icon.length>0">
+        {{ icon }}
+      </v-icon>
+    </v-btn>
   </v-snackbar>
 
 </template>
@@ -27,8 +27,7 @@ export default {
       text: '',
       icon: '',
       color: 'info',
-      timeout: 0,
-      dismissible: true,
+      timeout: -1,
       top: true,
     };
   },

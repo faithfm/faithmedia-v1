@@ -1,7 +1,8 @@
-//Original from https://github.com/pzs/vuetify-toast, but edited for our project in May 2020
+//Original from https://github.com/pzs/vuetify-toast, but edited for our project in July 2020
+//Additional inspiration from https://github.com/eolant/vuetify-toast-snackbar
 import Vue from 'vue';
 import Toast from './components/Toast.vue';
-
+import Vuetify from 'vuetify/lib';
 
 const colors = ['success', 'info', 'error'];
 
@@ -10,7 +11,6 @@ let defaultOptions = {
   icon: 'mdi-close',
   color: 'info',
   timeout: 0,             // timeout in milliseconds for message to automatically disappear
-  dismissible: true,
   top: true,
   logToConsole: true, 
   toastParentId: '',      // Toast is appended to document.body, unless a toastParentId is provided
@@ -24,6 +24,8 @@ function setDefaults(newDefaultOptions) {
 
 function createToastCmp(options) {
   const cmp = new Vue(Toast);
+  const vuetifyObj = new Vuetify();
+  cmp.$vuetify = vuetifyObj.framework;
 
   const parent = options.toastParentId ? document.getElementById(options.toastParentId) : document.body;
   parent.appendChild(cmp.$mount().$el);
