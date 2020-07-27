@@ -13,10 +13,10 @@
     <script>
         var LaravelAppGlobals = Object.freeze({!! json_encode($LaravelAppGlobals) !!});
     </script>
-    <script src="{{ asset('js/media_app.js') }}" defer></script>
+    <script src="{{ mix('/js/media_app.js') }}" defer></script>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
