@@ -19,10 +19,11 @@ Route::middleware('auth:api,web')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/content', 'ContentController');
+Route::apiResource('/songreviews', 'SongReviewController');
+Route::apiResource('/publicusers', 'PublicUserController');
+Route::apiResource('/publiccontentreviews', 'PublicContentReviewController');
 
 Route::get('/prefilters', function () {
     return \App\Prefilter::all();
 });
-
-Route::apiResource('/songreviews', 'SongReviewController');
 

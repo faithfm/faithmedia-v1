@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        $defined_permissions = ['use-app', 'edit-content', 'upload-files', 'review-songs', 'admin-media', 'admin-master'];
+        $defined_permissions = ['use-app', 'edit-content', 'upload-files', 'review-songs', 'admin-media', 'admin-master', 'public-website-api'];
 
         // define gates for each permission
         foreach ($defined_permissions as $permission) {
