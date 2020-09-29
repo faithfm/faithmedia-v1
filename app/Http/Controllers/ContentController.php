@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Content;
+use App\Models\Content;
 
 class ContentController extends Controller
 {
@@ -25,7 +25,7 @@ class ContentController extends Controller
      */
     public function index()
     {
-        return \App\Content::get();
+        return \App\Models\Content::get();
     }
 
     /**
@@ -69,7 +69,7 @@ class ContentController extends Controller
     // /**
     //  * Display the specified resource.
     //  *
-    //  * @param  \App\Content  $content
+    //  * @param  \App\Models\Content  $content
     //  * @return \Illuminate\Http\Response
     //  */
     // public function show(Content $content)
@@ -81,7 +81,7 @@ class ContentController extends Controller
     //  * Update the specified resource in storage.
     //  *
     //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  \App\Content  $content
+    //  * @param  \App\Models\Content  $content
     //  * @return \Illuminate\Http\Response
     //  */
     // public function update(Request $request, Content $content)
@@ -92,7 +92,7 @@ class ContentController extends Controller
     // /**
     //  * Remove the specified resource from storage.
     //  *
-    //  * @param  \App\Content  $content
+    //  * @param  \App\Models\Content  $content
     //  * @return \Illuminate\Http\Response
     //  */
     // public function destroy(Content $content)

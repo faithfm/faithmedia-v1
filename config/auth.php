@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Models\User::class,
         ],
         'auth0' => [
             'driver' => 'auth0'         // Use the Auth0 user provider instead of the default Eloquent user provider (since we're using the Auth0 authentication driver)

@@ -1,6 +1,6 @@
 <template>
 	<v-app dark id="the-media-page">
-		<v-content>
+		<v-main>
 			<v-container>
 				<!-- <div>{{prefilters}}</div> -->
 				<TheMediaTitleBar
@@ -45,7 +45,7 @@
 					@updateseek="setSeekPercent"
 				></ThePlayerControlsBars>
 			</v-container>
-		</v-content>
+		</v-main>
 	</v-app>
 </template>
 

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\PublicContentReview;
-use App\PublicUser;
+use App\Models\PublicContentReview;
+use App\Models\PublicUser;
 
 class PublicContentReviewController extends Controller
 {
@@ -60,7 +60,7 @@ class PublicContentReviewController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\PublicContentReview  $publicContentReview
+     * @param  \App\Models\PublicContentReview  $publicContentReview
      * @return \Illuminate\Http\Response
      */
     public function show(PublicContentReview $publicContentReview)
@@ -72,7 +72,7 @@ class PublicContentReviewController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PublicContentReview  $publicContentReview
+     * @param  \App\Models\PublicContentReview  $publicContentReview
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, PublicContentReview $publicContentReview)
@@ -84,7 +84,7 @@ class PublicContentReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\PublicContentReview  $publicContentReview
+     * @param  \App\Models\PublicContentReview  $publicContentReview
      * @return \Illuminate\Http\Response
      */
     public function destroy(PublicContentReview $publicContentReview)

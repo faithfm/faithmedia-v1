@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\SongReview;
+use App\Models\SongReview;
 
 class SongReviewController extends Controller
 {
@@ -26,7 +26,7 @@ class SongReviewController extends Controller
      */
     public function index()
     {
-        $songReviews = \App\SongReview::with('user:id,name,email')->get();
+        $songReviews = \App\Models\SongReview::with('user:id,name,email')->get();
         return $songReviews;
     }
 
@@ -60,7 +60,7 @@ class SongReviewController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SongReview  $songReview
+     * @param  \App\Models\SongReview  $songReview
      * @return \Illuminate\Http\Response
      */
     public function show(SongReview $songReview)
@@ -72,7 +72,7 @@ class SongReviewController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SongReview  $songReview
+     * @param  \App\Models\SongReview  $songReview
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, SongReview $songReview)
@@ -83,7 +83,7 @@ class SongReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SongReview  $songReview
+     * @param  \App\Models\SongReview  $songReview
      * @return \Illuminate\Http\Response
      */
     public function destroy(SongReview $songReview)

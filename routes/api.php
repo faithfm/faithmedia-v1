@@ -24,6 +24,6 @@ Route::apiResource('/publicusers', 'PublicUserController');
 Route::apiResource('/publiccontentreviews', 'PublicContentReviewController');
 
 Route::get('/prefilters', function () {
-    return \App\Prefilter::all();
+    return \App\Models\Prefilter::all();
 });
 

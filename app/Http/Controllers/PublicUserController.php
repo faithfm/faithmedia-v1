@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\PublicUser;
+use App\Models\PublicUser;
 
 class PublicUserController extends Controller
 {
@@ -72,7 +72,7 @@ class PublicUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\PublicUser  $publicUser
+     * @param  \App\Models\PublicUser  $publicUser
      * @return \Illuminate\Http\Response
      */
     public function show(PublicUser $publicUser)
@@ -84,7 +84,7 @@ class PublicUserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PublicUser  $publicUser
+     * @param  \App\Models\PublicUser  $publicUser
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, PublicUser $publicUser)
@@ -96,7 +96,7 @@ class PublicUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\PublicUser  $publicUser
+     * @param  \App\Models\PublicUser  $publicUser
      * @return \Illuminate\Http\Response
      */
     public function destroy(PublicUser $publicUser)

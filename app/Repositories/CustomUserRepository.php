@@ -11,7 +11,7 @@
 
 namespace App\Repositories;
 
-use App\User;
+use App\Models\User;
 
 use Auth0\Login\Auth0User;
 use Auth0\Login\Auth0JWTUser;
