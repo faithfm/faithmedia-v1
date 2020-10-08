@@ -49,7 +49,6 @@ class PublicUserContentBookmarkController extends Controller
     {
         Gate::authorize('public-website-api');           // "write" operations require "public-website-api" permission
 
-        // $publicUser = PublicUser::firstOrCreate(['sub' => $request->sub]);
         $publicUserContentBookmark = PublicUserContentBookmark::firstOrCreate([
             'public_user_id' => $publicUser->id,
             'file' => $request->file,

@@ -23,19 +23,18 @@ Route::get('/prefilters', function () {
 });
 
 Route::apiResource('/content', 'ContentController');
+
 Route::apiResource('/songreviews', 'SongReviewController');
 
-// explicit/long-hand version of the following statement... except it does not force camel-case /publicUsers/XXX route - that apiResource() requires to generate correct implied parameters
-// almost equvalent to:    Route::apiResource('/publicUsers', 'PublicUserController');
-Route::post  ('/publicusers',                 'PublicUserController@store');    // allows for both CREATE + UPDATE if already exists
-Route::get   ('/publicusers',                 'PublicUserController@index');
-Route::get   ('/publicusers/{publicUser}',    'PublicUserController@show');
-Route::put   ('/publicusers/{publicUser}',    'PublicUserController@update');
-Route::delete('/publicusers/{publicUser}',    'PublicUserController@destroy');
+Route::apiResource('/publicusers', 'PublicUserController')
+    ->parameters(['publicusers' => 'publicUser']);
 
-// Relying on implicit binding, nested route parameters, and custom keys - see: https://laravel.com/docs/8.x/routing#implicit-binding
-Route::post  ('/publicusers/{publicUser}/contentbookmarks',                                     'PublicUserContentBookmarkController@store');
-Route::get   ('/publicusers/{publicUser}/contentbookmarks',                                     'PublicUserContentBookmarkController@index');
-Route::get   ('/publicusers/{publicUser}/contentbookmarks/{publicUserContentBookmark:file}',    'PublicUserContentBookmarkController@show');
-Route::delete('/publicusers/{publicUser}/contentbookmarks/{publicUserContentBookmark:file}',    'PublicUserContentBookmarkController@destroy');
+Route::apiResource('/publicusers/{publicUser}/contentbookmarks', 'PublicUserContentBookmarkController')
+    ->parameters(['contentbookmarks' => 'publicUserContentBookmark:file']);
+
+/**
+ * Notes:
+ *   - Relying on implicit binding, nested route parameters, and custom keys - see: https://laravel.com/docs/8.x/routing#implicit-binding
+ *   - Relying on named parameters (to override the defaults that Laravel guesses) - see: https://laravel.com/docs/8.x/controllers#restful-naming-resource-route-parameters
+ */
 
