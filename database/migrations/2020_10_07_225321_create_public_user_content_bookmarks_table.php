@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePublicContentReviewsTable extends Migration
+class CreatePublicUserContentBookmarksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreatePublicContentReviewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('public_content_reviews', function (Blueprint $table) {
+        Schema::create('public_user_content_bookmarks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('public_user_id');
             $table->string('file');
-            $table->unsignedBigInteger('user_id');
-            $table->string('rating')->nullable();
-            $table->text('comments')->nullable();
             $table->timestamps();
-            $table->unique(['file', 'user_id']);	
+            $table->unique(['public_user_id', 'file']);
         });
     }
 
@@ -31,6 +29,6 @@ class CreatePublicContentReviewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('public_content_reviews');
+        Schema::dropIfExists('public_user_content_bookmarks');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class PublicContentReview extends Model implements Auditable
+class PublicUserContentBookmark extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
 
@@ -15,13 +15,13 @@ class PublicContentReview extends Model implements Auditable
      * @var array
      */
     protected $fillable = [
-        'file', 'user_id', 'rating', 'comments',
+        'public_user_id', 'file',
     ];
 
     /**
      * Get the user that owns the public content review.
      */
-    public function user()
+    public function public_user()
     {
         return $this->belongsTo('App\Models\PublicUser');
     }
