@@ -35,7 +35,7 @@ class PublicUserContentBookmarkController extends Controller
      */
     public function index(PublicUser $publicUser)
     {
-        return $publicUser->contentBookmarks()->orderBy('updated_at', 'desc')->get();
+        return $publicUser->contentBookmarks()->orderBy('updated_at', 'desc')->get()->pluck('file');
     }
 
     /**
@@ -66,7 +66,7 @@ class PublicUserContentBookmarkController extends Controller
      */
     public function show(PublicUser $publicUser, PublicUserContentBookmark $publicUserContentBookmark)
     {
-        return $publicUserContentBookmark;
+        return $publicUserContentBookmark->only('files');
     }
 
     /**
