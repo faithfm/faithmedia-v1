@@ -21,6 +21,11 @@ export function origUrl(dbPathname, config) {
 
 // **** URL generators ****
 function dbUrlEncode(dbPathname) {
+    // Use special cloudfront dist for paths containing 'ads' to prevent ad blockers blocking it:
+    dbPathname = dbPathname.replace('content96k.faithfm.com.au/ads/stationads/', 'content96k-link2.faithfm.com.au/');
+    dbPathname = dbPathname.replace('content96k.faithfm.com.au/ads/', 'content96k-link1.faithfm.com.au/');
+
+    // manually url-encode any '+' characters
 	return dbPathname.replace(/\+/g, "%2B")
 }
 
