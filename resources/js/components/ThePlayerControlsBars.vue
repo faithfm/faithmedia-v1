@@ -1,5 +1,18 @@
 <template>
 	<div class="footer">
+		<v-btn
+			v-scroll="onScroll"
+			v-show="fab"
+			fab
+			dark
+			absolute
+			top
+			right
+			color="red darken-3"
+			@click="toTop"
+		>
+			<v-icon>mdi-arrow-up</v-icon>
+		</v-btn>
 		<v-toolbar float height="90" class="d-flex align-center justify-center">
 			<!-- <v-btn icon @click="toggleLoop">
 				<v-icon color="red accent-1" v-if="this.loop">mdi-repeat-once</v-icon>
@@ -52,7 +65,8 @@ export default {
 	data() {
 		return {
 			volume: 1.0,
-			muted: false
+			muted: false,
+			fab: false,
 		};
 	},
 	computed: {
@@ -71,6 +85,14 @@ export default {
 		Howler.volume(this.volume);
 	},
 	methods: {
+		onScroll(e) {
+			if (typeof window === "undefined") return;
+			const top = window.pageYOffset || e.target.scrollTop || 0;
+			this.fab = top > 20;
+		},
+		toTop() {
+			this.$vuetify.goTo(0);
+		},
 		playTrack() {
 			this.$emit("playtrack");
 		},
