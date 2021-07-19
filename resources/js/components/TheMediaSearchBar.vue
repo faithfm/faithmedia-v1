@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat rounded>
+  <v-toolbar flat rounded class="ma-auto mt-4">
     <v-text-field
       clearable
       prepend-icon="mdi-magnify"

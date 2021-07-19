@@ -1,42 +1,63 @@
 <template>
-	<v-toolbar flat :prominent="!$vuetify.breakpoint.xs">
+	<v-row>
+		<v-app-bar
+			:clipped-left="$vuetify.breakpoint.lgAndUp"
+			app
+			flat
+		>
+			<v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-		<v-menu>
-			<template v-slot:activator="{ on: menu }">
-				<v-btn text small right v-on="menu">
-					<v-icon>mdi-menu</v-icon>
+			<v-img
+			src="/faithfm-colour-R4.png"
+			alt="Faith FM logo"
+			max-width="125"
+			class="d-flex align-self-center"
+		></v-img>
+
+			<v-spacer class="d-none d-sm-flex"></v-spacer>
+			<v-toolbar-title class="d-flex align-self-center">
+				<span class="hidden-sm-and-down">{{ app.config.name }}</span>
+			</v-toolbar-title>
+
+			<v-spacer></v-spacer>
+
+			<template v-if="app.guest">
+				<v-btn href="/login" class="d-flex align-self-center">Login</v-btn>
+			</template>
+
+			<template v-else>
+				<span class="text-body-1 d-none d-sm-flex align-self-center">
+					{{ app.user.name }}
+				</span>
+				<v-btn
+					dark
+					class="ma-2 d-none d-sm-flex align-self-center"
+					@click="reload()"
+				>
+					Reload
+				</v-btn>
+				<v-btn dark class="d-flex align-self-center" @click="logout()">
+					Logout
 				</v-btn>
 			</template>
+		</v-app-bar>
+		<v-navigation-drawer app :value="drawer" clipped>
 			<v-list>
 				<v-list-item-group>
 					<v-list-item v-for="(item, index) in itemMenu" :key="index">
-						<!-- <v-list-item-title  :to="{path: item.slug, params:{filter: item.filter}} ">{{ item.name }}</v-list-item-title> -->
 						<router-link
-							:to="{path: '/filter/' + item.slug, params:{filter: item.filter}}"
+							:to="{
+								path: '/filter/' + item.slug,
+								params: { filter: item.filter },
+							}"
 							@click="applyRouteFilter"
-						>{{ item.name }}</router-link>
+							>{{ item.name }}</router-link
+						>
 					</v-list-item>
 				</v-list-item-group>
 			</v-list>
-		</v-menu>
-
-		<v-img
-			src="https://faithfm.com.au/wp-content/themes/faith-fm/assets/images/logo/faithfm.png"
-			max-width="50px"
-			class="d-flex"
-		></v-img>
-
-		<v-spacer class="d-none d-sm-flex"></v-spacer>
-		<v-toolbar-title class="d-none d-sm-flex textTitleBar title">{{app.config.name}}</v-toolbar-title>
-
-		<v-spacer></v-spacer>
-		<span class="d-none d-sm-flex textTitleBar">{{app.user.name}}&nbsp;</span>
-		<span class="d-flex d-sm-none textTitleBar fontUser">{{app.user.name}}&nbsp;</span>
-		<!-- <v-icon>mdi-minus</v-icon>
-		<v-icon>mdi-checkbox-blank-outline</v-icon>-->
-		<v-icon @click="reload">mdi-reload</v-icon>
-		<v-icon @click="logout">mdi-close</v-icon>
-	</v-toolbar>
+		</v-navigation-drawer>
+	</v-row>
 </template>
 
 <script>
@@ -44,12 +65,13 @@ export default {
 	data() {
 		return {
 			dialog: false,
-            params: Array,
-            app: LaravelAppGlobals,
+			params: Array,
+			app: LaravelAppGlobals,
+			drawer: false,
 		};
 	},
 	props: {
-		itemMenu: Array
+		itemMenu: Array,
 	},
 	methods: {
 		logout() {
@@ -60,20 +82,7 @@ export default {
 		},
 		applyRouteFilter() {
 			this.$emit("applyroutefilter");
-		}
-	}
+		},
+	},
 };
 </script>
-
-<style scoped>
-.textTitleBar {
-	white-space: pre-wrap;
-	text-align: center;
-}
-.fontUser {
-	font-size: xx-small;
-	margin: 6px 0;
-	white-space: pre-wrap;
-	text-align: center;
-}
-</style>

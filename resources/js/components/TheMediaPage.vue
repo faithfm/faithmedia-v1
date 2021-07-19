@@ -1,13 +1,12 @@
 <template>
 	<v-app dark id="the-media-page">
+		<TheMediaTitleBar
+			:itemMenu="prefilters"
+			@reload="reloadContentDb"
+			@applyroutefilter="applyRouteFilter"
+		></TheMediaTitleBar>
 		<v-main>
-			<v-container>
-				<!-- <div>{{prefilters}}</div> -->
-				<TheMediaTitleBar
-					:itemMenu="prefilters"
-					@reload="reloadContentDb"
-					@applyroutefilter="applyRouteFilter"
-				></TheMediaTitleBar>
+			<v-container class="my-8">
 				<ThePlayerInfoPanel :trackInfo="getTrackInfo"></ThePlayerInfoPanel>
 				<TheMediaSearchBar
 					:searchString.sync="searchString"
@@ -23,7 +22,7 @@
 					:songReviews.sync="songReviews"
 					@selecttrack="selectTrack"
 					@playtrack="play"
-					@updateContentDb="updateContentDb($event);"
+					@updateContentDb="updateContentDb($event)"
 					@showmoreresults="showMoreResults"
 					@showallresults="showAllResults"
 					@submitSongReview="submitSongReview"
@@ -84,7 +83,7 @@ export default {
 		TheMediaSearchBar,
 		TheMediaPlaylistPanel,
 		ThePlayerInfoPanel,
-		ThePlayerControlsBars
+		ThePlayerControlsBars,
 	},
 	data() {
 		return {
@@ -112,7 +111,7 @@ export default {
 			sortAscending: false,
 			isLoading: true,
 			errorAlert: "",
-			noSleep: new NoSleep()
+			noSleep: new NoSleep(),
 		};
 	},
 	computed: {
@@ -124,7 +123,7 @@ export default {
 			// *** COMBINE WITH getTrackInfo ***
 			const indexFile = this.indexFile;
 			if (this.contentDb)
-				return this.contentDb.find(track => track.file == indexFile);
+				return this.contentDb.find((track) => track.file == indexFile);
 		},
 		progress() {
 			if (!this.currentHowler || this.currentHowler.duration() === 0) return 0;
@@ -146,9 +145,9 @@ export default {
 				guests,
 				content,
 				seek,
-				duration
+				duration,
 			};
-		}
+		},
 	},
 	watch: {
 		playing(playing) {
@@ -164,7 +163,7 @@ export default {
 		},
 		$route(to, from) {
 			this.applyRouteFilter();
-		}
+		},
 	},
 	created() {
 		Howler.mute(false).volume(1.0);
@@ -185,7 +184,7 @@ export default {
 		if (!this.prefilters || this.prefilters.length < 1) {
 			axios
 				.get("/api/prefilters")
-				.then(function(response) {
+				.then(function (response) {
 					try {
 						if (!(response.data instanceof Array)) throw "Result error"; // expecting an array
 						vm.prefilters = response.data;
@@ -195,7 +194,7 @@ export default {
 					}
 					vm.applyRouteFilter();
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					vm.prefilters = []; // clear data on error
 					vuetifyToast.error(error + " - prefilters API");
 				});
@@ -204,7 +203,7 @@ export default {
 		// load song-reviews (from API only)
 		axios
 			.get("/api/songreviews")
-			.then(function(response) {
+			.then(function (response) {
 				try {
 					if (!(response.data instanceof Array)) throw "Result error"; // expecting an array
 					vm.songReviews = response.data;
@@ -213,7 +212,7 @@ export default {
 					throw error;
 				}
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				vm.songReviewsAllowed = false;
 				if (error != "Error: Request failed with status code 403")
 					// anticipate "403 FORBIDDEN" failures (normal response based on user permissions)
@@ -252,7 +251,7 @@ export default {
 						}
 					},
 					preload: false,
-					html5: true
+					html5: true,
 				});
 				this.$set(this.howlers, file, howl);
 			}
@@ -296,14 +295,14 @@ export default {
 				}
 			} else if (direction === "next") {
 				const currentTrackIndex = this.displayedContent.findIndex(
-					track => track.file == this.indexFile
+					(track) => track.file == this.indexFile
 				);
 				// if (currentTrackIndex == -1)
 				index = currentTrackIndex + 1;
 				if (index >= this.displayedContent.length) index = 0;
 			} else {
 				const currentTrackIndex = this.displayedContent.findIndex(
-					track => track.file == this.indexFile
+					(track) => track.file == this.indexFile
 				);
 				index = currentTrackIndex - 1;
 				if (index < 0) index = this.displayedContent.length - 1;
@@ -360,7 +359,7 @@ export default {
 				axios
 					.get("/api/content")
 					// .get("/storage/content-snapshot.json")
-					.then(function(response) {
+					.then(function (response) {
 						try {
 							if (!(response.data instanceof Array)) throw "Result error"; // expecting an array
 							vm.contentDb = response.data;
@@ -376,7 +375,7 @@ export default {
 						vm.sortContentDbBy("file");
 						vm.applyRouteFilter();
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						vm.contentDb = []; // clear data on error
 						vuetifyToast.error(error + " - content API");
 					});
@@ -423,7 +422,7 @@ export default {
 			let prefilterSearchString = "";
 			if (this.$route.params.filter && this.prefilters.length > 0)
 				prefilterSearchString = this.prefilters.find(
-					f => f.slug == this.$route.params.filter
+					(f) => f.slug == this.$route.params.filter
 				).filter;
 			this.searchString = "";
 			this.prefilteredContent = new SmartSearchFilter(
@@ -445,16 +444,16 @@ export default {
 			const vm = this;
 			axios
 				.post("/api/songreviews", fields)
-				.then(function(response) {
+				.then(function (response) {
 					// update songReviews data if successful
 					const foundIndex = vm.songReviews.findIndex(
-						x => x.id == response.data.id
+						(x) => x.id == response.data.id
 					);
 					if (foundIndex != -1)
 						vm.$set(vm.songReviews, foundIndex, response.data);
 					else vm.$set(vm.songReviews, vm.songReviews.length, response.data);
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					vuetifyToast.error(error + " - song reviews API");
 				});
 		},
@@ -465,10 +464,10 @@ export default {
 			const vm = this;
 			axios
 				.post("/api/content", fields)
-				.then(function(response) {
+				.then(function (response) {
 					// update contentDb data if successful
 					const foundIndex = vm.contentDb.findIndex(
-						x => x.file == response.data.file
+						(x) => x.file == response.data.file
 					);
 					if (foundIndex != -1)
 						vm.$set(vm.contentDb, foundIndex, response.data);
@@ -478,7 +477,7 @@ export default {
 					}
 					vm.applyRouteFilter();
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					vuetifyToast.error(error + " - content API");
 					vm.isLoading = false;
 				});
@@ -496,7 +495,7 @@ export default {
 			this.sortAscending = !this.sortAscending;
 			this.sortContentDbBy("file");
 			this.applyRouteFilter();
-		}
-	}
+		},
+	},
 };
 </script>
