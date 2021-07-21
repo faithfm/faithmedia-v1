@@ -43,10 +43,10 @@
             ]
         },
         {
-            "name": "Listen for XDebug",
+            "name": "Listen for XDebug on Valet",
             "type": "php",
             "request": "launch",
-            "port": 9000
+            "port": 9003
         },
         {
             "name": "Listen for XDebug on Homestead",

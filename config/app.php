@@ -174,8 +174,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Auth0\Login\LoginServiceProvider::class,        // Add Auth0 login service provider
+        App\Providers\SessionServiceProvider::class,    // Add our special provider - that doesn't create sessions when request contains 'api_token=XXXX'
 
+        Auth0\Login\LoginServiceProvider::class,        // Add Auth0 login service provider
         OwenIt\Auditing\AuditingServiceProvider::class,   //Add Laravel Auditing
 
     ],
