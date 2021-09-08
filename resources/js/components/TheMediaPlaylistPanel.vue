@@ -100,7 +100,7 @@
 			:reviewDialog.sync = "reviewDialog"
 			:reviewComment.sync = "reviewComment"
 			:reviewFilename = "reviewFilename"
-						:songReviews= "songReviews"
+			:songReviews= "songReviews"
 			@submitSongReview="submitSongReview"
 		></SongReviewDialog>
 	</v-skeleton-loader>
