@@ -53,7 +53,7 @@
             "type": "php",
             "request": "launch",
             "pathMappings": {
-                "/home/vagrant/Code/faithsched-v2" : "${workspaceFolder}"
+                "/home/vagrant/Code/faithmedia-v1" : "${workspaceFolder}"
             },
             "port": 9003,
             "log": true
