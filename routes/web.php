@@ -25,6 +25,11 @@ Route::get('/login', 'Auth\Auth0IndexController@login')->name('login');
 Route::match(['get', 'post'], '/logout', 'Auth\Auth0IndexController@logout')->name('logout')->middleware('auth');
 Route::get('/profile', 'Auth\Auth0IndexController@profile')->name('profile')->middleware('auth');
 
+
+Route::get('phpinfo', function () {
+    phpinfo();
+});
+
 // Remaining routes are handled by our Vue SPA
 Route::get('/{any}', function () {
     Gate::authorize('use-app');
