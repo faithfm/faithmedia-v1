@@ -26,6 +26,8 @@ Route::apiResource('/content', 'ContentController');
 
 Route::apiResource('/songreviews', 'SongReviewController');
 
+Route::apiResource('/songreviewsummary', 'SongReviewSummaryController');
+
 Route::apiResource('/publicusers', 'PublicUserController')
     ->parameters(['publicusers' => 'publicUser']);
 
@@ -46,4 +48,3 @@ Route::apiResource('/publicusers/{publicUser}/contentbookmarks', 'PublicUserCont
  *   - Manually created an additional 'delete' route - which uses a new 'bookmark.querystring' middleware to inject the appropriate model for file=XXX query string parameters.
  *      (Problem handling slashes in the main route string).  Alternative would have been to create additional destroyXXX() controller action that did a similiar lookup.
  */
-
