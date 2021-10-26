@@ -163,6 +163,7 @@ export default {
 	data() {
 		return {
 			headers: [
+				{ text: "ID", value: "id", width: "9em" },
 				{ text: "Song", value: "name", width: "40em" },
 				{ text: "Status", value: "status", width: "10em" },
 				{ text: "Source", value: "source", width: "10em" },
@@ -228,6 +229,7 @@ export default {
 			const vm = this;
 			let review = "";
 			let table = [];
+			let reviewId = 1;
 			vm.playlist.forEach((element) => {
 				let filteredReviews = vm.songReviews.filter(
 					(x) => x.file == element.file
@@ -257,6 +259,8 @@ export default {
 						reviewComments: filteredReviews,
 					};
 				}
+				review = { ...review, id: reviewId };
+				reviewId++;
 				table.push(review);
 			});
 			return table;
