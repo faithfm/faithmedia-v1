@@ -76,10 +76,10 @@
 												<v-combobox
 													v-model="props.item.source"
 													:items="sources"
-													:rules="[max255chars]"
-													label="Edit"
+													:item-value="(value) => !!value || ''"
 													single-line
 													counter
+													clearable
 												></v-combobox>
 											</template>
 										</v-edit-dialog>
@@ -204,9 +204,14 @@ export default {
 				try {
 					if (!(response.data instanceof Array)) throw "Result error"; // expecting an array
 					vm.songReviewsSummary = response.data;
-					vm.sources = vm.songReviewsSummary
-						.map((item) => item.source)
-						.filter((value, index, self) => self.indexOf(value) === index);
+					let sources = new Set();
+					vm.songReviewsSummary.forEach((element) => {
+						let source = element.source;
+						if (source) {
+							sources.add(source);
+						}
+					});
+					vm.sources = [...sources];
 				} catch (error) {
 					throw error;
 				}
@@ -309,8 +314,10 @@ export default {
 					}
 					//add new source to sources(Array) if doesn't exist
 					let newSource = response.data.source;
-					if (!vm.sources.some((arrVal) => arrVal === newSource)) {
-						vm.sources.push(newSource);
+					if (newSource) {
+						if (!vm.sources.some((arrVal) => arrVal === newSource)) {
+							vm.sources.push(newSource);
+						}
 					}
 				})
 				.catch(function (error) {
