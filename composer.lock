@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9e9c5aea9b9ca02e29dd6fe38fb5861",
+    "content-hash": "bb937f83bf39fef721c18820b4f0e4eb",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -637,6 +637,65 @@
                 }
             ],
             "time": "2020-12-29T14:50:06+00:00"
+        },
+        {
+            "name": "faithfm/laravel-auth0-pattern",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/faithfm/laravel-auth0-pattern.git",
+                "reference": "91f1a4aa6aed14167a0a3d04159f1de37ae7b11c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/faithfm/laravel-auth0-pattern/zipball/91f1a4aa6aed14167a0a3d04159f1de37ae7b11c",
+                "reference": "91f1a4aa6aed14167a0a3d04159f1de37ae7b11c",
+                "shasum": ""
+            },
+            "require": {
+                "auth0/login": "^6.0",
+                "illuminate/support": "^8.0",
+                "owen-it/laravel-auditing": "^10.0 || ^11.0 || ^12.0",
+                "php": "^7.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "FaithFM\\Auth0Pattern\\Auth0PatternServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FaithFM\\Auth0Pattern\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Engelbrecht",
+                    "email": "michaelndani@gmail.com"
+                },
+                {
+                    "name": "Lidia Ordonez",
+                    "email": "lidiaordonez18@gmail.com"
+                }
+            ],
+            "description": "Laravel Authentication using Auth0 (developed for Faith FM projects)",
+            "homepage": "https://github.com/faithfm/laravel-auth0-pattern",
+            "keywords": [
+                "composer",
+                "package",
+                "template"
+            ],
+            "support": {
+                "source": "https://github.com/faithfm/laravel-auth0-pattern/tree/1.0.5",
+                "issues": "https://github.com/faithfm/laravel-auth0-pattern/issues"
+            },
+            "time": "2021-11-03T04:42:04+00:00"
         },
         {
             "name": "fideloper/proxy",

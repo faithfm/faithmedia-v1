@@ -24,14 +24,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        $defined_permissions = ['use-app', 'edit-content', 'upload-files', 'review-songs', 'admin-media', 'admin-master', 'public-website-api', 'review-songs-summary'];
-
-        // define gates for each permission
-        foreach ($defined_permissions as $permission) {
-            Gate::define($permission, function ($user) use ($permission) {
-                return $user->permissions->firstWhere('permission', $permission) !== null;     // check if the specified permission exists in the current User's UserPermissions model
-            });
-        }
     }
 }

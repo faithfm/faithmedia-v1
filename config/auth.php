@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'auth0',
+            'provider' => 'users',
         ],
 
         'api' => [
@@ -67,16 +67,9 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'auth0',
             'model' => App\Models\User::class,
         ],
-        'auth0' => [
-            'driver' => 'auth0'         // Use the Auth0 user provider instead of the default Eloquent user provider (since we're using the Auth0 authentication driver)
-        ],
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
