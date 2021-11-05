@@ -24,6 +24,16 @@ Route::get('phpinfo', function () {
     phpinfo();
 });
 
+// override Nova's login/logout routes
+Route::get('nova/logout', function () {
+    return redirect()->route('logout');
+})->name('nova.logout');
+Route::get('nova/login', function () {
+    return redirect()->route('login');
+})->name('nova.login');
+
+
+
 // Remaining routes are handled by our Vue SPA
 Route::get('/{any}', function () {
     Gate::authorize('use-app');
@@ -38,4 +48,4 @@ Route::get('/{any}', function () {
         ],
     ];
     return view('media')->with('LaravelAppGlobals', $LaravelAppGlobals);
-})->where('any', '.*')->middleware('auth');
+})->where('any', '^(?!nova).*')->middleware('auth');
