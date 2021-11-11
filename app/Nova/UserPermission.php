@@ -8,7 +8,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Code;
 use App\Repositories\AuthPermissionList;
 
 class UserPermission extends Resource
@@ -83,8 +83,9 @@ class UserPermission extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            KeyValue::make('Restrictions')->rules('json'),
-            Text::make('Restrictions')->onlyOnIndex(),
+            Code::make('Restrictions')->json(JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+                ->showOnIndex(),
+
         ];
     }
 

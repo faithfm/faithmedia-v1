@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Stack;
 use App\Repositories\AuthPermissionList;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redirect;
 
 class User extends Resource
 {
@@ -54,6 +55,11 @@ class User extends Resource
                 ->maxWidth(50)
                 ->hideFromIndex(),
 
+            Text::make('Name')
+                ->sortable()
+                ->rules('required', 'max:255')
+                ->hideFromIndex(),
+
             Stack::make('Name / Email', [
                 Line::make('Name')
                     ->sortable()
@@ -73,14 +79,14 @@ class User extends Resource
                 $allowedPermissions = AuthPermissionList::getNovaAllowedPermissions();
                 $permissionSortOrder = array_flip($allowedPermissions);
                 // sort the user's permission based on this standardised sort-order
-                $sortedPermissions = $this->permissions->sort(function($a, $b) use ($permissionSortOrder) {
+                $sortedPermissions = $this->permissions->sort(function ($a, $b) use ($permissionSortOrder) {
                     // lookup order for each permission (assume 99 if permission not in allowed-permission list)
                     $aOrder = $permissionSortOrder[$a->permission] ?? 99;
                     $bOrder = $permissionSortOrder[$b->permission] ?? 99;
                     return ($aOrder < $bOrder) ? -1 : 1;
                 });
                 // convert UserPermission model to an array of permission names... with square-brackets around [permissions] that are restricted in some way
-                $perms = $sortedPermissions->map(function($perm) {
+                $perms = $sortedPermissions->map(function ($perm) {
                     $name = $perm->permission;
                     if ($perm->restrictions <> NULL)
                         $name = "[$name]";
@@ -96,7 +102,6 @@ class User extends Resource
             Text::make('Sub')
                 ->sortable()
                 ->rules('required')
-                ->readonly()
                 ->hideFromIndex(),
 
             Stack::make('Sub / API Token', [
