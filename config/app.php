@@ -175,7 +175,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\SessionServiceProvider::class,    // Add our special provider - that doesn't create sessions when request contains 'api_token=XXXX'
 
         OwenIt\Auditing\AuditingServiceProvider::class,   //Add Laravel Auditing
 

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This file is cloned / force-published from the "laravel-auth0-pattern" composer package.
+ *    WARNING: Local modifications will be overwritten when the package is updated.
+ *             See https://github.com/faithfm/laravel-auth0-pattern for more details.
+ */
+
 return [
 
     /*
@@ -38,12 +44,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'auth0_users',
         ],
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'users',
+            'provider' => 'eloquent_users',
             'hash' => false,
         ],
     ],
@@ -66,9 +72,15 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'auth0_users' => [
             'driver' => 'auth0',
             'model' => App\Models\User::class,
+
+        ],
+        'eloquent_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+
         ],
     ],
 

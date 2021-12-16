@@ -32,7 +32,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             // \Illuminate\Session\Middleware\StartSession::class,      // replace with...
-            \App\Http\Middleware\StartSession::class,                   // ...our own class - that doesn't create sessions when request contains 'api_token=XXXX'
+            \FaithFM\Auth0Pattern\Http\Middleware\StartSession::class,  // ...the class from Auth0Pattern - which doesn't create hundreds of session files when request contains 'api_token=XXXX'
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
