@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
-    <link rel="icon" href="/faithfm-favicon-M.png" type="image/png"/>
+    <link rel="icon" href="{{ asset('/faithfm-favicon-M.png') }}" type="image/png" />
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,6 +21,7 @@
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 </head>
+
 <body>
     <div id="app">
         <the-media-page></the-media-page>
@@ -28,4 +30,5 @@
         @csrf
     </form>
 </body>
+
 </html>
