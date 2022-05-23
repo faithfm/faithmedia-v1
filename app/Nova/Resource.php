@@ -56,4 +56,11 @@ abstract class Resource extends NovaResource
     {
         return parent::relatableQuery($request, $query);
     }
+
+    /**
+     * The visual style used for the table. Available options are 'tight' and 'default'.
+     *
+     * @var string
+     */
+    public static $tableStyle = 'tight';
 }
