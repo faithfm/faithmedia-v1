@@ -66,14 +66,14 @@
             "@php artisan key:generate --ansi"
         ]
     },
-    "repositories": {
-        "laravel-auth0-pattern": {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/faithfm/nova"
+        },
+        {
             "type": "vcs",
             "url": "https://github.com/faithfm/laravel-auth0-pattern"
-        },
-        "nova": {
-            "type": "composer",
-            "url": "https://nova.laravel.com"
         }
-    }
+    ]
 }
