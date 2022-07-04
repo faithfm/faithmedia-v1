@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 use App\Nova\Dashboards\Main;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
+use Laravel\Nova\Menu\Menu;
+use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -18,6 +21,19 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        // Unfortunately, Nova 4 lost the ability to detect the browser timezone.  We have temporarily created a global environment variable but may want to add an option in the User Model in the future.  See: https://nova.laravel.com/docs/4.0/resources/date-fields.html#timezones
+        Nova::userTimezone(function (Request $request) {
+            //return $request->user()->timezone;
+            return config('myapp.nova_default_timezone');
+        });
+
+        Nova::mainMenu(function (Request $request, Menu $menu) {
+            return $menu
+                ->prepend(
+                    MenuItem::externalLink('Back to ' . config('app.name'), config('app.url'))
+                );
+        });
     }
 
     /**
@@ -28,9 +44,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes()
-                ->register();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register();
     }
 
     /**

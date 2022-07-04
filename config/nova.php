@@ -150,7 +150,29 @@ return [
 
     'currency' => 'AUD',
 
-/*
+    /*
+    |--------------------------------------------------------------------------
+    | Branding
+    |--------------------------------------------------------------------------
+    |
+    | These configuration values allow you to customize the branding of the
+    | Nova interface, including the primary color and the logo that will
+    | be displayed within the Nova interface. This logo value must be
+    | the absolute path to an SVG logo within the local filesystem.
+    |
+    */
+
+    'brand' => [
+        'logo' => realpath(__DIR__ . '/../public/faithfm-white-R4.svg'),
+
+        //     'colors' => [
+        //         "400" => "24, 182, 155, 0.5",
+        //         "500" => "24, 182, 155",
+        //         "600" => "24, 182, 155, 0.75",
+        //     ]
+    ],
+
+    /*
     |--------------------------------------------------------------------------
     | Nova Action Resource Class
     |--------------------------------------------------------------------------
