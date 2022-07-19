@@ -30,6 +30,7 @@
         "howler": "^2.2.0",
         "lz-string": "^1.4.4",
         "nosleep.js": "^0.9.0",
+        "npm": "^8.14.0",
         "vue-router": "^3.4.5",
         "vuetify": "^2.3.10"
     }
