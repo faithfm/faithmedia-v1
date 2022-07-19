@@ -14,7 +14,7 @@ class Prefilter extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\NovaShadows\Prefilter::class;
+    public static $model = \App\Models\Prefilter::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -42,9 +42,9 @@ class Prefilter extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Slug')->sortable(),
-            Text::make('Name')->sortable(),
-            Text::make('Filter')->sortable(),
+            Text::make('Slug')->sortable()->required(),
+            Text::make('Name')->sortable()->required(),
+            Text::make('Filter')->sortable()->required(),
         ];
     }
 
