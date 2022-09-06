@@ -52,12 +52,17 @@ Route::apiResource('/publicusers/{publicUser}/contentbookmarks', 'PublicUserCont
  *      (Problem handling slashes in the main route string).  Alternative would have been to create additional destroyXXX() controller action that did a similiar lookup.
  */
 
- //Allows public website to get a list of the current song rotation
- Route::get('/current_song_rotation',function (){
-    $filter = Prefilter::where('slug','music-currentrotation')->pluck('filter')->implode('filter');
-    $data = Content::select('file')->whereNotNull('seconds')->smartSearch($filter, 'file|series|guests|tags')->get();
-    $currentSongsData = collect($data)->map(function($item,$key){
-        return Str::between($item->file, ' ', '.ogg');
-    })->sort()->values();
+//Allows public website to get a list of the current song rotation
+Route::get('/current_song_rotation', function () {
+    $filter = Prefilter::where('slug', 'music-currentrotation')->pluck('filter')->implode('filter');
+    $data = Content::select('file','content', 'guests')->whereNotNull('seconds')->smartSearch($filter, 'file|series|guests|tags')->get();
+    $currentSongsData = collect($data)->map(function ($item, $key) {
+        $guestTitle = Str::between($item->file, ' ', '.ogg');
+        return [
+            'guestTitle' => $guestTitle,
+            'title' => $item->content,
+            'guest' => $item->guests,
+        ];
+    })->sortBy('guest')->values();
     return $currentSongsData;
- })->middleware('auth:api,web');
+})->middleware('auth:api,web');
