@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Content;
+use App\Models\Prefilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,3 +51,13 @@ Route::apiResource('/publicusers/{publicUser}/contentbookmarks', 'PublicUserCont
  *   - Manually created an additional 'delete' route - which uses a new 'bookmark.querystring' middleware to inject the appropriate model for file=XXX query string parameters.
  *      (Problem handling slashes in the main route string).  Alternative would have been to create additional destroyXXX() controller action that did a similiar lookup.
  */
+
+ //Allows public website to get a list of the current song rotation
+ Route::get('/current_song_rotation',function (){
+    $filter = Prefilter::where('slug','music-currentrotation')->pluck('filter')->implode('filter');
+    $data = Content::select('file')->whereNotNull('seconds')->smartSearch($filter, 'file|series|guests|tags')->get();
+    $currentSongsData = collect($data)->map(function($item,$key){
+        return Str::between($item->file, ' ', '.ogg');
+    })->sort()->values();
+    return $currentSongsData;
+ })->middleware('auth:api,web');

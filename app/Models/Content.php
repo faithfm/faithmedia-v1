@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use FaithFM\SmartSearch\SmartSearchable;
 
 class Content extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
+    use SmartSearchable;
 
     /**
      * The primary key associated with the table.

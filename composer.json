@@ -11,6 +11,7 @@
         "php": "^7.3|^8.0",
         "auth0/login": "^6.4",
         "faithfm/laravel-auth0-pattern": "^1.0",
+        "faithfm/smart-search-php": "^2.1",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^7.0.1",

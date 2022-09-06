@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb9f1a386fe7474bf8eb1f0e6b392c53",
+    "content-hash": "80919508d2f760c456964ded9a131ed9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1247,6 +1247,56 @@
                 "issues": "https://github.com/faithfm/laravel-auth0-pattern/issues"
             },
             "time": "2021-12-17T00:19:48+00:00"
+        },
+        {
+            "name": "faithfm/smart-search-php",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/faithfm/smart-search-php.git",
+                "reference": "4d6c9bfdebca2acc192cac42b972d1f8b4fb3415"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/faithfm/smart-search-php/zipball/4d6c9bfdebca2acc192cac42b972d1f8b4fb3415",
+                "reference": "4d6c9bfdebca2acc192cac42b972d1f8b4fb3415",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FaithFM\\SmartSearch\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Engelbrecht",
+                    "email": "michaelndani@gmail.com"
+                },
+                {
+                    "name": "Lidia Ordonez",
+                    "email": "lidiaordonez18@gmail.com"
+                }
+            ],
+            "description": "Search/filter using simple Google-style search strings to perform complex filter operations.",
+            "homepage": "https://github.com/faithfm/smart-search-php",
+            "keywords": [
+                "composer",
+                "package",
+                "template"
+            ],
+            "support": {
+                "issues": "https://github.com/faithfm/smart-search-php/issues",
+                "source": "https://github.com/faithfm/smart-search-php/tree/2.1.0"
+            },
+            "time": "2022-08-17T06:55:44+00:00"
         },
         {
             "name": "fideloper/proxy",
