@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Gate;
 class AuthPermissionList
 {
     /**
-     * The list of permissions recognised by the application
+     * The list of permissions recognised by the application 
      * (as applied from the 'user_permissions' table)
      *
      * Gates are automatically created for all permissions defined here.
