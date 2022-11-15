@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c118a580c4696fd44b39ac5b2b78d7b3",
+    "content-hash": "3b99471b34ea088353057a1b100fd42d",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -1028,16 +1028,16 @@
         },
         {
             "name": "faithfm/laravel-auth0-pattern",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/faithfm/laravel-auth0-pattern.git",
-                "reference": "0b201f506f7398f3f5790a389baebd5df459afce"
+                "reference": "f5ba21d2265d2f9eb579b1455bb71bf935d45761"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/faithfm/laravel-auth0-pattern/zipball/0b201f506f7398f3f5790a389baebd5df459afce",
-                "reference": "0b201f506f7398f3f5790a389baebd5df459afce",
+                "url": "https://api.github.com/repos/faithfm/laravel-auth0-pattern/zipball/f5ba21d2265d2f9eb579b1455bb71bf935d45761",
+                "reference": "f5ba21d2265d2f9eb579b1455bb71bf935d45761",
                 "shasum": ""
             },
             "require": {
@@ -1084,10 +1084,10 @@
                 "template"
             ],
             "support": {
-                "source": "https://github.com/faithfm/laravel-auth0-pattern/tree/2.0.0",
+                "source": "https://github.com/faithfm/laravel-auth0-pattern/tree/2.0.1",
                 "issues": "https://github.com/faithfm/laravel-auth0-pattern/issues"
             },
-            "time": "2022-11-08T02:27:40+00:00"
+            "time": "2022-11-15T05:03:47+00:00"
         },
         {
             "name": "faithfm/smart-search-php",
