@@ -5,14 +5,15 @@
  */
 
 import vuetify from './vuetify';    // import and use vuetify
-import VueRouter from 'vue-router';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 import routes from './routes';
 import "./minutes_filter";          // global filter: "minutes".  Given: "62 | minutes" --> Output: "01:02"
 import { Howl, Howler } from 'howler';
 window._ = require('lodash');       // need to manually include lodash if we don't include bootstrap
 
 window.Vue = require('vue');
-window.Vue.use(VueRouter);
+Vue.use(VueRouter);
 
 /**
  * The following block of code may be used to automatically register your
