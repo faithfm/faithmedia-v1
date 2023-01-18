@@ -18,19 +18,20 @@
                                     style="word-wrap: break-word; white-space: pre-line"
                                     :style="[track.file === selectedTrackFile ? { 'color': 'white !important' } : { 'color': 'black' }]">
                                     {{ index | numbers }} {{ track.content }} - {{ track.guests }}
+                                    <v-spacer></v-spacer>
+                                    <span class="my-4 d-none d-sm-flex"><v-chip :key="track.seconds" small color="#dde"
+                                            text-color="#444">
+                                            {{ track.seconds | minutes }}</v-chip></span>
                                 </span>
                             </v-list-item-title>
                             <v-list-item-subtitle v-show="!showReviews" class="text--primary text-right text-sm-left"
                                 style="text-oveflow: ellipsis; direction: rtl">
                                 <span class="text--secondary">{{ filePath(track.file) }}</span>
                                 /{{ fileName(track.file) }}
-                                <span style="float: right">
+                                <span style="float: right; align-self: center;">
                                     <v-chip v-for="tag in track.tags ? track.tags.split(' ') : []" :key="tag" x-small
-                                        color="#dde" text-color="#444" style="
-                                        margin-left: 2px;
-                                        padding-left: 4px;
-                                        padding-right: 4px;
-                                    ">
+                                        color="#dde" text-color="#444"
+                                        style="margin-left: 2px; padding-left: 4px; padding-right: 4px;">
                                         {{ tag }}
                                     </v-chip>
                                 </span>
@@ -62,12 +63,8 @@
                                 </v-chip>
                             </v-chip-group>
                             <v-chip-group v-show="showReviews" class="text--primary">
-                                <v-chip small class="mb-n1" @click="
-                                    reviewFilename = track.file;
-                                reviewComment =
-                                    getRating(reviewFilename, 'myComment') || '';
-                                reviewDialog = true;
-                                " :class="{ myRatings: getRating(track.file, 'myComment') }">
+                                <v-chip small class="mb-n1" :class="{ myRatings: getRating(track.file, 'myComment') }"
+                                    @click="reviewFilename = track.file; reviewComment = getRating(reviewFilename, 'myComment') || ''; reviewDialog = true;">
                                     <v-avatar left>
                                         <v-icon x-small>mdi-comment-outline</v-icon>
                                     </v-avatar>
@@ -76,10 +73,7 @@
                             </v-chip-group>
                         </v-list-item-content>
                         <v-list-item-action>
-                            <v-btn icon @click.stop="
-    actionsDialogModel = track;
-selectTrack(track.file);
-                            ">
+                            <v-btn icon @click.stop="actionsDialogModel = track; selectTrack(track.file);">
                                 <v-icon small color="black">mdi-dots-horizontal</v-icon>
                             </v-btn>
                         </v-list-item-action>
