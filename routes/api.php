@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\PublicUserContentBookmarkController;
 use App\Http\Controllers\PublicUserController;
 use App\Http\Controllers\SongReviewController;
 use App\Http\Controllers\SongReviewSummaryController;
-use App\Http\Controllers\PublicUserContentBookmarkController;
 use App\Models\Content;
 use App\Models\Prefilter;
 use Illuminate\Http\Request;

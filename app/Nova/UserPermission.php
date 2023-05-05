@@ -2,8 +2,8 @@
 
 namespace App\Nova;
 
-use Illuminate\Database\Eloquent\Builder;
 use App\Repositories\AuthPermissionList;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Code;
