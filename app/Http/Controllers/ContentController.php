@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Models\Content;
 
 class ContentController extends Controller
 {
@@ -17,7 +17,7 @@ class ContentController extends Controller
     {
         $this->middleware('auth:api,web');          // require authentication
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +31,6 @@ class ContentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -39,10 +38,10 @@ class ContentController extends Controller
         // NOTE: instead of simple "CREATE" method, I've allowed for CREATE or UPDATE if already exists
         Gate::authorize('edit-content');  // metadata editors only allowed
         $content = Content::where('file', $request->file)->first();
-        if ($content)
+        if ($content) {
             // UPDATE
             $content->update($request->only(['series', 'numbers', 'content', 'guests', 'tags', 'bytes', 'seconds', 'md5', 'bestdate', 'podcastdate', 'source', 'ref']));
-        else {
+        } else {
             // CREATE
             $content = Content::create([
                 'file' => $request->file,

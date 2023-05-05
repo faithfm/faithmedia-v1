@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use FaithFM\SmartSearch\SmartSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
-use FaithFM\SmartSearch\SmartSearchable;
 
 class Content extends Model implements Auditable
 {
@@ -58,10 +58,8 @@ class Content extends Model implements Auditable
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope('not3ABN', function (Builder $builder) {
             $builder->where('file', 'NOT LIKE', '3abn%');                       // exclude '3abn' files by default (using global scope)

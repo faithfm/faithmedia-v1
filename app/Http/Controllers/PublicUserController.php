@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PublicUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Models\PublicUser;
 
 class PublicUserController extends Controller
 {
@@ -31,7 +31,6 @@ class PublicUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,26 +40,27 @@ class PublicUserController extends Controller
         // validate request
         $validatedData = $request->validate([
             'sub' => 'required',
-            'user_id' => 'nullable', 
-            'name' => 'nullable', 
-            'email' => 'nullable', 
-            'nickname' => 'nullable', 
-            'picture' => 'nullable', 
-            'church_name' => 'nullable', 
-            'phone' => 'nullable', 
-            'listen_time_seconds' => 'nullable|integer', 
-            'analytics_uid' => 'nullable', 
-            'badges' => 'nullable', 
-            'site_id' => 'nullable', 
-            'site_search' => 'nullable', 
-            'timezone_type' => 'nullable', 
-            'user_timezone_offset' => 'nullable|integer', 
+            'user_id' => 'nullable',
+            'name' => 'nullable',
+            'email' => 'nullable',
+            'nickname' => 'nullable',
+            'picture' => 'nullable',
+            'church_name' => 'nullable',
+            'phone' => 'nullable',
+            'listen_time_seconds' => 'nullable|integer',
+            'analytics_uid' => 'nullable',
+            'badges' => 'nullable',
+            'site_id' => 'nullable',
+            'site_search' => 'nullable',
+            'timezone_type' => 'nullable',
+            'user_timezone_offset' => 'nullable|integer',
         ]);
 
         // NOTE: instead of simple "CREATE" method, I've allowed for CREATE or UPDATE if already exists
         $publicUser = PublicUser::where('sub', $request->sub)->first();
-        if ($publicUser)
-            $publicUser->update($validatedData);                  // UPDATE
+        if ($publicUser) {
+            $publicUser->update($validatedData);
+        }                  // UPDATE
         else {
             $publicUser = PublicUser::create($validatedData);     // CREATE
         }
@@ -68,11 +68,9 @@ class PublicUserController extends Controller
         return $publicUser;
     }
 
-
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PublicUser  $publicUser
      * @return \Illuminate\Http\Response
      */
     public function show(PublicUser $publicUser)
@@ -83,8 +81,6 @@ class PublicUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PublicUser  $publicUser
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, PublicUser $publicUser)
@@ -96,7 +92,6 @@ class PublicUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PublicUser  $publicUser
      * @return \Illuminate\Http\Response
      */
     public function destroy(PublicUser $publicUser)

@@ -26,23 +26,23 @@ class SongReviewSummaryController extends Controller
     public function index()
     {
         $songReviewsSummary = SongReviewSummary::all();
+
         return $songReviewsSummary;
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         // NOTE: instead of simple "CREATE" method, I've allowed for CREATE or UPDATE if already exists
         $songReviewSummary = SongReviewSummary::where('file', $request->file)->first();
-        if ($songReviewSummary)
+        if ($songReviewSummary) {
             // UPDATE
             $songReviewSummary->update($request->only(['status', 'source', 'comment']));
-        else {
+        } else {
             // CREATE
             $songReviewSummary = SongReviewSummary::create([
                 'file' => $request->file,
@@ -51,13 +51,13 @@ class SongReviewSummaryController extends Controller
                 'comment' => $request->comment,
             ]);
         }
+
         return $songReviewSummary;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  App\Models\SongReviewSummary $songReviewSummary
      * @return \Illuminate\Http\Response
      */
     public function show(SongReviewSummary $songReviewSummary)
@@ -68,8 +68,6 @@ class SongReviewSummaryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Models\SongReviewSummary $songReviewSummary
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, SongReviewSummary $songReviewSummary)
@@ -80,7 +78,7 @@ class SongReviewSummaryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  App\Models\SongReviewSummary 
+     * @param  App\Models\SongReviewSummary
      * @return \Illuminate\Http\Response
      */
     public function destroy(SongReviewSummary $songReviewSummary)

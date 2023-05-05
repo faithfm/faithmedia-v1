@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\ContentController;
+use App\Http\Controllers\PublicUserContentBookmarkController;
+use App\Http\Controllers\PublicUserController;
+use App\Http\Controllers\SongReviewController;
+use App\Http\Controllers\SongReviewSummaryController;
 use App\Models\Content;
 use App\Models\Prefilter;
 use Illuminate\Http\Request;
@@ -25,23 +30,23 @@ Route::get('/prefilters', function () {
     return \App\Models\Prefilter::all();
 });
 
-Route::apiResource('/content', 'ContentController');
+Route::apiResource('/content', ContentController::class);
 
-Route::apiResource('/songreviews', 'SongReviewController');
+Route::apiResource('/songreviews', SongReviewController::class);
 
-Route::apiResource('/songreviewsummary', 'SongReviewSummaryController');
+Route::apiResource('/songreviewsummary', SongReviewSummaryController::class);
 
-Route::apiResource('/publicusers', 'PublicUserController')
+Route::apiResource('/publicusers', PublicUserController::class)
     ->parameters(['publicusers' => 'publicUser']);
 
 // query-string alternative
-Route::delete('/publicusers/{publicUser}/contentbookmarks', 'PublicUserContentBookmarkController@destroy')
+Route::delete('/publicusers/{publicUser}/contentbookmarks', [PublicUserContentBookmarkController::class, 'destroy'])
     ->middleware('bookmark.querystring');
 
 // allow slashes in publicUserContentBookmark ('file') parameters  (global 'pattern' vs 'where')
 Route::pattern('publicUserContentBookmark', '.*');
 
-Route::apiResource('/publicusers/{publicUser}/contentbookmarks', 'PublicUserContentBookmarkController')
+Route::apiResource('/publicusers/{publicUser}/contentbookmarks', PublicUserContentBookmarkController::class)
     ->parameters(['contentbookmarks' => 'publicUserContentBookmark:file']);
 
 /**
@@ -55,14 +60,16 @@ Route::apiResource('/publicusers/{publicUser}/contentbookmarks', 'PublicUserCont
 //Allows public website to get a list of the current song rotation
 Route::get('/current_song_rotation', function () {
     $filter = Prefilter::where('slug', 'music-currentrotation')->pluck('filter')->implode('filter');
-    $data = Content::select('file','content', 'guests')->whereNotNull('seconds')->smartSearch($filter, 'file|series|guests|tags')->get();
+    $data = Content::select('file', 'content', 'guests')->whereNotNull('seconds')->smartSearch($filter, 'file|series|guests|tags')->get();
     $currentSongsData = collect($data)->map(function ($item, $key) {
         $guestTitle = Str::between($item->file, ' ', '.ogg');
+
         return [
             'guestTitle' => $guestTitle,
             'title' => $item->content,
             'guest' => $item->guests,
         ];
     })->sortBy('guest')->values();
+
     return $currentSongsData;
 })->middleware('auth:api,web');

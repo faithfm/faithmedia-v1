@@ -7,7 +7,7 @@ return [
     | Media Download Base URLs
     |--------------------------------------------------------------------------
     |
-    | These URLs are use by the media player to determine the location of 
+    | These URLs are use by the media player to determine the location of
     | the different types of media files.
     |
     */

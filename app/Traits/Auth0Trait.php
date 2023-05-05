@@ -14,43 +14,33 @@ namespace App\Traits;
 
 trait Auth0Trait
 {
-	public $accessToken;
+    public $accessToken;
 
-	/**
-	 * Get id field name.
-	 *
-	 * @return string
-	 */
-	public function getAuthIdentifierName()
-	{
-		return 'id';
-	}
+    /**
+     * Get id field name.
+     */
+    public function getAuthIdentifierName(): string
+    {
+        return 'id';
+    }
 
-	/**
-	 * Get the password for the user.
-	 *
-	 * @return string
-	 */
-	public function getAuthPassword()
-	{
-		return $this->accessToken;
-	}
+    /**
+     * Get the password for the user.
+     */
+    public function getAuthPassword(): string
+    {
+        return $this->accessToken;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getAccessToken(): ?string
-	{
-		return $this->accessToken;
-	}
+    public function getAccessToken(): ?string
+    {
+        return $this->accessToken;
+    }
 
-	/**
-	 * @param string $token
-	 * @return $this
-	 */
-	public function setAccessToken(string $token): self
-	{
-		$this->accessToken = $token;
-		return $this;
-	}
+    public function setAccessToken(string $token): self
+    {
+        $this->accessToken = $token;
+
+        return $this;
+    }
 }

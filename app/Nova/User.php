@@ -2,17 +2,16 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Gravatar;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Line;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Stack;
 use App\Repositories\AuthPermissionList;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Redirect;
+use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Line;
+use Laravel\Nova\Fields\Stack;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class User extends Resource
 {
@@ -41,11 +40,8 @@ class User extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             ID::make(__('ID'), 'id')
@@ -83,13 +79,16 @@ class User extends Resource
                     // lookup order for each permission (assume 99 if permission not in allowed-permission list)
                     $aOrder = $permissionSortOrder[$a->permission] ?? 99;
                     $bOrder = $permissionSortOrder[$b->permission] ?? 99;
+
                     return ($aOrder < $bOrder) ? -1 : 1;
                 });
                 // convert UserPermission model to an array of permission names... with square-brackets around [permissions] that are restricted in some way
                 $perms = $sortedPermissions->map(function ($perm) {
                     $name = $perm->permission;
-                    if ($perm->restrictions <> NULL)
+                    if ($perm->restrictions != null) {
                         $name = "[$name]";
+                    }
+
                     return $name;
                 });
                 // convert array to comma-separated text
@@ -97,7 +96,6 @@ class User extends Resource
                 // limit its length for displayability
                 return Str::limit($perms, 60);
             })->onlyOnIndex(),
-
 
             Text::make('Sub')
                 ->sortable()
@@ -127,44 +125,32 @@ class User extends Resource
 
     /**
      * Get the cards available for the request.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
      */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
     /**
      * Get the filters available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
      */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
     /**
      * Get the lenses available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
      */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
     /**
      * Get the actions available for the resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
      */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

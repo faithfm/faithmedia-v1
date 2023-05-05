@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PublicUser;
+use App\Models\PublicUserContentBookmark;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Models\PublicUserContentBookmark;
-use App\Models\PublicUser;
 
 /**
  * NOTE: All controller methods work on records related to a specific PublicUser.
  *
  * Relying on implicit binding, and nested route parameters - see: https://laravel.com/docs/8.x/routing#implicit-binding
  */
-
 class PublicUserContentBookmarkController extends Controller
 {
     /**
@@ -30,7 +29,6 @@ class PublicUserContentBookmarkController extends Controller
      *
      * (for the publicUser, sorted with most-recent first)
      *
-     * @param \App\Models\PublicUser $publicUser
      * @return \Illuminate\Http\Response
      */
     public function index(PublicUser $publicUser)
@@ -41,8 +39,6 @@ class PublicUserContentBookmarkController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PublicUser  $publicUser
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, PublicUser $publicUser)
@@ -60,8 +56,6 @@ class PublicUserContentBookmarkController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PublicUser  $publicUser
-     * @param  \App\Models\PublicUserContentBookmark  $publicUserContentBookmark
      * @return \Illuminate\Http\Response
      */
     public function show(PublicUser $publicUser, PublicUserContentBookmark $publicUserContentBookmark)
@@ -72,9 +66,6 @@ class PublicUserContentBookmarkController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PublicUser  $publicUser
-     * @param  \App\Models\PublicUserContentBookmark  $publicUserContentBookmark
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, PublicUser $publicUser, PublicUserContentBookmark $publicUserContentBookmark)
@@ -82,14 +73,13 @@ class PublicUserContentBookmarkController extends Controller
         Gate::authorize('public-website-api');           // "write" operations require "public-website-api" permission
 
         $publicUserContentBookmark->update();            // no updateable fields currently exist - currently a dummy operation
+
         return $publicUserContentBookmark;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PublicUser  $publicUser
-     * @param  \App\Models\PublicUserContentReview  $publicUserContentBookmark
      * @return \Illuminate\Http\Response
      */
     public function destroy(PublicUser $publicUser, PublicUserContentBookmark $publicUserContentBookmark)

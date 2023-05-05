@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +16,7 @@ use Illuminate\Support\Facades\Gate;
 
 Route::get('/home', function () {
     return view('home');
-})->name('home');;
-
+})->name('home');
 
 Route::get('phpinfo', function () {
     phpinfo();
@@ -31,8 +29,6 @@ Route::get('nova/logout', function () {
 Route::get('nova/login', function () {
     return redirect()->route('login');
 })->name('nova.login');
-
-
 
 // Remaining routes are handled by our Vue SPA
 Route::get('/{any}', function () {
@@ -47,5 +43,6 @@ Route::get('/{any}', function () {
             'media_download_base' => config('myapp.media_download_base'),
         ],
     ];
+
     return view('media')->with('LaravelAppGlobals', $LaravelAppGlobals);
 })->where('any', '^(?!nova).*')->middleware('auth');

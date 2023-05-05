@@ -31,8 +31,9 @@ class PublicUser extends Model implements Auditable
     /**
      * Get the content bookmarks for this user.
      */
-    public function contentBookmarks() {
-        return $this->hasMany('App\Models\PublicUserContentBookmark');
+    public function contentBookmarks()
+    {
+        return $this->hasMany(\App\Models\PublicUserContentBookmark::class);
     }
 
     /**
@@ -40,7 +41,8 @@ class PublicUser extends Model implements Auditable
      *
      * Required by Laravel when using implicit binding of nested route parameters - see: https://laravel.com/docs/8.x/routing#implicit-model-binding-scoping
      */
-    public function publicUserContentBookmarks() {
+    public function publicUserContentBookmarks()
+    {
         return $this->contentBookmarks();
     }
 
@@ -50,15 +52,12 @@ class PublicUser extends Model implements Auditable
      * See: https://laravel.com/docs/8.x/routing#explicit-binding
      *
      * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, ?string $field = null): ?Model
     {
         // lookup by 'id' vs 'sub' - depending on whether the value is an integer (or a string by implication)
         $lookupField = is_numeric($value) ? 'id' : 'sub';
 
         return $this->where($lookupField, $value)->firstOrFail();
     }
-
 }
