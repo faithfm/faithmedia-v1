@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This file is cloned / force-published from the "laravel-auth0-pattern" composer package.
+ *    WARNING: Local modifications will be overwritten when the package is updated.
+ *             See https://github.com/faithfm/laravel-auth0-pattern for more details.
+ */
+
 return [
 
     /*
@@ -14,7 +20,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'auth0',
+        'guard' => 'web_guard',
         'passwords' => 'users',
     ],
 
@@ -31,22 +37,17 @@ return [
     | users are actually retrieved out of your database or other storage
     | mechanisms used by this application to persist your user's data.
     |
-    | Supported: "session"
+    | Supported: "session", "token"
     |
     */
 
     'guards' => [
-        'auth0' => [
-            'driver' => 'auth0',
-            'provider' => 'auth0',
+        'web_guard' => [
+            'driver' => 'auth0.guard',
+            'provider' => 'ffm_auth0_provider',
         ],
 
-        'web' => [
-            'driver' => 'auth0',
-            'provider' => 'auth0',
-        ],
-
-        'api' => [
+        'api_guard' => [
             'driver' => 'token',
             'provider' => 'eloquent_users',
             'hash' => false,
@@ -71,27 +72,16 @@ return [
     */
 
     'providers' => [
-        'auth0' => [
-            'driver' => 'auth0',
+        'ffm_auth0_provider' => [
+            'driver' => 'auth0.provider',
             'repository' => FaithFM\Auth0Pattern\Auth0PatternUserRepository::class,
 
         ],
-
         'eloquent_users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
 
         ],
-
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -103,20 +93,16 @@ return [
     | than one user table or model in the application and you want to have
     | separate password reset settings based on the specific user types.
     |
-    | The expiry time is the number of minutes that each reset token will be
+    | The expire time is the number of minutes that the reset token should be
     | considered valid. This security feature keeps tokens short-lived so
     | they have less time to be guessed. You may change this as needed.
-    |
-    | The throttle setting is the number of seconds a user must wait before
-    | generating more password reset tokens. This prevents the user from
-    | quickly generating a very large amount of password reset tokens.
     |
     */
 
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => 'password_reset_tokens',
+            'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],

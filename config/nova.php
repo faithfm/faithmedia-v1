@@ -1,7 +1,7 @@
 <?php
 
+use FaithFM\Auth0Pattern\Http\Middleware\PatchedAuthenticationMiddleware;
 use Laravel\Nova\Actions\ActionResource;
-use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
@@ -90,7 +90,6 @@ return [
     /*
     |--------------------------------------------------------------------------
     | Nova Route Middleware
-    |--------------------------------------------------------------------------
     |
     | These middleware will be assigned to every Nova route, giving you the
     | chance to add your own middleware to this stack or override any of
@@ -99,7 +98,7 @@ return [
     */
 
     'middleware' => [
-        'web',
+        'web_group',
         HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
@@ -107,7 +106,7 @@ return [
 
     'api_middleware' => [
         'nova',
-        Authenticate::class,
+        PatchedAuthenticationMiddleware::class,
         Authorize::class,
     ],
 
@@ -163,7 +162,7 @@ return [
     */
 
     'brand' => [
-        'logo' => realpath(__DIR__.'/../public/faithfm-white-R4.svg'),
+        'logo' => realpath(__DIR__ . '/../public/faithfm-white-R4.svg'),
 
         //     'colors' => [
         //         "400" => "24, 182, 155, 0.5",

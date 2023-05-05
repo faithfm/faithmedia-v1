@@ -21,7 +21,7 @@ class PublicUserContentBookmarkController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api,web');          // require authentication
+        $this->middleware('auth.patched:api_guard,web_guard');          // require authentication
     }
 
     /**

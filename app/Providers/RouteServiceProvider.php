@@ -43,7 +43,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes(): void
     {
-        Route::middleware('web')
+        Route::middleware('web_group')
             ->group(base_path('routes/web.php'));
     }
 
@@ -55,7 +55,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes(): void
     {
         Route::prefix('api')
-            ->middleware(['web', 'api'])         // add non-standard 'web' middleware option for API routes too - to allow authentication using session cookies instead of api_token etc
+            ->middleware(['web_group', 'api_group'])         // add non-standard 'web' middleware option for API routes too - to allow authentication using session cookies instead of api_token etc
             ->group(base_path('routes/api.php'));
     }
 }

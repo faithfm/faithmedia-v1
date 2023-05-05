@@ -28,7 +28,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareGroups = [
-        'web' => [
+        'web_group' => [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             // \Illuminate\Session\Middleware\StartSession::class,      // replace with...
@@ -39,8 +39,8 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
-        'api' => [
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':60,1',
+        'api_group' => [
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];

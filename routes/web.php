@@ -34,8 +34,8 @@ Route::get('nova/login', function () {
 Route::get('/{any}', function () {
     Gate::authorize('use-app');
     $LaravelAppGlobals = [
-        'guest' => auth()->guest(),
         'user' => auth()->user(),
+        'guest' => auth()->guest(),
         'csrf-token' => csrf_token(),
         'config' => [
             'name' => config('app.name'),
@@ -45,4 +45,4 @@ Route::get('/{any}', function () {
     ];
 
     return view('media')->with('LaravelAppGlobals', $LaravelAppGlobals);
-})->where('any', '^(?!nova).*')->middleware('auth');
+})->where('any', '^(?!nova).*')->middleware('auth.patched:api_guard,web_guard');
