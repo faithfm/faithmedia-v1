@@ -20,7 +20,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 class User extends \Illuminate\Database\Eloquent\Model implements StatefulUser, AuthenticatableUser, Auditable
 {
     use \OwenIt\Auditing\Auditable;
-
     use HasFactory, Notifiable, Authenticatable;
 
     /**
@@ -57,5 +56,4 @@ class User extends \Illuminate\Database\Eloquent\Model implements StatefulUser, 
     {
         return $this->hasMany('App\Models\UserPermission');
     }
-
 }

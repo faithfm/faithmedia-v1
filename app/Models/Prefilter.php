@@ -22,5 +22,4 @@ class Prefilter extends Model implements Auditable
      * No timestamps for this table
      */
     public $timestamps = false;
-
 }

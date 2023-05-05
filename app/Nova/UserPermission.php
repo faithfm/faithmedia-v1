@@ -2,14 +2,13 @@
 
 namespace App\Nova;
 
+use App\Repositories\AuthPermissionList;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Code;
-use App\Repositories\AuthPermissionList;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UserPermission extends Resource
 {
@@ -48,27 +47,26 @@ class UserPermission extends Resource
     /**
      * Restrict index query - depending on what permissions the Nova user is allowed to edit
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
         $permissions = AuthPermissionList::getNovaAllowedPermissions();
+
         return $query->whereIn('permission', $permissions);
     }
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
     {
         // Restrict Select (combobox) to only show permissions the Nova user is allowed to edit
         $allowedPermissions = AuthPermissionList::getNovaAllowedPermissions();
-        $allowedPermissions = array_combine($allowedPermissions, $allowedPermissions);   # we need an associative array with permissions as both keys AND values
+        $allowedPermissions = array_combine($allowedPermissions, $allowedPermissions);   // we need an associative array with permissions as both keys AND values
 
         return [
             ID::make(__('ID'), 'id')
@@ -92,7 +90,6 @@ class UserPermission extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -103,7 +100,6 @@ class UserPermission extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -114,7 +110,6 @@ class UserPermission extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -125,7 +120,6 @@ class UserPermission extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

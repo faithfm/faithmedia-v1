@@ -12,23 +12,21 @@
 namespace App\Repositories;
 
 use App\Models\User;
-
-use Auth0\Login\Auth0User;
 use Auth0\Login\Auth0JWTUser;
+use Auth0\Login\Auth0User;
 use Auth0\Login\Repository\Auth0UserRepository;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class CustomUserRepository extends Auth0UserRepository
 {
-
     /**
      * Get an existing user or create a new one
      *
-     * @param array $profile - Auth0 profile
-     *
+     * @param  array  $profile - Auth0 profile
      * @return User
      */
-    protected function upsertUser( $profile ) {  
+    protected function upsertUser($profile)
+    {
         return User::firstOrCreate(['sub' => $profile['sub']], [
             'email' => $profile['email'] ?? '',
             'name' => $profile['name'] ?? '',
@@ -38,28 +36,27 @@ class CustomUserRepository extends Auth0UserRepository
     /**
      * Authenticate a user with a decoded ID Token
      *
-     * @param array $decodedJwt
      *
      * @return Auth0JWTUser
      */
-    public function getUserByDecodedJWT(array $decodedJwt) : Authenticatable
+    public function getUserByDecodedJWT(array $decodedJwt): Authenticatable
     {
-        $user = $this->upsertUser( (array) $jwt );
-        return new Auth0JWTUser( $user->getAttributes() );
+        $user = $this->upsertUser((array) $jwt);
+
+        return new Auth0JWTUser($user->getAttributes());
     }
 
     /**
      * Get a User from the database using Auth0 profile information
      *
-     * @param array $userinfo
      *
      * @return Auth0User
      */
-    public function getUserByUserInfo(array $userinfo) : Authenticatable
+    public function getUserByUserInfo(array $userinfo): Authenticatable
     {
-        $user = $this->upsertUser( $userinfo['profile'] );
+        $user = $this->upsertUser($userinfo['profile']);
+
         return $user->setAccessToken($userinfo['accessToken'] || '');                       // @aaronflorey's solution which returns a normal User model...
         // return new Auth0User( $user->getAttributes(), $userinfo['accessToken'] );        // ...instead of the original code from Auth0 quickstart tutorial - which returns a non-standard Auth0User class
     }
-
 }

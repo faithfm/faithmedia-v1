@@ -31,7 +31,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::mainMenu(function (Request $request, Menu $menu) {
             return $menu
                 ->prepend(
-                    MenuItem::externalLink('Back to ' . config('app.name'), config('app.url'))
+                    MenuItem::externalLink('Back to '.config('app.name'), config('app.url'))
                 );
         });
     }

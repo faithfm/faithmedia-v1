@@ -163,7 +163,7 @@ return [
     */
 
     'brand' => [
-        'logo' => realpath(__DIR__ . '/../public/faithfm-white-R4.svg'),
+        'logo' => realpath(__DIR__.'/../public/faithfm-white-R4.svg'),
 
         //     'colors' => [
         //         "400" => "24, 182, 155, 0.5",

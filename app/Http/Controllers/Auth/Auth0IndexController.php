@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class Auth0IndexController extends Controller
 {
@@ -19,6 +18,7 @@ class Auth0IndexController extends Controller
             // Use the key below to get an access token for your API.
             // 'audience' => config('laravel-auth0.api_identifier'),
         ];
+
         return \App::make('auth0')->login(null, null, $authorize_params);
     }
 
@@ -36,6 +36,7 @@ class Auth0IndexController extends Controller
             config('laravel-auth0.client_id'),
             url('/')
         );
+
         return  \Redirect::intended($logoutUrl);
     }
 
@@ -46,11 +47,10 @@ class Auth0IndexController extends Controller
      */
     public function profile()
     {
-        if ( ! \Auth::check() ) {
+        if (! \Auth::check()) {
             return redirect()->route('login');
         } else {
-            return '<pre class="text-left">' . json_encode( \Auth::user(), JSON_PRETTY_PRINT ) .'</pre>';
+            return '<pre class="text-left">'.json_encode(\Auth::user(), JSON_PRETTY_PRINT).'</pre>';
         }
-
     }
 }

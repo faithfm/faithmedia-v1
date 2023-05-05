@@ -20,8 +20,8 @@ class CreateSongReviewsTable extends Migration
             $table->string('rating')->nullable();
             $table->text('comments')->nullable();
             $table->timestamps();
-            // $table->primary('id');	
-            $table->unique(['file', 'user_id']);	
+            // $table->primary('id');
+            $table->unique(['file', 'user_id']);
         });
     }
 

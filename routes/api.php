@@ -55,14 +55,16 @@ Route::apiResource('/publicusers/{publicUser}/contentbookmarks', 'PublicUserCont
 //Allows public website to get a list of the current song rotation
 Route::get('/current_song_rotation', function () {
     $filter = Prefilter::where('slug', 'music-currentrotation')->pluck('filter')->implode('filter');
-    $data = Content::select('file','content', 'guests')->whereNotNull('seconds')->smartSearch($filter, 'file|series|guests|tags')->get();
+    $data = Content::select('file', 'content', 'guests')->whereNotNull('seconds')->smartSearch($filter, 'file|series|guests|tags')->get();
     $currentSongsData = collect($data)->map(function ($item, $key) {
         $guestTitle = Str::between($item->file, ' ', '.ogg');
+
         return [
             'guestTitle' => $guestTitle,
             'title' => $item->content,
             'guest' => $item->guests,
         ];
     })->sortBy('guest')->values();
+
     return $currentSongsData;
 })->middleware('auth:api,web');

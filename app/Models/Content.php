@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use FaithFM\SmartSearch\SmartSearchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
-use FaithFM\SmartSearch\SmartSearchable;
 
 class Content extends Model implements Auditable
 {

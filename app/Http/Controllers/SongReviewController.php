@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use App\Models\SongReview;
+use Illuminate\Http\Request;
 
 class SongReviewController extends Controller
 {
@@ -18,7 +17,7 @@ class SongReviewController extends Controller
         $this->middleware('auth:api,web');          // require authentication
         $this->middleware('can:review-songs');  // song-reviewers only allowed
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -27,23 +26,23 @@ class SongReviewController extends Controller
     public function index()
     {
         $songReviews = \App\Models\SongReview::with('user:id,name,email')->get();
+
         return $songReviews;
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         // NOTE: instead of simple "CREATE" method, I've allowed for CREATE or UPDATE if already exists
         $songReview = SongReview::where('file', $request->file)->where('user_id', $request->user()->id)->first();
-        if ($songReview)
+        if ($songReview) {
             // UPDATE
             $songReview->update($request->only(['rating', 'comments']));
-        else {
+        } else {
             // CREATE
             $songReview = SongReview::create([
                 'file' => $request->file,
@@ -54,13 +53,13 @@ class SongReviewController extends Controller
         }
 
         $songReview->load('user:id,name,email');
+
         return $songReview;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SongReview  $songReview
      * @return \Illuminate\Http\Response
      */
     public function show(SongReview $songReview)
@@ -71,8 +70,6 @@ class SongReviewController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SongReview  $songReview
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, SongReview $songReview)
@@ -83,7 +80,6 @@ class SongReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SongReview  $songReview
      * @return \Illuminate\Http\Response
      */
     public function destroy(SongReview $songReview)

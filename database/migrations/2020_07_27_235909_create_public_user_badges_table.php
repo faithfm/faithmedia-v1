@@ -19,7 +19,7 @@ class CreatePublicUserBadgesTable extends Migration
             $table->string('name')->default('');
             $table->tinyInteger('status')->default('1');
             $table->timestamps();
-            $table->unique(['user_id', 'name']);	
+            $table->unique(['user_id', 'name']);
         });
     }
 

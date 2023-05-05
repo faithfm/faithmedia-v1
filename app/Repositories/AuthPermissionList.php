@@ -8,13 +8,12 @@
 namespace App\Repositories;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 
 class AuthPermissionList
 {
     /**
-     * The list of permissions recognised by the application 
+     * The list of permissions recognised by the application
      * (as applied from the 'user_permissions' table)
      *
      * Gates are automatically created for all permissions defined here.
@@ -38,20 +37,20 @@ class AuthPermissionList
      *
      * Note: high-level permissions should not be visible or editable UNLESS user has 'admin-master' permission
      */
-    public static function getNovaAllowedPermissions() {
+    public static function getNovaAllowedPermissions()
+    {
         if (Gate::allows('admin-master')) {
             // unfiltered access for 'admin-master' users
             return static::DEFINED_PERMISSIONS;
         } else {
             // restricted access for other admins
             return Arr::where(static::DEFINED_PERMISSIONS, function ($value, $key) {
-                return !(in_array($value, [
+                return ! (in_array($value, [
                     'review-songs',
                     'review-songs-summary',
                     'admin-master',
                 ]));
-        });
+            });
+        }
     }
-}
-
 }

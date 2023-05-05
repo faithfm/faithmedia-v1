@@ -73,7 +73,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-            ->middleware(['web','api'])         // add non-standard 'web' middleware option for API routes too - to allow authentication using session cookies instead of api_token etc
+            ->middleware(['web', 'api'])         // add non-standard 'web' middleware option for API routes too - to allow authentication using session cookies instead of api_token etc
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
