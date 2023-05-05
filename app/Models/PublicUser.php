@@ -33,7 +33,7 @@ class PublicUser extends Model implements Auditable
      */
     public function contentBookmarks()
     {
-        return $this->hasMany('App\Models\PublicUserContentBookmark');
+        return $this->hasMany(\App\Models\PublicUserContentBookmark::class);
     }
 
     /**

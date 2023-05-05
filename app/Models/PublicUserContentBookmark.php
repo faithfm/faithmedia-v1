@@ -23,6 +23,6 @@ class PublicUserContentBookmark extends Model implements Auditable
      */
     public function public_user()
     {
-        return $this->belongsTo('App\Models\PublicUser');
+        return $this->belongsTo(\App\Models\PublicUser::class);
     }
 }

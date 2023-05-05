@@ -39,6 +39,6 @@ class UserPermission extends Model implements Auditable
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(\App\Models\User::class);
     }
 }
