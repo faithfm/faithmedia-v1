@@ -23,7 +23,6 @@ class CustomUserRepository extends Auth0UserRepository
      * Get an existing user or create a new one
      *
      * @param  array  $profile - Auth0 profile
-     * @return User
      */
     protected function upsertUser(array $profile): User
     {
@@ -35,9 +34,6 @@ class CustomUserRepository extends Auth0UserRepository
 
     /**
      * Authenticate a user with a decoded ID Token
-     *
-     *
-     * @return Auth0JWTUser
      */
     public function getUserByDecodedJWT(array $decodedJwt): Authenticatable
     {
@@ -48,9 +44,6 @@ class CustomUserRepository extends Auth0UserRepository
 
     /**
      * Get a User from the database using Auth0 profile information
-     *
-     *
-     * @return Auth0User
      */
     public function getUserByUserInfo(array $userinfo): Authenticatable
     {

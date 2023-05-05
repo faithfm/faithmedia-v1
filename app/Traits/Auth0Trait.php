@@ -18,8 +18,6 @@ trait Auth0Trait
 
     /**
      * Get id field name.
-     *
-     * @return string
      */
     public function getAuthIdentifierName(): string
     {
@@ -28,25 +26,17 @@ trait Auth0Trait
 
     /**
      * Get the password for the user.
-     *
-     * @return string
      */
     public function getAuthPassword(): string
     {
         return $this->accessToken;
     }
 
-    /**
-     * @return mixed
-     */
     public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
 
-    /**
-     * @return $this
-     */
     public function setAccessToken(string $token): self
     {
         $this->accessToken = $token;

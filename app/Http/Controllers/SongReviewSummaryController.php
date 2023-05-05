@@ -58,7 +58,6 @@ class SongReviewSummaryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  App\Models\SongReviewSummary  $songReviewSummary
      * @return \Illuminate\Http\Response
      */
     public function show(SongReviewSummary $songReviewSummary)
@@ -69,7 +68,6 @@ class SongReviewSummaryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  App\Models\SongReviewSummary  $songReviewSummary
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, SongReviewSummary $songReviewSummary)

@@ -52,8 +52,6 @@ class PublicUser extends Model implements Auditable
      * See: https://laravel.com/docs/8.x/routing#explicit-binding
      *
      * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function resolveRouteBinding($value, ?string $field = null): ?Model
     {

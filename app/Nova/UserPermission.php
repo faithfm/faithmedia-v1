@@ -47,9 +47,6 @@ class UserPermission extends Resource
 
     /**
      * Restrict index query - depending on what permissions the Nova user is allowed to edit
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, Builder $query): Builder
     {
@@ -60,8 +57,6 @@ class UserPermission extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @return array
      */
     public function fields(NovaRequest $request): array
     {
@@ -90,8 +85,6 @@ class UserPermission extends Resource
 
     /**
      * Get the cards available for the request.
-     *
-     * @return array
      */
     public function cards(NovaRequest $request): array
     {
@@ -100,8 +93,6 @@ class UserPermission extends Resource
 
     /**
      * Get the filters available for the resource.
-     *
-     * @return array
      */
     public function filters(NovaRequest $request): array
     {
@@ -110,8 +101,6 @@ class UserPermission extends Resource
 
     /**
      * Get the lenses available for the resource.
-     *
-     * @return array
      */
     public function lenses(NovaRequest $request): array
     {
@@ -120,8 +109,6 @@ class UserPermission extends Resource
 
     /**
      * Get the actions available for the resource.
-     *
-     * @return array
      */
     public function actions(NovaRequest $request): array
     {
