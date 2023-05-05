@@ -61,7 +61,7 @@ class Content extends Model implements Auditable
      *
      * @return void
      */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope('not3ABN', function (Builder $builder) {
             $builder->where('file', 'NOT LIKE', '3abn%');                       // exclude '3abn' files by default (using global scope)

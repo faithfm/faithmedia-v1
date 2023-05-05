@@ -21,7 +21,7 @@ trait Auth0Trait
      *
      * @return string
      */
-    public function getAuthIdentifierName()
+    public function getAuthIdentifierName(): string
     {
         return 'id';
     }
@@ -31,7 +31,7 @@ trait Auth0Trait
      *
      * @return string
      */
-    public function getAuthPassword()
+    public function getAuthPassword(): string
     {
         return $this->accessToken;
     }

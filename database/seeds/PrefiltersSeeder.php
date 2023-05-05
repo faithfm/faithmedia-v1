@@ -10,7 +10,7 @@ class PrefiltersSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         DB::table('prefilters')->insert([
             ['slug' => 'all-content',             'name' => 'Entire Media Library',       'filter' => ''],

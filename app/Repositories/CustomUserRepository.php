@@ -25,7 +25,7 @@ class CustomUserRepository extends Auth0UserRepository
      * @param  array  $profile - Auth0 profile
      * @return User
      */
-    protected function upsertUser($profile)
+    protected function upsertUser(array $profile): User
     {
         return User::firstOrCreate(['sub' => $profile['sub']], [
             'email' => $profile['email'] ?? '',

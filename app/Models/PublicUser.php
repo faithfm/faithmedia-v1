@@ -55,7 +55,7 @@ class PublicUser extends Model implements Auditable
      * @param  string|null  $field
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, ?string $field = null): ?Model
     {
         // lookup by 'id' vs 'sub' - depending on whether the value is an integer (or a string by implication)
         $lookupField = is_numeric($value) ? 'id' : 'sub';

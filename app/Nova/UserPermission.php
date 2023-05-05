@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Database\Eloquent\Builder;
 use App\Repositories\AuthPermissionList;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -50,7 +51,7 @@ class UserPermission extends Resource
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function indexQuery(NovaRequest $request, $query)
+    public static function indexQuery(NovaRequest $request, Builder $query): Builder
     {
         $permissions = AuthPermissionList::getNovaAllowedPermissions();
 
@@ -62,7 +63,7 @@ class UserPermission extends Resource
      *
      * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         // Restrict Select (combobox) to only show permissions the Nova user is allowed to edit
         $allowedPermissions = AuthPermissionList::getNovaAllowedPermissions();
@@ -92,7 +93,7 @@ class UserPermission extends Resource
      *
      * @return array
      */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
@@ -102,7 +103,7 @@ class UserPermission extends Resource
      *
      * @return array
      */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
@@ -112,7 +113,7 @@ class UserPermission extends Resource
      *
      * @return array
      */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
@@ -122,7 +123,7 @@ class UserPermission extends Resource
      *
      * @return array
      */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }
