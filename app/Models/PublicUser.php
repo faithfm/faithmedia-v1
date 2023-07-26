@@ -49,11 +49,13 @@ class PublicUser extends Model implements Auditable
     /**
      * Retrieve the model for a bound value.
      *
-     * See: https://laravel.com/docs/8.x/routing#explicit-binding
+     * See: https://laravel.com/docs/10.x/routing#explicit-binding
      *
      * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value, ?string $field = null): ?Model
+    public function resolveRouteBinding($value, $field = null)
     {
         // lookup by 'id' vs 'sub' - depending on whether the value is an integer (or a string by implication)
         $lookupField = is_numeric($value) ? 'id' : 'sub';
