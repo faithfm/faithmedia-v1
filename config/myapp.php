@@ -18,4 +18,16 @@ return [
         'orig' => env('MEDIA_DOWNLOAD_BASE_ORIG', 'http://content.mediaserver.com/'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Sample rates for New Relic traces
+    |--------------------------------------------------------------------------
+    |
+    */
+    'nr_sample_rate' => [
+        'pubusers' =>env('NR_SAMPLE_RATE_PUBUSERS', 0.01),
+    ],
+
+
+
 ];

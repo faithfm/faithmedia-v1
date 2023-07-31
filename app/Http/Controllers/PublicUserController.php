@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PublicUser;
+use FaithFM\NewRelicHelper\NewRelicHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -35,6 +36,9 @@ class PublicUserController extends Controller
      */
     public function store(Request $request)
     {
+        // reduce trace sampling for this high-volume endpoint
+        NewRelicHelper::reduceTraceSampling(config('myapp.nr_sample_rate.pubusers'));
+
         Gate::authorize('public-website-api');           // "write" operations require "public-website-api" permission
 
         // validate request

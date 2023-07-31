@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b68526fa92f6c5393c1fee68e05de6e",
+    "content-hash": "de6cb649d0551b76f682206eb66e6570",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -1179,6 +1179,62 @@
                 "issues": "https://github.com/faithfm/laravel-auth0-pattern/issues"
             },
             "time": "2023-05-30T02:27:42+00:00"
+        },
+        {
+            "name": "faithfm/new-relic-helper",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/faithfm/new-relic-helper.git",
+                "reference": "56a3614021437f6d73c31b8ba93eeb199cbe8414"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/faithfm/new-relic-helper/zipball/56a3614021437f6d73c31b8ba93eeb199cbe8414",
+                "reference": "56a3614021437f6d73c31b8ba93eeb199cbe8414",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "FaithFM\\NewRelicHelper\\NewRelicHelperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FaithFM\\NewRelicHelper\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Engelbrecht",
+                    "email": "michaelndani@gmail.com"
+                },
+                {
+                    "name": "Lidia Ordonez",
+                    "email": "lidiaordonez18@gmail.com"
+                }
+            ],
+            "description": "New Relic helper package for Faith FM Laravel Projects",
+            "homepage": "https://github.com/faithfm/new-relic-helper",
+            "keywords": [
+                "composer",
+                "package",
+                "template"
+            ],
+            "support": {
+                "source": "https://github.com/faithfm/new-relic-helper/tree/1.0.4",
+                "issues": "https://github.com/faithfm/new-relic-helper/issues"
+            },
+            "time": "2023-07-28T01:32:20+00:00"
         },
         {
             "name": "faithfm/smart-search-php",
