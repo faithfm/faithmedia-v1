@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49e4b17e84d623dede5771fea299fe93",
+    "content-hash": "5319999cc7e0aa3cb42ef211c0490e83",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -2170,16 +2170,16 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.25.1",
+            "version": "4.26.5",
             "source": {
                 "type": "git",
                 "url": "git@github.com:faithfm/nova.git",
-                "reference": "503a214499988800eed84cfbf0553775c5482c16"
+                "reference": "1adba336aeb2133e717ecee99afca7a8c8f18d32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/faithfm/nova/zipball/503a214499988800eed84cfbf0553775c5482c16",
-                "reference": "503a214499988800eed84cfbf0553775c5482c16",
+                "url": "https://api.github.com/repos/faithfm/nova/zipball/1adba336aeb2133e717ecee99afca7a8c8f18d32",
+                "reference": "1adba336aeb2133e717ecee99afca7a8c8f18d32",
                 "shasum": ""
             },
             "require": {
@@ -2256,8 +2256,8 @@
                 ],
                 "test:local": [
                     "./vendor/bin/testbench-dusk package:dusk-purge",
-                    "./vendor/bin/phpunit -c phpunit.xml --group local-time,external-network --testdox",
-                    "./vendor/bin/phpunit -c phpunit.dusk.xml --group local-time,external-network --testdox"
+                    "./vendor/bin/phpunit -c phpunit.xml --group date-field,datetime-field,external-network --testdox",
+                    "./vendor/bin/phpunit -c phpunit.dusk.xml --group date-field,datetime-field,external-network --testdox"
                 ],
                 "dusk:filter": [
                     "./vendor/bin/testbench-dusk package:dusk-purge && ./vendor/bin/phpunit -c phpunit.dusk.xml --filter"
@@ -2278,10 +2278,10 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/faithfm/nova/tree/4.25.1",
+                "source": "https://github.com/faithfm/nova/tree/4.26.5",
                 "issues": "https://github.com/faithfm/nova/issues"
             },
-            "time": "2023-06-13T05:50:34+00:00"
+            "time": "2023-08-03T02:03:43+00:00"
         },
         {
             "name": "laravel/prompts",
