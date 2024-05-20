@@ -27,8 +27,8 @@ return [
     'user'      => [
         'morph_prefix' => 'user',
         'guards'       => [
-            'web_guard',
-            'api_guard',
+            'ffm-session-guard',
+            'ffm-token-guard',
         ],
         'resolver'     => OwenIt\Auditing\Resolvers\UserResolver::class
     ],

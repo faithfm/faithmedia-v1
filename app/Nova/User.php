@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Repositories\AuthPermissionList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Gravatar;
@@ -70,10 +69,18 @@ class User extends Resource
             ]),
 
             // (On the index only...) Show user permissions as a comma-separated list (using a computed text field)
-            Text::make('User Permissions', function () {
-                // get sort-order from allowed-permission list
-                $allowedPermissions = AuthPermissionList::getNovaAllowedPermissions();
-                $permissionSortOrder = array_flip($allowedPermissions);
+            Text::make('User Permissions', function ($request) {
+                // // get sort-order from allowed-permission list
+                // $user = $request->user();
+                // $userPermissions = $user->permissions->pluck('permission')->toArray();
+                // if (in_array('admin-master', $userPermissions)) {
+                //     $permissions = config('auth.defined_permissions');
+                // } else {
+                //     $permissions = array_diff(config('auth.defined_permissions'), ['review-songs', 'review-songs-summary', 'admin-master']);
+                // }
+                // $permissionSortOrder = array_flip($permissions);
+                $permissionSortOrder = array_flip(config('auth.defined_permissions'));
+
                 // sort the user's permission based on this standardised sort-order
                 $sortedPermissions = $this->permissions->sort(function ($a, $b) use ($permissionSortOrder) {
                     // lookup order for each permission (assume 99 if permission not in allowed-permission list)

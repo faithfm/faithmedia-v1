@@ -22,7 +22,7 @@ use Illuminate\Support\Str;
 |
 */
 
-Route::middleware('auth.patched:api_guard,web_guard')->get('/user', function (Request $request) {
+Route::middleware('auth:ffm-token-guard,ffm-session-guard')->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -72,4 +72,4 @@ Route::get('/current_song_rotation', function () {
     })->sortBy('guest')->values();
 
     return $currentSongsData;
-})->middleware('auth.patched:api_guard,web_guard');
+})->middleware('auth:ffm-token-guard,ffm-session-guard');

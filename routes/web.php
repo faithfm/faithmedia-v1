@@ -1,5 +1,6 @@
 <?php
 
+use FaithFM\SimpleAuth0\SimpleAuth0ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Register login/logout/callback routes (for Auth0)
+SimpleAuth0ServiceProvider::registerLoginLogoutCallbackRoutes();
 
 Route::get('/home', function () {
     return view('home');
@@ -45,4 +49,4 @@ Route::get('/{any}', function () {
     ];
 
     return view('media')->with('LaravelAppGlobals', $LaravelAppGlobals);
-})->where('any', '^(?!nova).*')->middleware('auth.patched:api_guard,web_guard');
+})->where('any', '^(?!nova).*')->middleware('auth:ffm-token-guard,ffm-session-guard');

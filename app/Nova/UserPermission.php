@@ -2,8 +2,6 @@
 
 namespace App\Nova;
 
-use App\Repositories\AuthPermissionList;
-use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\ID;
@@ -45,24 +43,18 @@ class UserPermission extends Resource
     public static $perPageViaRelationship = 25;
 
     /**
-     * Restrict index query - depending on what permissions the Nova user is allowed to edit
-     */
-    public static function indexQuery(NovaRequest $request, $query): Builder
-    {
-        $permissions = AuthPermissionList::getNovaAllowedPermissions();
-
-        return $query->whereIn('permission', $permissions);
-    }
-
-    /**
      * Get the fields displayed by the resource.
      */
     public function fields(NovaRequest $request): array
     {
         // Restrict Select (combobox) to only show permissions the Nova user is allowed to edit
-        $allowedPermissions = AuthPermissionList::getNovaAllowedPermissions();
-        $allowedPermissions = array_combine($allowedPermissions, $allowedPermissions);   // we need an associative array with permissions as both keys AND values
-
+        $user = $request->user();
+        $userPermissions = $user->permissions->pluck('permission')->toArray();
+        if (in_array('admin-master', $userPermissions)) {
+            $allowedPermissions = config('auth.defined_permissions');
+        } else {
+            $allowedPermissions = array_diff(config('auth.defined_permissions'), ['review-songs', 'review-songs-summary', 'admin-master']);
+        }
         return [
             ID::make(__('ID'), 'id')
                 ->sortable(),

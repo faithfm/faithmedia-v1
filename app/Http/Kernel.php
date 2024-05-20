@@ -28,20 +28,26 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareGroups = [
-        'web_group' => [
+        'web' => [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             // \Illuminate\Session\Middleware\StartSession::class,      // replace with...
-            \FaithFM\Auth0Pattern\Http\Middleware\StartSession::class,  // ...the class from Auth0Pattern - which doesn't create hundreds of session files when request contains 'api_token=XXXX'
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \FaithFM\SimpleAuthTokens\Http\Middleware\StartSession::class,  // ...FaithFM\SimpleAuthTokens class - which prevents creation of (numerous) session files for requests containing 'api_token=XXXX'  (ie: clients without support for cookies will normally result in creation of a session-file for every API call - potentially resulting in hundreds/thousands of session-files)
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
-        'api_group' => [
+        'api' => [
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
+            // OPTIONAL session-related middleware for API routes - recommended by FaithFM\SimpleAuthTokens
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \FaithFM\SimpleAuthTokens\Http\Middleware\StartSession::class,        // FaithFM\SimpleAuthTokens class
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
         ],
     ];
 
@@ -55,6 +61,8 @@ class Kernel extends HttpKernel
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
+
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'bookmark.querystring' => \App\Http\Middleware\PublicUserContentBookmarkQueryString::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

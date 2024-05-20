@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\Authenticate;
 use FaithFM\Auth0Pattern\Http\Middleware\PatchedAuthenticationMiddleware;
 use Laravel\Nova\Actions\ActionResource;
 use Laravel\Nova\Http\Middleware\Authorize;
@@ -98,7 +99,7 @@ return [
     */
 
     'middleware' => [
-        'web_group',
+        'web',
         HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
@@ -106,7 +107,7 @@ return [
 
     'api_middleware' => [
         'nova',
-        PatchedAuthenticationMiddleware::class,
+        Authenticate::class,
         Authorize::class,
     ],
 
