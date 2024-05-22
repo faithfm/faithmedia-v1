@@ -22,9 +22,12 @@ Route::get('/home', function () {
     return view('home');
 })->name('home');
 
-Route::get('phpinfo', function () {
-    phpinfo();
+Route::middleware(['auth', 'can:use-app'])->group(function () {
+    Route::get('phpinfo', function () {
+        phpinfo();
+    });
 });
+
 
 // override Nova's login/logout routes
 Route::get('nova/logout', function () {
