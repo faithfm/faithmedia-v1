@@ -70,15 +70,7 @@ class User extends Resource
 
             // (On the index only...) Show user permissions as a comma-separated list (using a computed text field)
             Text::make('User Permissions', function ($request) {
-                // // get sort-order from allowed-permission list
-                // $user = $request->user();
-                // $userPermissions = $user->permissions->pluck('permission')->toArray();
-                // if (in_array('admin-master', $userPermissions)) {
-                //     $permissions = config('auth.defined_permissions');
-                // } else {
-                //     $permissions = array_diff(config('auth.defined_permissions'), ['review-songs', 'review-songs-summary', 'admin-master']);
-                // }
-                // $permissionSortOrder = array_flip($permissions);
+                //sort-order from allowed-permission list
                 $permissionSortOrder = array_flip(config('auth.defined_permissions'));
 
                 // sort the user's permission based on this standardised sort-order
