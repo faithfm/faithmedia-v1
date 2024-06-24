@@ -12,7 +12,8 @@ import "./minutes_filter";          // global filter: "minutes".  Given: "62 | m
 import { Howl, Howler } from 'howler';
 window._ = require('lodash');       // need to manually include lodash if we don't include bootstrap
 
-window.Vue = require('vue');
+import Vue from 'vue';
+window.Vue = Vue;
 Vue.use(VueRouter);
 
 /**
