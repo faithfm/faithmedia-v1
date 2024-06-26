@@ -55,6 +55,9 @@ class UserPermission extends Resource
         } else {
             $allowedPermissions = array_diff(config('auth.defined_permissions'), ['review-songs', 'review-songs-summary', 'admin-master']);
         }
+        // Create an array where keys and values are the same
+        $permissionsArray = array_combine($allowedPermissions, $allowedPermissions);
+        
         return [
             ID::make(__('ID'), 'id')
                 ->sortable(),
@@ -63,7 +66,7 @@ class UserPermission extends Resource
                 ->sortable(),
 
             Select::make('Permission')
-                ->options($allowedPermissions)     // list of (restricted) permissions
+                ->options($permissionsArray)     // list of (restricted) permissions
                 ->default('use-app')
                 ->rules('required')
                 ->sortable(),
