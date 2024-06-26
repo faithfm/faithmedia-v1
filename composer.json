@@ -14,8 +14,8 @@
         "faithfm/smart-search-php": "^2.4.1",
         "guzzlehttp/guzzle": "^7.8.1",
         "itsgoingd/clockwork": "^5.2.2",
-        "laravel/framework": "^10.48.13",
-        "laravel/nova": "^4.34.2",
+        "laravel/framework": "^10.48.14",
+        "laravel/nova": "^4.34.3",
         "laravel/tinker": "^2.9.0",
         "laravel/ui": "^4.5.2",
         "owen-it/laravel-auditing": "^13.6.7"

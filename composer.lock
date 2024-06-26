@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22369a8071e87d56952298400c077850",
+    "content-hash": "5d494c96f465af1dbd9f3fd609085c20",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -2125,16 +2125,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.48.13",
+            "version": "v10.48.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "2c6816d697a4362c09c066118addda251b70b98a"
+                "reference": "27cb4736bb7e60a5311ec73160068dfbcf98336b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/2c6816d697a4362c09c066118addda251b70b98a",
-                "reference": "2c6816d697a4362c09c066118addda251b70b98a",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/27cb4736bb7e60a5311ec73160068dfbcf98336b",
+                "reference": "27cb4736bb7e60a5311ec73160068dfbcf98336b",
                 "shasum": ""
             },
             "require": {
@@ -2328,20 +2328,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-06-18T16:46:35+00:00"
+            "time": "2024-06-21T10:06:42+00:00"
         },
         {
             "name": "laravel/nova",
-            "version": "4.34.2",
+            "version": "4.34.3",
             "source": {
                 "type": "git",
                 "url": "git@github.com:faithfm/nova.git",
-                "reference": "bb88623d2d25129f46ef33e9ec9109c02859c01e"
+                "reference": "36a58574f3c173cf4cee9fdd1c5de8dfeff5a604"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/faithfm/nova/zipball/bb88623d2d25129f46ef33e9ec9109c02859c01e",
-                "reference": "bb88623d2d25129f46ef33e9ec9109c02859c01e",
+                "url": "https://api.github.com/repos/faithfm/nova/zipball/36a58574f3c173cf4cee9fdd1c5de8dfeff5a604",
+                "reference": "36a58574f3c173cf4cee9fdd1c5de8dfeff5a604",
                 "shasum": ""
             },
             "require": {
@@ -2452,10 +2452,10 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/faithfm/nova/tree/4.34.2",
+                "source": "https://github.com/faithfm/nova/tree/4.34.3",
                 "issues": "https://github.com/faithfm/nova/issues"
             },
-            "time": "2024-06-21T00:33:23+00:00"
+            "time": "2024-06-26T00:20:52+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -10107,16 +10107,16 @@
         },
         {
             "name": "spatie/error-solutions",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/error-solutions.git",
-                "reference": "202108314a6988ede156fba1b3ea80a784c1734a"
+                "reference": "d60d4d2ef4b7701c86134ded959667cac6215233"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/error-solutions/zipball/202108314a6988ede156fba1b3ea80a784c1734a",
-                "reference": "202108314a6988ede156fba1b3ea80a784c1734a",
+                "url": "https://api.github.com/repos/spatie/error-solutions/zipball/d60d4d2ef4b7701c86134ded959667cac6215233",
+                "reference": "d60d4d2ef4b7701c86134ded959667cac6215233",
                 "shasum": ""
             },
             "require": {
@@ -10169,7 +10169,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/error-solutions/issues",
-                "source": "https://github.com/spatie/error-solutions/tree/1.0.0"
+                "source": "https://github.com/spatie/error-solutions/tree/1.0.1"
             },
             "funding": [
                 {
@@ -10177,7 +10177,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-12T14:49:54+00:00"
+            "time": "2024-06-21T10:09:00+00:00"
         },
         {
             "name": "spatie/flare-client-php",
