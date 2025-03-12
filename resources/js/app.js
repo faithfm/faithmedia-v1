@@ -6,6 +6,7 @@
 
 require('./bootstrap');
 
+// Bootstrap 5 doesn't require jQuery as a dependency
 window.Vue = require('vue');
 
 /**
