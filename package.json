@@ -11,13 +11,13 @@
     },
     "devDependencies": {
         "@mdi/font": "^5.6.55",
+        "@popperjs/core": "^2.11.8",
         "axios": "^1.6.7",
         "bootstrap": "^5.3.3",
         "cross-env": "^7.0",
         "jquery": "^3.5.1",
         "laravel-mix": "^6.0.49",
         "lodash": "^4.17.20",
-        "@popperjs/core": "^2.11.8",
         "resolve-url-loader": "^5.0.0",
         "sass": "~1.32",
         "sass-loader": "^8.0.0",
@@ -31,7 +31,7 @@
         "howler": "^2.2.0",
         "lz-string": "^1.4.4",
         "nosleep.js": "^0.9.0",
-        "npm": "^8.14.0",
+        "npm": "^10.9.2",
         "vue-router": "^3.6.5",
         "vuetify": "^2.3.10"
     }
