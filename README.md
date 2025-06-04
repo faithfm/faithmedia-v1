@@ -1,108 +1,68 @@
 # FaithMedia-V1
 
-The "Faith FM Media Management" is a line-of-business application to help manage our media content database.
+The "Faith FM Media Management" is a line-of-business application to help manage our media content library. It enables producers, reviewers, and content managers to handle Faith FM's media content database efficiently.
 
-Notes:
+## Key Features
+- Content library management and preview
+- Audio player with metadata editing
+- Smart search and filtering
+- Review system for content feedback
+- User management and permissions
+- Standardized error handling with sheep-themed messages
 
-* The application is written using the Laravel + Vue frameworks.
-* The front-end is (primarily) a Vue application communicating with a Laravel API, but like many Laravel + Vue apps it is not strictly a "Single Page Application (SPA)" but rather it uses a hybrid architecture.  
-  * The Vue front-end is not statically-hosted, but is dynamically served by a Laravel Blade template.
-  * A few helper routes do not use Vue at all.
-  * Although most of the data is sourced via axios AJAX calls to the API, some configuration and user data is injected into the front-end using window.xxx variables, that become this.$xxx variables accessible throughout the Vue app.  (This technique is similar-but-different to the Laravel technique of injecting the CSRF token by means of meta tags).
-* There seems to be a lot of different ways to do authentication for Laravel+Vue apps and Laravel documentation doesn't clarify common architecture patterns very well, however the approach we have chosen to use is to allow Laravel to handle authentication in a stateful manner rather than using a stateless JWT-approach more-commonly seen for other SPA apps.  Essentially, the Vue app is only served to the user if they are logged in, and the API uses stateful session cookies to authenticate API requests.
-* I'm not sure if it's the best approach, but we've implemented our javascript API requests using /api/xxx routes defined in `api.php` (instead of using 'web.php' routes).  Routes defined in `web.php` look for stateful session cookie-based authentication by-default, however routes defined in `api.php` use stateless token-based authentication by default.  We discovered however that stateful authentication can be enabled alongside stateless token-based authentication in `api.php` by using ?
+## Quick Start
 
-## Deployment
+### Requirements
+- PHP ^8.1
+- Node.js
+- Composer
+- Git
 
-### Config Files
+### Development Setup
+1. Clone the repository
+2. Copy `.env.example` to `.env` and configure
+3. Install dependencies:
+   ```bash
+   composer install
+   npm install
+   ```
+4. Start development server:
+   ```bash
+   php artisan serve
+   npm run dev
+   ```
 
-Create configuration files on server (project folder):
+For detailed technical documentation, please refer to [docs/TechnicalSpecification.md](docs/TechnicalSpecification.md).
 
-```bash
-.env
-auth.json
-```
+## Architecture Overview
 
-### Crontab
+This is a hybrid Laravel + Vue application:
+* Not strictly a "Single Page Application (SPA)"
+* Vue front-end is dynamically served by Laravel Blade templates
+* Some routes bypass Vue entirely
+* Data is sourced via:
+  * AJAX calls to the API
+  * Configuration injection using window.xxx variables (similar to Laravel's CSRF token injection via meta tags)
+* Authentication uses Laravel's stateful session-based approach rather than JWT
+* API routes in `api.php` are configured to support stateful authentication alongside stateless token-based authentication
+* Styling approach:
+  * Vuetify 3 for primary UI components
+  * TailwindCSS specifically for error page styling
+  * SASS for custom styles
 
-No cronjobs required for this project
+## Error Handling
 
-### Deploy Scripts
+The application implements a standardized error handling pattern with:
+- Custom error pages for common HTTP status codes (401, 403, 404, 500, 503)
+- Sheep-themed error messages for user-friendly experience
+- Consistent styling using TailwindCSS
+- Interactive elements (back button, login button when applicable)
+- Debug mode support for detailed error information
 
-#### Production
+## System Diagrams
 
-> Note: Currently a github App deploy script in Laravel Forge).
-> Be sure to change project path + PHP version as require.
-
-```bash
-cd /home/username/project-folder.com.au
-
-# delete session data (force logout all users during upgrade)
-find storage/framework/sessions/ -type f -delete
-
-# use fetch + hard-resetting to allow deploy of force-pushes
-git fetch origin master
-git checkout -f master
-git reset --hard origin/master
-
-composer install --no-interaction --prefer-dist --optimize-autoloader
-
-( flock -w 10 9 || exit 1
-    echo 'Restarting FPM...'; sudo -S service php8.1-fpm reload ) 9>/tmp/fpmlock
-
-# restart queue workers - otherwise they won't be working with latest code - see: https://medium.com/@taylorotwell/properly-deploying-queues-on-forge-5abe1eac6d1c
-php artisan queue:restart
-
-# clear laravel cache (fixed problem with job workers not being called - https://github.com/laravel/framework/issues/16476#issuecomment-476036660)
-php artisan cache:clear
-
-# UNSAFE BECAUSE WE USE SAME TABLES FOR DEV+STAGING+PRODUCTION!  -  REMOVED
-# if [ -f artisan ]; then
-#     php artisan migrate --force
-# fi
-```
-
-#### Staging
-
-> Note: Currently a post-receive hook on the server.
-> Be sure to change project path + PHP version as require.
-
-```bash
-#!/bin/bash
-
-cd /home/username/project-folder.com.au
-
-# Allow the correct working tree to be detected.
-#    Prevent "remote: fatal: Not a git repository: '.'" errors.
-#    See: https://stackoverflow.com/questions/6394366/problem-with-git-hook-for-updating-site
-unset $(git rev-parse --local-env-vars)
-
-while read oldrev newrev ref
-do
-  echo "Ref $ref sucessfully received. Deploying to staging..."
-  git checkout -f $newrev
-  git clean -f -d
-done
-
-composer install --no-interaction --prefer-dist --optimize-autoloader
-
-( flock -w 10 9 || exit 1
-    echo 'Restarting FPM...'; sudo -S service php8.1-fpm reload ) 9>/tmp/fpmlock
-
-# UNSAFE BECAUSE WE USE SAME TABLES FOR DEV+STAGING+PRODUCTION!  -  REMOVED
-# if [ -f artisan ]; then
-#     php artisan migrate --force
-# fi
-```
-
-### Daemons
-
-No Daemons (or Queue Workers) required for this project.
-
-### Diagrams
-
-Front-end
+Front-end Architecture:
 ![Front-end](public/front-end-diagram.jpg)
 
-Back-end
+Back-end Architecture:
 ![Back-end](public/back-end-diagram.jpg)

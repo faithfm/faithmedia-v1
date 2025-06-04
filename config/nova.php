@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Middleware\Authenticate;
-use FaithFM\Auth0Pattern\Http\Middleware\PatchedAuthenticationMiddleware;
 use Laravel\Nova\Actions\ActionResource;
+use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;

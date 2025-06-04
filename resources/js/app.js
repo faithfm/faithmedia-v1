@@ -1,33 +1,51 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import { createApp, h } from 'vue';
+import { createInertiaApp } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 
-require('./bootstrap');
+import '@mdi/font/css/materialdesignicons.css';
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as directives from 'vuetify/directives';
+// Note: We're keeping the Vue Router import for now during the transition phase
+// but will gradually phase it out in favor of Inertia's navigation
+import vueRouter from './router';
+import { vLazyLoad } from './composables/useLazyLoading';
 
-// Bootstrap 5 doesn't require jQuery as a dependency
-window.Vue = require('vue');
-
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-const app = new Vue({
-    el: '#app',
+// Vuetify setup
+const vuetify = createVuetify({
+  directives,
 });
+
+// Create Inertia app
+createInertiaApp({
+  title: title => `${title} - FaithMedia`,
+  resolve: async name => {
+    const pages = import.meta.glob('./Pages/**/*.vue', { eager: true });
+    const page = pages[`./Pages/${name}.vue`];
+    
+    if (!page) {
+      throw new Error(`Page not found: ${name}`);
+    }
+    
+    return page;
+  },
+  setup({ el, App, props, plugin }) {
+    const app = createApp({ render: () => h(App, props) })
+      .use(plugin)
+      .use(vuetify)
+      .use(vueRouter); // Still using Vue Router during transition phase
+      
+    // Register custom directives
+    app.directive('lazy-load', vLazyLoad);
+
+    // Make Inertia props globally accessible
+    // Note: This approach is not recommended in Inertia v2
+    // TODO: Refactor to use Inertia's shared data feature instead
+    window.LaravelAppGlobals = props.initialPage.props.LaravelAppGlobals;
+
+    app.mount(el);
+  },
+});
+
+// Export the router instance for use in components
+export { router as inertiaRouter };

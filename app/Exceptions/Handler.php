@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Inertia\Inertia;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -76,11 +77,14 @@ class Handler extends ExceptionHandler
             ($status == 503) ||
             (($status == 500) && !$debug)
         ) {
-            // Return our custom (blade) error page
-            return response()
-                ->view('errors/error', ['status' => $status, 'exceptionMessage' => $message, 'statusMessages' => $statusMessages[$status]], $status);
-        }
-
+            // Return our custom error page
+            return Inertia::render('Error', [
+                'status' => $status, 
+                'exceptionMessage' => $message
+            ])
+            ->toResponse($request)
+            ->setStatusCode($status);
+    }
         // Return the default Laravel error page
         return $response;
     }

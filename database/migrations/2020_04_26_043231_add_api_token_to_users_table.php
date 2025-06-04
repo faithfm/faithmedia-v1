@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         // as per instructions in: https://laravel.com/docs/5.8/api-authentication
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('api_token', 80)->after('email')
-                                ->unique()
-                                ->nullable()
-                                ->default(null);
-        });
+        if (!Schema::hasColumn('users', 'api_token')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('api_token', 80)->after('email')
+                                    ->unique()
+                                    ->nullable()
+                                    ->default(null);
+            });
+        }
     }
 
     /**
@@ -25,8 +27,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('api_token');
-        });
+        if (Schema::hasColumn('users', 'api_token')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('api_token');
+            });
+        }
     }
 };

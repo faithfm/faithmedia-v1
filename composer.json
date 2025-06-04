@@ -12,10 +12,11 @@
         "faithfm/laravel-auth0-pattern": "^4.0.2",
         "faithfm/new-relic-helper": "^1.0.4",
         "faithfm/smart-search-php": "^2.4.1",
-        "guzzlehttp/guzzle": "^7.9.2",
+        "guzzlehttp/guzzle": "^7.9.3",
+        "inertiajs/inertia-laravel": "^2.0.2",
         "itsgoingd/clockwork": "^5.3.4",
-        "laravel/framework": "^10.48.28",
-        "laravel/nova": "^4.35.8",
+        "laravel/framework": "^10.48.29",
+        "laravel/nova": "^5.4.4",
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6.1",
         "owen-it/laravel-auditing": "^13.7.2"
@@ -23,8 +24,8 @@
     "require-dev": {
         "spatie/laravel-ignition": "^2.9.1",
         "mockery/mockery": "^1.6.12",
-        "nunomaduro/collision": "^7.11",
-        "phpunit/phpunit": "^9.6.22",
+        "nunomaduro/collision": "^7.12",
+        "phpunit/phpunit": "^10.5.46",
         "fakerphp/faker": "^1.24.1"
     },
     "config": {

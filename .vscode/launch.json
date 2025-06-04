@@ -58,6 +58,21 @@
             "port": 9003,
             "log": true
         },
+        {
+            "name": "Listen for XDebug on Herd",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/Users/lidiaordonez/Documents/FaithFM Projects/Laravel Projects/faithmedia-v1": "${workspaceFolder}"
+            },
+            "log": true,
+            "xdebugSettings": {
+                "max_children": 128,
+                "max_data": 1024,
+                "max_depth": 3,
+                "show_hidden": 1
+            }
+        },
     ]
 }
-
