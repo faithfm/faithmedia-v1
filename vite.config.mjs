@@ -1,3 +1,6 @@
+// Vite configuration for building and serving the Laravel + Vue application
+// This file is REQUIRED for the application to work properly
+// Purpose: Configures asset compilation, development server, and build process
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';

@@ -23,11 +23,26 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::middleware(['auth', 'can:use-app'])->group(function () {
+    // Root route redirects to content
+    Route::get('/', function () {
+        return redirect('/content');
+    });
+
     Route::get('phpinfo', function () {
         phpinfo();
     });
-});
 
+
+     // Content page routes
+    Route::get('/content/{path?}', [ContentController::class, 'show'])
+        ->where('path', '.*')
+        ->name('content.show');
+
+    // Content metadata update route
+    Route::put('/content/metadata', [ContentController::class, 'updateMetadata'])
+        ->name('content.metadata.update');
+
+});
 
 // override Nova's login/logout routes
 Route::get('nova/logout', function () {
@@ -38,8 +53,8 @@ Route::get('nova/login', function () {
 })->name('nova.login');
 
 // Remaining routes are handled by our Vue SPA
-Route::get('/{any}', function () {
-// Vue2 routes
+
+
 Route::get('vue2/{any?}', function () {
     Gate::authorize('use-app');
     $LaravelAppGlobals = [

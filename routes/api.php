@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ContentController;
 use App\Http\Controllers\PublicUserContentBookmarkController;
 use App\Http\Controllers\PublicUserController;
 use App\Http\Controllers\SongReviewController;
@@ -30,22 +29,22 @@ Route::get('/prefilters', function () {
     return \App\Models\Prefilter::all();
 });
 
-Route::apiResource('/content', ContentController::class);
-
 Route::apiResource('/songreviews', SongReviewController::class);
 
 Route::apiResource('/songreviewsummary', SongReviewSummaryController::class);
 
+// Public user management - CRUD operations for the FaithFm App (external website) users
 Route::apiResource('/publicusers', PublicUserController::class)
     ->parameters(['publicusers' => 'publicUser']);
 
-// query-string alternative
+// Alternative delete route for bookmarks using query string parameters
 Route::delete('/publicusers/{publicUser}/contentbookmarks', [PublicUserContentBookmarkController::class, 'destroy'])
     ->middleware('bookmark.querystring');
 
-// allow slashes in publicUserContentBookmark ('file') parameters  (global 'pattern' vs 'where')
+// Allow slashes in publicUserContentBookmark ('file') parameters  (global 'pattern' vs 'where')
 Route::pattern('publicUserContentBookmark', '.*');
 
+// User content bookmarks - manage saved media content for public users
 Route::apiResource('/publicusers/{publicUser}/contentbookmarks', PublicUserContentBookmarkController::class)
     ->parameters(['contentbookmarks' => 'publicUserContentBookmark:file']);
 
@@ -57,7 +56,7 @@ Route::apiResource('/publicusers/{publicUser}/contentbookmarks', PublicUserConte
  *      (Problem handling slashes in the main route string).  Alternative would have been to create additional destroyXXX() controller action that did a similiar lookup.
  */
 
-//Allows public website to get a list of the current song rotation
+//Allows public website(faithfm.com.au) to get a list of the current song rotation
 Route::get('/current_song_rotation', function () {
     $filter = Prefilter::where('slug', 'music-currentrotation')->pluck('filter')->implode('filter');
     $data = Content::select('file', 'content', 'guests')->whereNotNull('seconds')->smartSearch($filter, 'file|series|guests|tags')->get();
