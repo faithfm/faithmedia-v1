@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContentController;
 use FaithFM\SimpleAuth0\SimpleAuth0ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -18,10 +19,6 @@ use Illuminate\Support\Facades\Route;
 // Register login/logout/callback routes (for Auth0)
 SimpleAuth0ServiceProvider::registerLoginLogoutCallbackRoutes();
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
-
 Route::middleware(['auth', 'can:use-app'])->group(function () {
     // Root route redirects to content
     Route::get('/', function () {
@@ -32,8 +29,7 @@ Route::middleware(['auth', 'can:use-app'])->group(function () {
         phpinfo();
     });
 
-
-     // Content page routes
+    // Content page routes
     Route::get('/content/{path?}', [ContentController::class, 'show'])
         ->where('path', '.*')
         ->name('content.show');
@@ -42,6 +38,15 @@ Route::middleware(['auth', 'can:use-app'])->group(function () {
     Route::put('/content/metadata', [ContentController::class, 'updateMetadata'])
         ->name('content.metadata.update');
 
+    // Song review routes - main Inertia page
+    Route::get('/review-songs', [App\Http\Controllers\SongReviewController::class, 'index'])
+        ->middleware('can:review-songs')
+        ->name('review-songs');
+
+    // Song review routes - process form submissions (creates/updates)
+    Route::put('/review-songs', [App\Http\Controllers\SongReviewController::class, 'upsert'])
+        ->middleware('can:review-songs')
+        ->name('review-songs.submit');
 });
 
 // override Nova's login/logout routes
@@ -51,22 +56,3 @@ Route::get('nova/logout', function () {
 Route::get('nova/login', function () {
     return redirect()->route('login');
 })->name('nova.login');
-
-// Remaining routes are handled by our Vue SPA
-
-
-Route::get('vue2/{any?}', function () {
-    Gate::authorize('use-app');
-    $LaravelAppGlobals = [
-        'user' => auth()->user(),
-        'guest' => auth()->guest(),
-        'csrf-token' => csrf_token(),
-        'config' => [
-            'name' => config('app.name'),
-            'url' => config('app.url'),
-            'media_download_base' => config('myapp.media_download_base'),
-        ],
-    ];
-
-    return view('media')->with('LaravelAppGlobals', $LaravelAppGlobals);
-})->where('any', '^(?!nova).*')->middleware('auth:ffm-token-guard,ffm-session-guard');

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\PublicUserContentBookmarkController;
 use App\Http\Controllers\PublicUserController;
-use App\Http\Controllers\SongReviewController;
 use App\Http\Controllers\SongReviewSummaryController;
 use App\Models\Content;
 use App\Models\Prefilter;
@@ -28,8 +27,6 @@ Route::middleware('auth:ffm-token-guard,ffm-session-guard')->get('/user', functi
 Route::get('/prefilters', function () {
     return \App\Models\Prefilter::all();
 });
-
-Route::apiResource('/songreviews', SongReviewController::class);
 
 Route::apiResource('/songreviewsummary', SongReviewSummaryController::class);
 

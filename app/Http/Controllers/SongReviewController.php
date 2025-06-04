@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\SongReview;
+use App\Models\Prefilter;
+use App\Models\Content;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Inertia\Inertia;
 
 class SongReviewController extends Controller
 {
@@ -19,71 +24,110 @@ class SongReviewController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the song review page.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $songReviews = \App\Models\SongReview::with('user:id,name,email')->get();
+        // Get the songs for review
+        $songs = static::getSongsForReview();
 
-        return $songReviews;
+        // Fetch reviews for these songs
+        $filenames = $songs->pluck('file')->toArray();
+        $songReviews = SongReview::select('id', 'file', 'user_id', 'rating', 'comments')
+            ->with(['user' => function ($query) {
+                $query->select('id', 'name')->without('permissions');
+            }])
+            ->whereIn('file', $filenames)
+            ->latest('updated_at')
+            ->get();
+
+        // Return the page with optimized data loading
+        return Inertia::render('ReviewSongs', [
+            'songReviews' => $songReviews,          // song reviews are regularly updated - always required
+            'songs' => $songs,                      // lazy load the songs to save network traffic
+        ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function upsert(Request $request)
     {
-        // NOTE: instead of simple "CREATE" method, I've allowed for CREATE or UPDATE if already exists
-        $songReview = SongReview::where('file', $request->file)->where('user_id', $request->user()->id)->first();
-        if ($songReview) {
-            // UPDATE
-            $songReview->update($request->only(['rating', 'comments']));
-        } else {
-            // CREATE
-            $songReview = SongReview::create([
+        try {
+            // Validate the request
+            $request->validate([
+                'file' => 'required|string',
+                'user_id' => 'required|integer',
+                'rating' => 'nullable|string|in:+,-,?,A,L,P,N,U',
+                'comments' => 'nullable|string|max:500',
+            ]);
+
+            // Use updateOrCreate for cleaner upsert operation
+            $songReview = SongReview::updateOrCreate(
+                [
+                    'file' => $request->file,
+                    'user_id' => $request->user()->id,
+                ],
+                [
+                    'rating' => $request->rating,
+                    'comments' => $request->comments,
+                ]
+            );
+
+            Log::info('Song review saved successfully', [
                 'file' => $request->file,
                 'user_id' => $request->user()->id,
-                'rating' => $request->rating,
-                'comments' => $request->comments,
+                'action' => $songReview->wasRecentlyCreated ? 'created' : 'updated'
             ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to save song review', [
+                'message' => $e->getMessage(),
+                'file' => $request->file,
+                'user_id' => $request->user()->id,
+            ]);
+
+            throw $e; // Re-throw
         }
-
-        $songReview->load('user:id,name,email');
-
-        return $songReview;
+        // Redirect back to the review page to refresh the data
+        return back();
     }
 
     /**
-     * Display the specified resource.
+     * Get songs for review with caching.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Support\Collection
      */
-    public function show(SongReview $songReview)
+    public static function getSongsForReview()
     {
-        return $songReview;
+        return Cache::remember('songs-for-review', 600, function () {     // songs are cached for 10 minutes  (they won't change during a review session, but don't want to cache too long to cater for pre/post-review changes)
+            // Get the filter for the lazy loading of songs
+            $filter = Cache::remember('music-pending-filter', 3600, function () {           // prefilter is cached for 1 hour
+                return Prefilter::where('slug', 'music-pending')
+                    ->pluck('filter')
+                    ->implode('filter');
+            });
+
+            return Content::select('file', 'content', 'guests', 'seconds', 'tags')          // songs are cached for 10 minutes  (they won't change during a review session, but don't want to cache too long to cater for pre/post-review changes)
+                ->whereNotNull('seconds')
+                ->smartSearch($filter, 'file|series|guests|tags')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'file'    => $item->file,
+                        'title'   => $item->content,
+                        'artist'  => $item->guests,
+                        'seconds' => $item->seconds,
+                        'tags'    => $item->tags,
+                    ];
+                })
+                ->values();
+        });
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, SongReview $songReview)
-    {
-        $songReview->update($request->only(['rating', 'comments']));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SongReview $songReview)
-    {
-        $songReview->delete();
-    }
 }
