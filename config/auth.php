@@ -163,8 +163,8 @@ return [
         'edit-content',             // content metadata editor
         'upload-files',             // file upload permission
         'public-website-api',       // special API access (used by public website)
-        'review-songs',             // 'admin-media'-restricted permission
-        'review-songs-summary',     // 'admin-media'-restricted permission
+        'review-songs',             // song review access permission
+        'review-songs-summary',     // review summary access permission
         'admin-master',             // MASTER admin privilege - also an 'admin-media'-restricted permission
         'admin-media',              // lower-level administrator access... can do most things but CAN'T view/edit permissions:  'admin-master', 'review-songs', 'review-songs-summary'
     ],
