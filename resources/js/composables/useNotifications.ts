@@ -68,22 +68,18 @@ export function useNotifications() {
    * Shorthand methods for different notification types
    */
   const success = (message: string, timeout = 5000, dismissible = true) => {
-    console.info('success', message)
     return addNotification(message, 'success', timeout, dismissible)
   }
 
   const info = (message: string, timeout = 5000, dismissible = true) => {
-    console.info('info', message)
     return addNotification(message, 'info', timeout, dismissible)
   }
 
   const warning = (message: string, timeout = 5000, dismissible = true) => {
-    console.warn('warning', message)
     return addNotification(message, 'warning', timeout, dismissible)
   }
 
   const error = (message: string, timeout = 0, dismissible = true) => {
-    console.error('error', message)
     return addNotification(message, 'error', timeout, dismissible)
   }
 

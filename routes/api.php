@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\PublicUserContentBookmarkController;
 use App\Http\Controllers\PublicUserController;
-use App\Http\Controllers\SongReviewSummaryController;
 use App\Models\Content;
 use App\Models\Prefilter;
 use Illuminate\Http\Request;
@@ -27,8 +26,6 @@ Route::middleware('auth:ffm-token-guard,ffm-session-guard')->get('/user', functi
 Route::get('/prefilters', function () {
     return \App\Models\Prefilter::all();
 });
-
-Route::apiResource('/songreviewsummary', SongReviewSummaryController::class);
 
 // Public user management - CRUD operations for the FaithFm App (external website) users
 Route::apiResource('/publicusers', PublicUserController::class)

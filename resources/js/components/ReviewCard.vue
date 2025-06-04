@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { SongReviewSummary } from '../composables/useReviewSummaries'
-import type { SongReview } from '../composables/useReviews'
+import { useReviewSummaries } from '../composables/useReviewSummaries'
 
 interface Props {
   item: SongReviewSummary | null
@@ -16,12 +16,16 @@ const emit = defineEmits<{
   'toggle-collapse': []
 }>()
 
+// Get reviews from the composable
+const { getFileReviews } = useReviewSummaries()
+
 // Computed property to get reviews for the selected item
 const reviews = computed(() => {
-  if (!props.item || !props.item.reviews) {
+  if (!props.item) {
     return []
   }
-  return props.item.reviews
+  // Use client-side filtering to get reviews for this file
+  return getFileReviews(props.item.file)
 })
 
 // Function to get rating display text

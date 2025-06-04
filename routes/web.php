@@ -47,6 +47,16 @@ Route::middleware(['auth', 'can:use-app'])->group(function () {
     Route::put('/review-songs', [App\Http\Controllers\SongReviewController::class, 'upsert'])
         ->middleware('can:review-songs')
         ->name('review-songs.submit');
+
+    // Song review summary routes - main Inertia page
+    Route::get('/review-songs-summary', [App\Http\Controllers\SongReviewSummaryController::class, 'index'])
+        ->middleware('can:review-songs-summary')
+        ->name('review-songs-summary');
+
+    // Song review summary routes - process form submissions (creates/updates)
+    Route::patch('/review-songs-summary', [App\Http\Controllers\SongReviewSummaryController::class, 'upsert'])
+        ->middleware('can:review-songs-summary')
+        ->name('review-songs-summary.submit');
 });
 
 // override Nova's login/logout routes

@@ -2,87 +2,125 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Content;
 use App\Models\SongReviewSummary;
+use App\Http\Controllers\SongReviewController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Inertia\Inertia;
 
 class SongReviewSummaryController extends Controller
 {
     /**
-     * Instantiate a new controller instance.
+     * Restrict access to content managers who make final song decisions.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->middleware('auth:ffm-token-guard,ffm-session-guard');          // require authentication
-        $this->middleware('can:review-songs-summary');  // song-reviewers only allowed
+        $this->middleware('auth:ffm-token-guard,ffm-session-guard');
+        $this->middleware('can:review-songs-summary');
     }
 
     /**
-     * Display a listing of the resource.
+     * Display song review summary management interface.
+     * Content managers make final decisions based on reviewer feedback.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $songReviewsSummary = SongReviewSummary::all();
+        $songs = SongReviewController::getSongsForReview();
+        $filenames = $songs->pluck('file')->toArray();
 
-        return $songReviewsSummary;
+        return Inertia::render('ReviewSongsSummary', [
+            // Use closures for lazy evaluation - only execute when needed for partial reloads
+            'summaries' => fn() => SongReviewSummary::whereIn('file', $filenames)->get(),
+            'sourceSuggestions' => fn() => $this->getSourceSuggestions(),
+            'allReviews' => fn() => $this->getAllReviews($filenames),
+            'songs' => $songs,
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Save management decisions (status, source, comments) for songs.
+     * Supports partial updates of individual fields.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function upsert(Request $request)
     {
-        // NOTE: instead of simple "CREATE" method, I've allowed for CREATE or UPDATE if already exists
-        $songReviewSummary = SongReviewSummary::where('file', $request->file)->first();
-        if ($songReviewSummary) {
-            // UPDATE
-            $songReviewSummary->update($request->only(['status', 'source', 'comment']));
-        } else {
-            // CREATE
-            $songReviewSummary = SongReviewSummary::create([
-                'file' => $request->file,
-                'status' => $request->status,
-                'source' => $request->source,
-                'comment' => $request->comment,
+        try {
+            // Validate the request
+            $request->validate([
+                'file' => 'required|string',
+                'status' => 'nullable|string',
+                'source' => 'nullable|string',
+                'comment' => 'nullable|string',
             ]);
+
+            $songReviewSummary = SongReviewSummary::firstOrNew(['file' => $request->file]);
+
+            // Use exists() instead of has() to allow clearing values like source = null or ""
+            foreach (['status', 'source', 'comment'] as $field) {
+                if ($request->exists($field)) {
+                    $songReviewSummary->$field = $request->$field;
+                }
+            }
+
+            $songReviewSummary->save();
+
+            Log::info('Song review summary saved successfully', [
+                'file' => $request->file,
+                'changes' => $songReviewSummary->getDirty(),
+                'action' => $songReviewSummary->wasRecentlyCreated ? 'created' : 'updated'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to save song review summary: ', [
+                'message' => $e->getMessage(),
+                'file' => $request->file,
+            ]);
+            throw $e;
         }
 
-        return $songReviewSummary;
+        return back();
+    }
+
+
+    /**
+     * Get all individual reviewer feedback
+     *
+     * @param string[] $filenames Array of song filenames to process
+     * @return \Illuminate\Support\Collection
+     */
+    private function getAllReviews(array $filenames)
+    {
+        return \App\Models\SongReview::with('user:id,name,email')
+            ->select('id', 'file', 'rating', 'comments', 'created_at', 'user_id')
+            ->whereIn('file', $filenames)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     /**
-     * Display the specified resource.
+     * Provide autocomplete suggestions for source attribution field.
      *
-     * @return \Illuminate\Http\Response
+     * @return string[] Array of unique source values for autocomplete suggestions
      */
-    public function show(SongReviewSummary $songReviewSummary)
+    private function getSourceSuggestions(): array
     {
-        return $songReviewSummary;
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, SongReviewSummary $songReviewSummary)
-    {
-        $songReviewSummary->update($request->only(['status', 'source', 'comment']));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  App\Models\SongReviewSummary
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SongReviewSummary $songReviewSummary)
-    {
-        $songReviewSummary->delete();
+        return Cache::remember('source-suggestions', 3600, function () {
+            return SongReviewSummary::whereNotNull('source')
+                ->where('source', '!=', '')
+                ->distinct()
+                ->pluck('source')
+                ->filter()
+                ->sort()
+                ->values()
+                ->toArray();
+        });
     }
 }
