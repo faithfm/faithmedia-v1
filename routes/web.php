@@ -39,6 +39,8 @@ Route::get('nova/login', function () {
 
 // Remaining routes are handled by our Vue SPA
 Route::get('/{any}', function () {
+// Vue2 routes
+Route::get('vue2/{any?}', function () {
     Gate::authorize('use-app');
     $LaravelAppGlobals = [
         'user' => auth()->user(),

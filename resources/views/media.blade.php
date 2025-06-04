@@ -16,10 +16,10 @@
     <script>
         var LaravelAppGlobals = Object.freeze({!! json_encode($LaravelAppGlobals) !!});
     </script>
-    <script src="{{ mix('/js/media_app.js') }}" defer></script>
+    <script src="{{ mix('/js/media_app.js', 'vue2') }}" defer></script>
 
     <!-- Styles -->
-    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('/css/app.css', 'vue2') }}" rel="stylesheet">
 </head>
 
 <body>

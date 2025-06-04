@@ -1,16 +1,29 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-
 // Variables
-@import 'variables';
+@use 'variables';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+// Base styles
+body {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
-// Vuetify
-@import '~vuetify/dist/vuetify.min.css';
+// You can add your custom styles here
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
 
-// Icons
-@import '~@mdi/font/css/materialdesignicons.min.css';
+// Utility classes
+.text-center {
+    text-align: center;
+}
 
+.mt-4 {
+    margin-top: 1.5rem;
+}
 
+.mb-4 {
+    margin-bottom: 1.5rem;
+}

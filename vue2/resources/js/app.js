@@ -4,16 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import vuetify from './vuetify';    // import and use vuetify
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import routes from './routes';
-import "./minutes_filter";          // global filter: "minutes".  Given: "62 | minutes" --> Output: "01:02"
-import { Howl, Howler } from 'howler';
-window._ = require('lodash');       // need to manually include lodash if we don't include bootstrap
+require('./bootstrap');
 
 window.Vue = require('vue');
-Vue.use(VueRouter);
 
 /**
  * The following block of code may be used to automatically register your
@@ -23,8 +16,10 @@ Vue.use(VueRouter);
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-const files = require.context('./', true, /\.vue$/i)
-files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -34,7 +29,4 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 
 const app = new Vue({
     el: '#app',
-    vuetify,
-    router: new VueRouter(routes)
 });
-
