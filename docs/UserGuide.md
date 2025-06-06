@@ -539,7 +539,6 @@ This user guide provides a comprehensive reference for using the FaithMedia cont
 
 - [Technical Specification](TechnicalSpecification.md) - Comprehensive technical specification
 - [Architecture Documentation](Architecture.md) - Detailed system architecture and structure
-- [Migration Guide](MigrationGuide.md) - Vue2 to Vue3 migration reference
 - [API & Technical Implementation](API.md) - API reference and technical details
 - [Component Documentation](Components.md) - UI component documentation
 - [Development Guidelines](DevelopmentGuidelines.md) - Code standards and best practices

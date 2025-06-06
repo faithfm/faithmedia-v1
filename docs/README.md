@@ -7,7 +7,6 @@ This directory contains detailed documentation for the FaithMedia project. For a
 ### Core Documentation
 - [Technical Specification](TechnicalSpecification.md) - Comprehensive technical specification
 - [Architecture Documentation](Architecture.md) - Detailed system architecture and structure
-- [Migration Guide](MigrationGuide.md) - Vue2 to Vue3 migration reference
 - [API & Technical Implementation](API.md) - API reference and technical details
 
 ### Development Resources
@@ -30,9 +29,8 @@ Start with:
 
 ### For Frontend Developers
 Focus on:
-1. [Migration Guide](MigrationGuide.md) - Vue3 migration patterns
-2. [Component Documentation](Components.md) - UI components
-3. [API & Technical Implementation](API.md) - API integration
+1. [Component Documentation](Components.md) - UI components
+2. [API & Technical Implementation](API.md) - API integration
 
 ### For Backend Developers
 Focus on:

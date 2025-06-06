@@ -712,6 +712,5 @@ The application is designed to scale in several ways:
 ## Related Documentation
 
 - [Technical Specification](TechnicalSpecification.md) - Comprehensive technical specification
-- [Migration Guide](MigrationGuide.md) - Vue2 to Vue3 migration reference
 - [API & Technical Implementation](API.md) - API reference and technical details
 - [Component Documentation](Components.md) - UI component documentation

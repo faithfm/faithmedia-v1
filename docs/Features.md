@@ -20,7 +20,6 @@ This document consolidates feature-specific documentation for the FaithMedia pro
    - [Technical Architecture](#song-review-technical-architecture)
    - [Implementation Details](#song-review-implementation-details)
    - [User Interface](#song-review-user-interface)
-   - [Migration Recommendations](#song-review-migration-recommendations)
 
 4. [Song Review Summary System](#song-review-summary-system)
    - [Feature Overview](#song-review-summary-feature-overview)
@@ -777,7 +776,6 @@ Legacy rating codes (+, -, ?) are no longer used. All systems share a unified sc
 
 - [Technical Specification](TechnicalSpecification.md) - Comprehensive technical specification
 - [Architecture Documentation](Architecture.md) - Detailed system architecture and structure
-- [Migration Guide](MigrationGuide.md) - Vue2 to Vue3 migration reference
 - [API & Technical Implementation](API.md) - API reference and technical details
 - [Component Documentation](Components.md) - UI component documentation
 - [Development Guidelines](DevelopmentGuidelines.md) - Code standards and best practices

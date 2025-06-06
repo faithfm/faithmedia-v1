@@ -580,5 +580,4 @@ When using these components, follow these best practices:
 
 - [Technical Specification](TechnicalSpecification.md) - Comprehensive technical specification
 - [Architecture Documentation](Architecture.md) - Detailed system architecture and structure
-- [Migration Guide](MigrationGuide.md) - Vue2 to Vue3 migration reference
 - [API & Technical Implementation](API.md) - API reference and technical details

@@ -795,5 +795,4 @@ The application includes performance tests that measure various aspects of perfo
 
 - [Technical Specification](TechnicalSpecification.md) - Comprehensive technical specification
 - [Architecture Documentation](Architecture.md) - Detailed system architecture and structure
-- [Migration Guide](MigrationGuide.md) - Vue2 to Vue3 migration reference
 - [Component Documentation](Components.md) - UI component documentation
