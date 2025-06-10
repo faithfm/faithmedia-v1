@@ -64,7 +64,7 @@
             "request": "launch",
             "port": 9003,
             "pathMappings": {
-                "/Users/lidiaordonez/Documents/FaithFM Projects/Laravel Projects/faithmedia-v1": "${workspaceFolder}"
+                "${workspaceFolder}": "${workspaceFolder}"
             },
             "log": true,
             "xdebugSettings": {
