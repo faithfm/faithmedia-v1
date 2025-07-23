@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Prefilter;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -30,7 +29,10 @@ class HandleInertiaRequests extends Middleware
     /**
      * Define the props that are shared by default.
      *
+     * This data is consumed by the frontend useSharedData composable.
+     *
      * @see https://inertiajs.com/shared-data
+     * @see resources/js/composables/useSharedData.ts - Frontend composable that consumes this data
      *
      * @return array<string, mixed>
      */
@@ -42,13 +44,8 @@ class HandleInertiaRequests extends Middleware
             $user = null;
         }
 
-        // Fetch Prefilter data
-        $prefilters = Prefilter::all(['slug', 'name']);
-        // Check for duplicate slugs and filter them out
-        $uniquePrefilters = $prefilters->unique('slug');
-        
         $x = [
-            'LaravelAppGlobals' => [
+            'sharedData' => [
                 'user' => $user,
                 'guest' => auth()->guest(),
                 'csrf-token' => csrf_token(),
@@ -58,7 +55,8 @@ class HandleInertiaRequests extends Middleware
                     'media_download_base' => config('myapp.media_download_base'),
                 ],
             ],
-            'prefilters' => $uniquePrefilters,
+            // Add automatic validation error sharing
+            'errors' => $request->session()->get('errors')?->getBag('default')->getMessages() ?: (object) [],
         ];
 
         return array_merge(parent::share($request), $x);
