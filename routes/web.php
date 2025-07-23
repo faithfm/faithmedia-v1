@@ -57,6 +57,15 @@ Route::middleware(['auth', 'can:use-app'])->group(function () {
     Route::patch('/review-songs-summary', [App\Http\Controllers\SongReviewSummaryController::class, 'upsert'])
         ->middleware('can:review-songs-summary')
         ->name('review-songs-summary.submit');
+
+    // Clear cache route - admin only
+    Route::get('/clear-cache', function () {
+        \Illuminate\Support\Facades\Cache::flush();
+        return response()->json([
+            'message' => 'Cache cleared successfully',
+            'timestamp' => now()->toISOString()
+        ]);
+    })->name('clear-cache');
 });
 
 // override Nova's login/logout routes
