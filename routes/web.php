@@ -36,6 +36,7 @@ Route::middleware(['auth', 'can:use-app'])->group(function () {
 
     // Content metadata update route
     Route::put('/content/metadata', [ContentController::class, 'updateMetadata'])
+        ->middleware('can:edit-content')
         ->name('content.metadata.update');
 
     // Song review routes - main Inertia page

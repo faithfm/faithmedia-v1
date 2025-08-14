@@ -101,8 +101,8 @@ class ContentController extends Controller
             // Don't cache search results as they're more dynamic
             if (!$search) {
                 $userRestrictions = $this->getUserAppRestrictions();
-                $restrictionsKey = $userRestrictions ? md5(json_encode($userRestrictions)) : 'none';
-                $cacheKey = 'content.folders.' . md5($path . '|' . ($prefilterSlug ?? 'none') . '|' . ($includeSubfolders ? '1' : '0') . '|' . $restrictionsKey);
+                $userRestrictionsKey = $userRestrictions ? md5(json_encode($userRestrictions)) : 'none';
+                $cacheKey = 'content.folders.' . md5($path . '|' . ($prefilterSlug ?? 'none') . '|' . ($includeSubfolders ? '1' : '0') . '|' . $userRestrictionsKey);
                 return Cache::remember($cacheKey, 900, function () use ($path, $search, $prefilterSlug, $includeSubfolders, $pathPrefix, $pathPrefixLength) {
                     return $this->executeSubfoldersQuery($path, $search, $prefilterSlug, $includeSubfolders, $pathPrefix, $pathPrefixLength);
                 });
@@ -199,9 +199,9 @@ class ContentController extends Controller
                 return $query->where('file', 'not like', $pathFilter . '%/%');
             })
             // STEP 2: Apply user restrictions filter
-            ->when($this->getUserAppRestrictions(), function ($query, $restrictions) use ($allowedSearchFields) {
-                if (isset($restrictions['filter'])) {
-                    return $query->smartSearch($restrictions['filter'], $allowedSearchFields);
+            ->when($this->getUserAppRestrictions(), function ($query, $userRestrictions) use ($allowedSearchFields) {
+                if (isset($userRestrictions['filter'])) {
+                    return $query->smartSearch($userRestrictions['filter'], $allowedSearchFields);
                 }
                 return $query;
             })
@@ -272,14 +272,42 @@ class ContentController extends Controller
 
 
     /**
-     * Get user restrictions for the 'use-app' permission.
+     * Get user restrictions for a specific permission.
      *
+     * @param string $permissionName
      * @return array|null
      */
-    private function getUserAppRestrictions(): ?array
+    private function getUserAppRestrictions(string $permissionName = 'use-app'): ?array
     {
-        $permission = auth()->user()->permissions->firstWhere('permission', 'use-app');
+        $permission = auth()->user()->permissions->firstWhere('permission', $permissionName);
         return $permission?->restrictions;
+    }
+
+    /**
+     * Get fields that are forced by database rules for a specific file.
+     *
+     * @param string $file
+     * @return array
+     */
+    private function getContentForcedFields(string $file): array
+    {
+        try {
+            $defaults = \Illuminate\Support\Facades\DB::connection('sched')
+                ->select('SELECT * FROM content_defaults WHERE ? LIKE file_pattern', [$file]);
+
+            $forcedFields = [];
+            foreach ($defaults as $default) {
+                if (!empty($default->series_force)) $forcedFields[] = 'series';
+                if (!empty($default->content_force)) $forcedFields[] = 'content';
+                if (!empty($default->guests_force)) $forcedFields[] = 'guests';
+                if (!empty($default->tags_force)) $forcedFields[] = 'tags';
+            }
+
+            return array_unique($forcedFields);
+        } catch (\Exception $e) {
+            Log::error('Error checking content forced fields: ' . $e->getMessage(), ['file' => $file]);
+            return [];
+        }
     }
 
     /**
@@ -290,8 +318,8 @@ class ContentController extends Controller
      */
     public function updateMetadata(Request $request): \Illuminate\Http\JsonResponse
     {
-        // Validate all fields first
-        $data = $request->validate([
+        // 1. Validate all input fields:Ensures required and optional fields meet type/length requirements before processing.
+        $requestedData = $request->validate([
             'file' => 'required|string',
             'content' => 'nullable|string|max:500',
             'series' => 'nullable|string|max:255',
@@ -299,29 +327,63 @@ class ContentController extends Controller
             'tags' => 'nullable|string|max:500',
         ]);
 
-        // Get allowed fields from user restrictions
-        $restrictions = $this->getUserAppRestrictions() ?: [];
-        $allowedFields = $restrictions['fields'] ?? ['content', 'series', 'guests', 'tags'];
+        // 2. Load existing content record by file identifier
+        $content = Content::where('file', $requestedData['file'])->firstOrFail();
+        $oldData = $content->only(['file', 'content', 'series', 'guests', 'tags']);
 
-        // Check for restricted field attempts
-        $requestedFields = array_keys($request->only(['content', 'series', 'guests', 'tags']));
-        $restrictedFields = array_diff($requestedFields, $allowedFields);
-        
-        if (!empty($restrictedFields)) {
-            return response()->json([
-                'message' => 'You do not have permission to update: ' . implode(', ', $restrictedFields)
-            ], 403);
+        // 3. Determine which fields have actually changed. Compare the incoming request data with existing stored data
+        $changedData = array_diff_assoc($requestedData, $oldData);
+        $changedFields = array_keys($changedData);
+
+        // 4. Identify fields with attempted changes that should be blocked based on user fields-restriction permissions
+        $userRestrictions = $this->getUserAppRestrictions('edit-content') ?: [];
+        $permissionAllowedFields = $userRestrictions['fields'] ?? ['content', 'series', 'guests', 'tags'];
+        $permissionBlockedFields = array_diff($changedFields, $permissionAllowedFields);
+
+        // 5. Identify fields with attempted changes that should be blocked based on forced fields from content_defaults table
+        $forcedFields = $this->getContentForcedFields($requestedData['file']);
+        $contentBlockedFields = array_intersect($changedFields, $forcedFields);
+
+        // 6. Get list of fields where the changes are allowed
+        $allowedChangesFields = array_diff($changedFields, $permissionBlockedFields, $contentBlockedFields);
+        $allowedChangedData = array_intersect_key($changedData, array_flip($allowedChangesFields));
+
+        // 7. Prepare response variables
+        $responseCode = 200; // Assume success
+        $respondMessages = [];
+        // Add error messages if there are blocked fields from user permissions
+        if (!empty($permissionBlockedFields)) {
+            $respondMessages[] = 'You do not have permission to update: ' . implode(', ', $permissionBlockedFields);
+            $responseCode = 403;
+        }
+        // Add error messages if there are blocked fields from content_defaults table
+        if (!empty($contentBlockedFields)) {
+            $respondMessages[] = 'Content Defaults table is blocking changes to: ' . implode(', ', $contentBlockedFields);
+            $responseCode = 403;
+        }
+        // Add error messages if there are no changes detected
+        if (empty($allowedChangedData)) {
+            $respondMessages[] = 'No changes detected';
+            $responseCode = 400;
         }
 
-        // Update content
-        $content = Content::where('file', $data['file'])->firstOrFail();
-        $update = array_intersect_key($data, array_flip($allowedFields));
-        
-        if (empty($update)) {
-            return response()->json(['message' => 'No fields to update'], 400);
+        // 8. Attempt to update allowed fields
+        try {
+            $content->update($allowedChangedData);
+            // If no error messages exist, confirm success
+            if (empty($respondMessages)) {
+                $respondMessages[] = 'Content metadata updated successfully';
+            }
+        } catch (\Exception $e) {
+            // Catch database or update errors
+            $respondMessages[] = 'Failed to update content metadata: ' . $e->getMessage();
+            $responseCode = 500;
         }
 
-        $content->update($update);
-        return response()->json($content->only(array_merge(['file'], $allowedFields)));
+        // 9. Return final JSON response
+        return response()->json([
+            'messages' => implode(';  ', $respondMessages),
+            'content' => $content->only(['file', 'content', 'series', 'guests', 'tags']),
+        ], $responseCode);
     }
 }

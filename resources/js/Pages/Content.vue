@@ -453,28 +453,42 @@ const saveFileInfo = async (updatedItem: Content) => {
       ;(page.props as any).errors = {}
     }
 
+    // Clear any previous errors before saving
+    const page = usePage()
+    if (page.props.errors) {
+        ; (page.props as any).errors = {}
+    }
+
+    let content = {};
+    try {
+        // Make PUT request
+        const response = await axios.put('/content/metadata', metadata)
+        content = response.data.content
+
+    } catch (error: unknown) {
+        content = error.response?.data.content || {};
+        console.error('Error updating file information:', error)
+
+        //Set global errors for SharedLayout display
+        const page = usePage()
+        if (axios.isAxiosError(error) && error.response?.status === 422) {
+            // Laravel validation errors - use the exact format Laravel provides
+            page.props.errors = error.response.data.errors || {}
+        } else {
+            // All other errors - simple general error
+            const message = (axios.isAxiosError(error) && error.response?.data?.messages) || 'Unknown error occurred while updating file information.'
+            page.props.errors = { general: message }
+        }
+    }
     // Update local state by finding and mutating the relevant content item
     const contentItems = (usePage().props as any).content.items
     const index = contentItems.findIndex((i: Content) => i.file === updatedItem.file)
     if (index !== -1) {
-      Object.assign(contentItems[index], response.data)
+        // Mutate content item (assuming content is not empty)
+        if (Object.keys(content).length > 0) {
+            Object.assign(contentItems[index], content)
+        }
     }
-
-  } catch (error: unknown) {
-    console.error('Error updating file information:', error)
-
-    // Set global errors for SharedLayout display
-    const page = usePage()
-    
-    if (axios.isAxiosError(error) && error.response?.status === 422) {
-      // Laravel validation errors - use the exact format Laravel provides
-      page.props.errors = error.response.data.errors || {}
-    } else {
-      // All other errors - simple general error
-      const message = (axios.isAxiosError(error) && error.response?.data?.message) || 'Failed to update file information'
-      page.props.errors = { general: message }
-    }
-  }
 }
 
 // Initializes component state from the current URL
