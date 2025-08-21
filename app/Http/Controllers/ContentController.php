@@ -328,8 +328,8 @@ class ContentController extends Controller
         ]);
 
         // 2. Load existing content record by file identifier
-        $content = Content::where('file', $requestedData['file'])->firstOrFail();
-        $oldData = $content->only(['file', 'content', 'series', 'guests', 'tags']);
+        $contentModel = Content::where('file', $requestedData['file'])->firstOrFail();
+        $oldData = $contentModel->only(['file', 'content', 'series', 'guests', 'tags']);
 
         // 3. Determine which fields have actually changed. Compare the incoming request data with existing stored data
         $changedData = array_diff_assoc($requestedData, $oldData);
@@ -369,7 +369,7 @@ class ContentController extends Controller
 
         // 8. Attempt to update allowed fields
         try {
-            $content->update($allowedChangedData);
+            $contentModel->update($allowedChangedData);
             // If no error messages exist, confirm success
             if (empty($respondMessages)) {
                 $respondMessages[] = 'Content metadata updated successfully';
@@ -383,7 +383,7 @@ class ContentController extends Controller
         // 9. Return final JSON response
         return response()->json([
             'messages' => implode(';  ', $respondMessages),
-            'content' => $content->only(['file', 'content', 'series', 'guests', 'tags']),
+            'updatedContent' => $contentModel->only(['file', 'content', 'series', 'guests', 'tags']),
         ], $responseCode);
     }
 }

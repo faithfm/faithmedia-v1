@@ -443,52 +443,43 @@ const saveFileInfo = async (updatedItem: Content) => {
     tags: updatedItem.tags
   }
 
+  // Clear any previous errors before attempting the request
+  const page = usePage()
+  if (page.props.errors) {
+    ; (page.props as any).errors = {}
+  }
+
+  // Initialize content
+  let content = {};
+
   try {
     // Make PUT request
     const response = await axios.put('/content/metadata', metadata)
 
-    // Clear any previous errors on success
-    const page = usePage()
-    if (page.props.errors) {
-      ;(page.props as any).errors = {}
-    }
+    // Capture the updated content
+    content = response.data.updatedContent
 
-    // Clear any previous errors before saving
-    const page = usePage()
-    if (page.props.errors) {
-        ; (page.props as any).errors = {}
-    }
+  } catch (error: unknown) {
+    // Capture the (partially) updated content - since error responses often include some valid updated fields
+    content = error.response?.data.updatedContent || {};
+    console.error('Error updating file information:', error)
 
-    let content = {};
-    try {
-        // Make PUT request
-        const response = await axios.put('/content/metadata', metadata)
-        content = response.data.content
-
-    } catch (error: unknown) {
-        content = error.response?.data.content || {};
-        console.error('Error updating file information:', error)
-
-        //Set global errors for SharedLayout display
-        const page = usePage()
-        if (axios.isAxiosError(error) && error.response?.status === 422) {
-            // Laravel validation errors - use the exact format Laravel provides
-            page.props.errors = error.response.data.errors || {}
-        } else {
-            // All other errors - simple general error
-            const message = (axios.isAxiosError(error) && error.response?.data?.messages) || 'Unknown error occurred while updating file information.'
-            page.props.errors = { general: message }
-        }
+    // Set global errors for SharedLayout display
+    if (axios.isAxiosError(error) && error.response?.status === 422) {
+      // Laravel validation errors - use the exact format Laravel provides
+      page.props.errors = error.response.data.errors
+    } else {
+      // All other errors - simple general error
+      const message = (axios.isAxiosError(error) && error.response?.data?.messages) || 'Unknown error occurred while updating file information.'
+      page.props.errors = { general: message }
     }
-    // Update local state by finding and mutating the relevant content item
-    const contentItems = (usePage().props as any).content.items
-    const index = contentItems.findIndex((i: Content) => i.file === updatedItem.file)
-    if (index !== -1) {
-        // Mutate content item (assuming content is not empty)
-        if (Object.keys(content).length > 0) {
-            Object.assign(contentItems[index], content)
-        }
-    }
+  }
+  // Update the content items after successful metadata update
+  const contentItems = (page.props as any).content.items
+  const index = contentItems.findIndex((i: Content) => i.file === updatedItem.file)
+  if (index !== -1 && Object.keys(content).length > 0) {
+    Object.assign(contentItems[index], content)
+  }
 }
 
 // Initializes component state from the current URL
