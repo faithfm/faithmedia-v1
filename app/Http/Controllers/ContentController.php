@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Content;
+use App\Models\ContentDefaults;
 use App\Models\Prefilter;
 use App\Http\Requests\ContentRequest;
 use Illuminate\Http\Request;
@@ -292,18 +293,7 @@ class ContentController extends Controller
     private function getContentForcedFields(string $file): array
     {
         try {
-            $defaults = \Illuminate\Support\Facades\DB::connection('sched')
-                ->select('SELECT * FROM content_defaults WHERE ? LIKE file_pattern', [$file]);
-
-            $forcedFields = [];
-            foreach ($defaults as $default) {
-                if (!empty($default->series_force)) $forcedFields[] = 'series';
-                if (!empty($default->content_force)) $forcedFields[] = 'content';
-                if (!empty($default->guests_force)) $forcedFields[] = 'guests';
-                if (!empty($default->tags_force)) $forcedFields[] = 'tags';
-            }
-
-            return array_unique($forcedFields);
+            return ContentDefaults::getForcedFields($file);
         } catch (\Exception $e) {
             Log::error('Error checking content forced fields: ' . $e->getMessage(), ['file' => $file]);
             return [];
