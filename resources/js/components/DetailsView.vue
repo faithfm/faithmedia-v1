@@ -5,7 +5,7 @@
     @play-item="$emit('play-item', $event)" @save-file-info="$emit('save-file-info', $event)"
     @download-item="(item, format) => $emit('download-item', item, format)" @retry="handleRetry">
     <template
-      #default="{ content, isSelected, isPlaying, onItemSelect, onItemMenu, onPlayItem, getFileName, getFilePath, formatDuration, itemHasMatches }">
+      #default="{ content, isSelected, isPlaying, onItemSelect, onItemMenu, onPlayItem, getFileName, getFilePath, formatDuration, highlightText, itemHasMatches }">
       <div class="table-wrapper">
         <v-data-table
           :headers="headers"
@@ -61,12 +61,32 @@
           <!-- File column with subfolder indicator -->
           <template #item.file="{ item }">
             <div class="d-flex align-center">
-              <span>{{ getFileName(item.file) }}</span>
+              <span v-html="getFileName(item.file)"></span>
               <v-chip v-if="mode === 'search' && isFromSubfolder(item)" size="x-small" color="primary"
                 class="ml-2" label>
                 sub
               </v-chip>
             </div>
+          </template>
+
+          <!-- Series column with highlighting -->
+          <template #item.series="{ item }">
+            <span v-html="highlightText(item.series)"></span>
+          </template>
+
+          <!-- Content column with highlighting -->
+          <template #item.content="{ item }">
+            <span v-html="highlightText(item.content)"></span>
+          </template>
+
+          <!-- Guests column with highlighting -->
+          <template #item.guests="{ item }">
+            <span v-html="highlightText(item.guests)"></span>
+          </template>
+
+          <!-- Tags column with highlighting -->
+          <template #item.tags="{ item }">
+            <span v-html="highlightText(item.tags)"></span>
           </template>
 
           <!-- Duration column with formatting -->
@@ -76,7 +96,7 @@
 
           <!-- Path column (when includeSubfolders is true) -->
           <template #item.path="{ item }">
-            {{ getFilePath(item.file) }}
+            <span v-html="getFilePath(item.file)"></span>
           </template>
 
           <!-- Desktop actions column -->
@@ -128,6 +148,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Error handling
 const { error, retry } = useErrorHandling()
+
 
 // Define table headers using Vuetify's proper column configuration
 const headers = computed(() => {
@@ -346,6 +367,13 @@ const hasZeroDuration = (item: Content) => {
 
 .content-data-table :deep(.action-btn:hover) {
   background-color: rgba(var(--v-theme-primary), 0.08);
+}
+
+/* Style for highlighted text */
+.content-data-table :deep(mark) {
+  background-color: rgba(var(--v-theme-warning), 0.3);
+  border-radius: 2px;
+  font-weight: 500;
 }
 
 /* Desktop: Hide mobile actions by default */
