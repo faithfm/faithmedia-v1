@@ -66,7 +66,7 @@
             </v-avatar>
           </template>
           <v-card-title class="text-h5 font-weight-medium text-wrap">
-            {{ getFileName(selectedItems[0].file) }}
+            <span v-html="getFileName(selectedItems[0].file)"></span>
           </v-card-title>
           <v-card-subtitle class="text-white text-opacity-70 text-wrap">
             {{ selectedItems[0].content || 'No title' }}
