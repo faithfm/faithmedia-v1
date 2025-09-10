@@ -43,7 +43,7 @@ export function useReviewSummaries() {
       return {
         id: index + 1, // Display ID for table
         file: song.file,
-        name: `${song.artist} - ${song.title}`,
+        name: `${song.title} - ${song.artist}`,
         status: existingSummary?.status || '',
         source: existingSummary?.source || null,
         comment: existingSummary?.comment || null,
