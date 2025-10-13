@@ -69,7 +69,7 @@
             <span v-html="getFileName(selectedItems[0].file)"></span>
           </v-card-title>
           <v-card-subtitle class="text-white text-opacity-70 text-wrap">
-            {{ selectedItems[0].content || 'No title' }}
+            <span v-html="highlightText(selectedItems[0].content) || 'No title'"></span>
           </v-card-subtitle>
           <template v-slot:append>
             <v-btn
@@ -555,5 +555,21 @@ defineExpose({
 .field-modified {
   border-left: 3px solid rgb(var(--v-theme-red-darken-4)) !important;
   transition: all 0.2s ease;
+}
+
+/* Search highlighting styles */
+:deep(mark) {
+  background-color: rgba(var(--v-theme-warning), 0.3);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* Enhanced visibility for marks on red background in dialog header */
+.bg-red-darken-4 :deep(mark) {
+  background-color: #ffc107;
+  color: #000;
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 </style>
