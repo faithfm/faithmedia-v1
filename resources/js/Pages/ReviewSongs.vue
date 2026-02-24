@@ -102,6 +102,16 @@ const playItem = (song: SongForReview) => {
   audioPlayer.playTrack(trackInfo)
 }
 
+// Sync selected song highlight with the currently playing track (e.g. when next/prev is clicked in the player)
+watch(() => audioPlayer.state.value.currentTrack, (newTrack) => {
+  if (newTrack && songs.value.length > 0) {
+    const matchingSong = songs.value.find(song => song.file === newTrack.id)
+    if (matchingSong) {
+      selectedSong.value = matchingSong
+    }
+  }
+})
+
 // Updates the audio player playlist when songs change
 watch(() => songs.value, (newSongs) => {
   if (newSongs && newSongs.length > 0) {
