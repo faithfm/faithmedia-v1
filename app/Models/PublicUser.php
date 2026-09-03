@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\Contracts\Auditable;
 
-class PublicUser extends Model implements Auditable
+class PublicUser extends Model
 {
-    use \OwenIt\Auditing\Auditable;
-
     /**
      * The attributes that are mass assignable.
      *
